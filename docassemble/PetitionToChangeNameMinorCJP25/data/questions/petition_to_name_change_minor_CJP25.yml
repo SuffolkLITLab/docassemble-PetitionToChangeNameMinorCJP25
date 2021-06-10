@@ -49,6 +49,8 @@ objects:
   - users: ALPeopleList.using(ask_number=True,target_number=1)
   - notary_public: ALPeopleList.using(there_are_any=True)
   - guardian2_full: ALPeopleList
+  - parents: ALPeopleList
+  - guardians: ALPeopleList
 ---
 sections:
   - review_petition_to_name_change_minor_CJP25: Review your answers
@@ -80,28 +82,30 @@ code: |
   users[0].address.address
   doc_or_dys_yes
   prior_name_change
+  if prior_name_change == True:
+    user_name_change_from
   set_progress(15.0)
-  user_name_change_from
   return_request_yes
-  parents.gather()
-  parents[0].address.address
-  parents[0].address.address
-  set_progress(20.0)
-  parents[0].address.address
-  parents[0].address.address
-  parents[0].address.address
-  parents[0].phone_number
-  parents[0].email
-  set_progress(25.0)
-  parents.gather()
-  parents[1].address.address
-  parents[1].address.address
-  parents[1].address.address
-  parents[1].address.address
-  set_progress(30.0)
-  parents[1].address.address
-  parents[1].phone_number
-  parents[1].email
+  if presented_by_parent1 or presented_by_parent2:
+    parents.gather()
+    parents[0].address.address
+    parents[0].address.address
+    set_progress(20.0)
+    parents[0].address.address
+    parents[0].address.address
+    parents[0].address.address
+    parents[0].phone_number
+    parents[0].email
+    set_progress(25.0)
+    parents.gather()
+    parents[1].address.address
+    parents[1].address.address
+    parents[1].address.address
+    parents[1].address.address
+    set_progress(30.0)
+    parents[1].address.address
+    parents[1].phone_number
+    parents[1].email
   one_parent_listed_yes
   deceased_parent_listed_yes
   set_progress(35.0)
