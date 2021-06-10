@@ -1,0 +1,1159 @@
+---
+include:
+  - docassemble.AssemblyLine:al_package.yml
+  - docassemble.ALMassachusetts:al_massachusetts.yml
+  - docassemble.MassAccess:massaccess.yml
+---
+metadata:
+  title: |
+    Petition to Change the Name of a Minor
+  short title: |
+    Name change minor petition cjp25
+  tags:
+    - FA-00-00-00-00
+---
+mandatory: True
+comment: |
+  This contains metadata that will not be overwritten if this YAML file is included in another
+  file. Each file gets its own key in the interview_metadata dictionary.
+  Most keys are not currently used at runtime, other than "allowed courts".
+code: |
+  interview_metadata
+  if not defined("interview_metadata['petition_to_name_change_minor_CJP25']"):
+    interview_metadata.initializeObject("petition_to_name_change_minor_CJP25")
+    interview_metadata["petition_to_name_change_minor_CJP25"].update({
+      "al_weaver_version": "1.0.2",
+      "generated on": "2021-06-09",
+      "title": "Petition to Change the Name of a Minor",
+      "short title": "Name change minor petition cjp25",
+      "description": "This form will help you to change the name for a minor child.",
+      "original_form": "https://courtforms.jud.state.ma.us/publicforms/PFC0021",
+      "allowed courts": [
+        "Probate and Family Court",
+      ],
+      "categories": [
+        "FA-00-00-00-00",
+      ],        
+      "logic block variable": "interview_order_petition_to_name_change_minor_CJP25",
+      "attachment block variable": "petition_to_name_change_minor_CJP25_attachment",
+      "typical role": "plaintiff",
+    })
+---
+code: |
+  interview_short_title = "Ask the court for a Petition to Change the Name of a Minor"
+---
+code: |
+  al_form_type = 'starts_case'
+---
+objects:
+  - users: ALPeopleList.using(ask_number=True,target_number=1)
+  - notary_public: ALPeopleList.using(there_are_any=True)
+  - guardian2_full: ALPeopleList
+---
+sections:
+  - review_petition_to_name_change_minor_CJP25: Review your answers
+---
+#################### Interview order #####################
+comment: |
+  Controls order and branching logic for questions specific to this form
+id: interview_order_petition_to_name_change_minor_CJP25
+code: |
+  # Set the allowed courts for this interview
+  allowed_courts = interview_metadata["petition_to_name_change_minor_CJP25"]["allowed courts"]
+  nav.set_section('review_petition_to_name_change_minor_CJP25')
+  user_role = 'plaintiff'
+  docket_number
+  courts[0].division
+  users.gather()
+  set_parts(subtitle=str(users))
+  users.gather()
+  users.gather()
+  set_progress(5.0)
+  presented_by_parent2
+  users[0].birthdate
+  users[0].birthdate
+  users[0].address.address
+  users[0].address.address
+  set_progress(10.0)
+  users[0].address.address
+  users[0].address.address
+  users[0].address.address
+  doc_or_dys_yes
+  prior_name_change
+  set_progress(15.0)
+  user_name_change_from
+  return_request_yes
+  parents.gather()
+  parents[0].address.address
+  parents[0].address.address
+  set_progress(20.0)
+  parents[0].address.address
+  parents[0].address.address
+  parents[0].address.address
+  parents[0].phone_number
+  parents[0].email
+  set_progress(25.0)
+  parents.gather()
+  parents[1].address.address
+  parents[1].address.address
+  parents[1].address.address
+  parents[1].address.address
+  set_progress(30.0)
+  parents[1].address.address
+  parents[1].phone_number
+  parents[1].email
+  one_parent_listed_yes
+  deceased_parent_listed_yes
+  set_progress(35.0)
+  parent_listed_rights_terminated_yes
+  guardian
+  guardians.gather()
+  guardians[0].address.address
+  guardians[0].address.address
+  set_progress(40.0)
+  guardians[0].address.address
+  guardians[0].address.address
+  guardians[0].address.address
+  guardians[0].phone_number
+  guardians[0].email
+  set_progress(45.0)
+  guardian2_full[0]
+  guardians[1].address.address
+  guardians[1].address.address
+  guardians[1].address.address
+  guardians[1].address.address
+  set_progress(50.0)
+  guardians[1].address.address
+  guardians[1].phone_number
+  guardians[1].email
+  minor_under_12_yes
+  parent1_assent
+  set_progress(55.0)
+  parent2_assent
+  guardian_assent
+  user_name_change_reason_1
+  user_needs_interpreter
+  parent2_needs_interpreter
+  set_progress(60.0)
+  user_signature_date
+  users.gather()
+  users[0].address.address
+  user_date_day
+  notary_public[0]
+  set_progress(65.0)
+  date_commission_expiration
+  parent1_signature_date
+  parents[0].address.address
+  set_progress(70.0)
+  parent1_date_day
+  parent2_signature_date
+  parents[1].address.address
+  parent2_date_year
+  set_progress(75.0)
+  guardian_signature_date
+  guardian_name_full_printed
+  guardians[0].address.address
+  guardian_date_month
+  set_progress(80.0)
+  attorneys.gather()
+  attorneys[0].address.address
+  attorneys[0].address.address
+  attorneys[0].address.address
+  set_progress(85.0)
+  attorneys[0].address.address
+  attorneys[0].address.address
+  attorneys[0].phone_number
+  attorney_bbo
+  attorneys[0].email
+  interview_order_petition_to_name_change_minor_CJP25 = True
+---
+###################### Main order ######################
+comment: |
+  This block includes the logic for standalone interviews.
+  Delete mandatory: True to include in another interview
+mandatory: True
+code: |
+  al_intro_screen
+  petition_to_name_change_minor_CJP25_intro
+  interview_order_petition_to_name_change_minor_CJP25
+  signature_date
+  # Save anonymized interview statistics (customize the saved data below)
+  store_variables_snapshot(data={'zip': users[0].address.zip})
+  petition_to_name_change_minor_CJP25_preview_question
+  basic_questions_signature_flow
+  notary_public[0].signature
+  attorneys[0].signature
+  parents[1].signature
+  guardians[0].signature
+  users[0].signature
+  parents[0].signature
+  petition_to_name_change_minor_CJP25_download
+---
+comment: |
+  This question is used to introduce your interview. Please customize
+id: Petition_to_Change_the_Name_of_a_Minor
+continue button field: petition_to_name_change_minor_CJP25_intro
+question: |
+  Petition to Change the Name of a Minor
+subquestion: |
+  This form will help you to change the name for a minor child.
+---
+id: Who is presenting the petition on behalf of the child
+question: |
+  Who is presenting the petition on behalf of the child?
+fields:
+  - "Was the Presented by the Legal Father/Parent 2": presented_by_parent2
+    datatype: yesno
+  - "Was the Presented by the Legal Mother/Parent 1": presented_by_parent1
+    datatype: yesno
+  - "Was the Presented by the Guardian": presented_by_guardian
+    datatype: yesno
+---
+id: Is the current address a facility under the supervision of the Massachusetts Department of Corrections or Department of Youth Services
+question: |
+  Is the current address a facility under the supervision of the Massachusetts Department of Corrections or Department of Youth Services?
+yesno: doc_or_dys_yes
+---
+id: Has the child ever previously changed their name
+question: |
+  Has the child ever previously changed their name?
+yesno: prior_name_change
+---
+id: What was the previous name the name that the child changed to and the reason for the name change
+question: |
+  What was the previous name, the name that the child changed to, and the reason for the name change?
+fields:
+  - "Previous Name": user_name_change_from
+    maxlength: 82
+  - "New Name": user_name_change_to
+    maxlength: 82
+  - "Reason for Name Change": user_name_change_reason
+    maxlength: 82
+---
+id: Do you want to request a return by first class mail of all certified copies of documents filed with the court after review and processing
+question: |
+  Do you want to request a return, by first class mail, of all certified copies of documents filed with the court after review and processing.
+yesno: return_request_yes
+---
+id: Check if only one parent is listed on the child s birth certificate
+question: |
+  Check if only one parent is listed on the child's birth certificate.
+yesno: one_parent_listed_yes
+---
+id: Check if any legal parent listed on the child s birth certificate is deceased
+question: |
+  Check if any legal parent listed on the child's birth certificate is deceased.
+yesno: deceased_parent_listed_yes
+---
+id: Check if any legal parent listed on the child s birth certificate had their parental rights terminated in a prior proceeding
+question: |
+  Check if any legal parent listed on the child's birth certificate had their parental rights terminated in a prior proceeding.
+yesno: parent_listed_rights_terminated_yes
+---
+id: Does the child have a court appointed guardian
+question: |
+  Does the child have a court-appointed guardian.
+yesno: guardian
+---
+id: The minor child who is 12 years of age or older assents to the petition See notarized assent on this petition
+question: |
+  The minor child who is 12 years of age or older assents to the petition (See notarized assent on this petition).
+yesno: minor_under_12_yes
+---
+id: The Legal Mother Parent 1
+question: |
+  The Legal Mother/Parent 1
+fields:
+  - "Legal Mother/Parent 1 Assents to the Petition.": parent1_assent
+    datatype: yesno
+  - "Legal Mother/Parent 1 explanation for no assent.": parent1_assent_no_explanation
+    input type: area
+    maxlength: 134
+---
+id: Legal Father Parent 2
+question: |
+  Legal Father/Parent 2
+fields:
+  - "Legal Father/Parent 2 Assents to the Petition.": parent2_assent
+    datatype: yesno
+  - "Legal Father/Parent 2 explanation for no assent.": parent2_assent_no_explanation
+    input type: area
+    maxlength: 134
+---
+id: All court appointed guardians
+question: |
+  All court-appointed guardians
+fields:
+  - "Guardian Assents to the Petition.": guardian_assent
+    datatype: yesno
+  - "Guardian explanation for no assent.": guardian_assent_no_explanation
+    input type: area
+    maxlength: 134
+  - "Not applicable, no court-appointed guardian.": guardian_assent_not_applicable
+    datatype: yesno
+---
+id: A name change is sought for the following reason
+question: |
+  A name change is sought for the following reason:
+fields:
+  - "Reason for the minor\'s name change.": user_name_change_reason_1
+    input type: area
+    maxlength: 180
+---
+id: If there is a hearing on this petition I request an interpreter for
+question: |
+  If there is a hearing on this petition, I request an interpreter for
+subquestion: |
+  (check all that apply)
+fields:
+  - "Legal Father/Parent 2 needs interpreter.": parent2_needs_interpreter
+    datatype: yesno
+  - "Guardian needs interpreter.": guardian_needs_interpreter
+    datatype: yesno
+  - "Legal Mother/Parent 1 needs interpreter.": parent1_needs_interpreter
+    datatype: yesno
+  - "Interpreter language.": interpreter_language
+    maxlength: 71
+---
+id: Enter the date that the minor signed the form in the presence of a Notary Public
+question: |
+  Enter the date that the minor signed the form in the presence of a Notary Public.
+fields:
+  - "Date of user signature.": user_signature_date
+    datatype: date
+---
+id: Enter the date that minor appeared before the Notary Public and the form of ID presented
+question: |
+  Enter the date that minor appeared before the Notary Public and the form of ID presented.
+fields:
+  - "User appearance day.": user_date_day
+    maxlength: 7
+  - "User appearance year.": user_date_year
+    maxlength: 4
+  - "User appearance month.": user_date_month
+    maxlength: 7
+  - "Minor ID form.": user_id
+    maxlength: 21
+---
+id: Enter the date that the Notary Public s commission expires
+question: |
+  Enter the date that the Notary Public's commission expires.
+fields:
+  - "Date of Notary Public commission expiration.": date_commission_expiration
+    maxlength: 20
+---
+id: Enter the date that the Legal Mother Parent 1 signed this form in the presence of the Notary Public
+question: |
+  Enter the date that the Legal Mother/Parent 1 signed this form in the presence of the Notary Public.
+fields:
+  - "Date of Legal Mother/Parent 1 signature.": parent1_signature_date
+    datatype: date
+---
+id: Enter the date that the Legal Mother Parent 1 appeared before the Notary Public and the form of ID presented
+question: |
+  Enter the date that the Legal Mother/Parent 1 appeared before the Notary Public and the form of ID presented.
+fields:
+  - "Legal Mother/Parent 1 appearance day.": parent1_date_day
+    maxlength: 7
+  - "Legal Mother/Parent 1 appearance year.": parent1_date_year
+    maxlength: 4
+  - "Legal Mother/Parent 1 appearance month.": parent1_date_month
+    maxlength: 7
+  - "Legal Mother/Parent 1 ID form.": parent1_id
+    maxlength: 22
+---
+id: Enter the date that the Legal Father Parent 2 signed this form in the presence of a Notary Public
+question: |
+  Enter the date that the Legal Father/Parent 2 signed this form in the presence of a Notary Public.
+fields:
+  - "Date of Legal Father/Parent 2 signature.": parent2_signature_date
+    datatype: date
+---
+id: Enter the date that the Legal Father Parent 2 appeared before the Notary Public and the form of ID presented
+question: |
+  Enter the date that the Legal Father/Parent 2 appeared before the Notary Public and the form of ID presented.
+fields:
+  - "Legal Father/Parent 2 appearance year.": parent2_date_year
+    maxlength: 4
+  - "Legal Father/Parent 2 appearance month.": parent2_date_month
+    maxlength: 7
+  - "Legal Father/Parent 2 appearance day.": parent2_date_day
+    maxlength: 7
+  - "Legal Father/Parent 2 ID form.": parent2_id
+    maxlength: 22
+---
+id: Enter the date that the Guardian signed in the presence of the Notary Public
+question: |
+  Enter the date that the Guardian signed in the presence of the Notary Public.
+fields:
+  - "Date of guardian signature": guardian_signature_date
+    datatype: date
+---
+id: Enter the full printed Guardian name
+question: |
+  Enter the full printed Guardian name.
+fields:
+  - "Full printed Guardian name.": guardian_name_full_printed
+    maxlength: 32
+---
+id: Enter the date that the Guardian appeared before the Notary Public and the form of ID presented
+question: |
+  Enter the date that the Guardian appeared before the Notary Public and the form of ID presented.
+fields:
+  - "Guardian appearance month.": guardian_date_month
+    maxlength: 7
+  - "Guardian appearance year.": guardian_date_year
+    maxlength: 4
+  - "Guardian appearance day.": guardian_date_day
+    maxlength: 7
+  - "Guardian ID form.": guardian_id
+    maxlength: 22
+---
+id: Enter the Attorney s BBO
+question: |
+  Enter the Attorney's BBO#.
+fields:
+  - "Attorney BBO#.": attorney_bbo
+    maxlength: 44
+---
+id: preview petition_to_name_change_minor_CJP25
+question: |
+  Preview your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page.   
+  
+  ${ al_court_bundle.as_pdf(key='preview') }
+
+  Click the image to open it in a new tab. Click the "Make changes" button
+  to edit your answers.
+
+  ${ action_button_html(url_action('review_petition_to_name_change_minor_CJP25'), label='Make changes', color='info') }
+  
+  Remember to come back to this window to continue and sign your form.
+continue button field: petition_to_name_change_minor_CJP25_preview_question    
+---
+code: |
+  signature_fields = ['notary_public[0].signature', 'attorneys[0].signature', 'parents[1].signature', 'guardians[0].signature', 'users[0].signature', 'parents[0].signature']
+---
+id: petition to name change minor CJP25 review screen
+event: review_petition_to_name_change_minor_CJP25
+question: |
+  Review your answers
+review:
+  - Edit: presented_by_parent2
+    button: |
+      **Was the Presented by the Legal Father/Parent 2**:
+      ${ word(yesno(presented_by_parent2)) }
+  - Edit: presented_by_parent1
+    button: |
+      **Was the Presented by the Legal Mother/Parent 1**:
+      ${ word(yesno(presented_by_parent1)) }
+  - Edit: presented_by_guardian
+    button: |
+      **Was the Presented by the Guardian**:
+      ${ word(yesno(presented_by_guardian)) }
+  - Edit: doc_or_dys_yes
+    button: |
+      **Under Supervision of Massachusetts Department of Corrections or Department of Youth Services**:
+      ${ word(yesno(doc_or_dys_yes)) }
+  - Edit: prior_name_change
+    button: |
+      **Prior Name Change?**:
+      ${ word(yesno(prior_name_change)) }
+  - Edit: user_name_change_from
+    button: |
+      **Previous Name**:
+      ${ user_name_change_from }
+  - Edit: user_name_change_to
+    button: |
+      **New Name**:
+      ${ user_name_change_to }
+  - Edit: user_name_change_reason
+    button: |
+      **Reason for Name Change**:
+      ${ user_name_change_reason }
+  - Edit: return_request_yes
+    button: |
+      **Request Return by First Class Mail**:
+      ${ word(yesno(return_request_yes)) }
+  - Edit: one_parent_listed_yes
+    button: |
+      **One Parent Listed on Child\'s Birth Certificate**:
+      ${ word(yesno(one_parent_listed_yes)) }
+  - Edit: deceased_parent_listed_yes
+    button: |
+      **One Parent Listed on Child\'s Birth Certificate is Deceased**:
+      ${ word(yesno(deceased_parent_listed_yes)) }
+  - Edit: parent_listed_rights_terminated_yes
+    button: |
+      **One Parent Listed on Child\'s Birth Certificate had their Parental Rights Terminated in a Prior Proceeding**:
+      ${ word(yesno(parent_listed_rights_terminated_yes)) }
+  - Edit: guardian
+    button: |
+      **Does the Child have a Court-Appointed Guardian**:
+      ${ word(yesno(guardian)) }
+  - Edit: minor_under_12_yes
+    button: |
+      **Not applicable. The minor child is not 12 years of age or older.**:
+      ${ word(yesno(minor_under_12_yes)) }
+  - Edit: parent1_assent
+    button: |
+      **Legal Mother/Parent 1 Assents to the Petition.**:
+      ${ word(yesno(parent1_assent)) }
+  - Edit: parent1_assent_no_explanation
+    button: |
+      **Legal Mother/Parent 1 explanation for no assent.**:
+      > ${ single_paragraph(parent1_assent_no_explanation) }
+  - Edit: parent2_assent
+    button: |
+      **Legal Father/Parent 2 Assents to the Petition.**:
+      ${ word(yesno(parent2_assent)) }
+  - Edit: parent2_assent_no_explanation
+    button: |
+      **Legal Father/Parent 2 explanation for no assent.**:
+      > ${ single_paragraph(parent2_assent_no_explanation) }
+  - Edit: guardian_assent
+    button: |
+      **Guardian Assents to the Petition.**:
+      ${ word(yesno(guardian_assent)) }
+  - Edit: guardian_assent_no_explanation
+    button: |
+      **Guardian explanation for no assent.**:
+      > ${ single_paragraph(guardian_assent_no_explanation) }
+  - Edit: guardian_assent_not_applicable
+    button: |
+      **Not applicable, no court-appointed guardian.**:
+      ${ word(yesno(guardian_assent_not_applicable)) }
+  - Edit: user_name_change_reason_1
+    button: |
+      **Reason for the minor\'s name change.**:
+      > ${ single_paragraph(user_name_change_reason_1) }
+  - Edit: parent2_needs_interpreter
+    button: |
+      **Legal Father/Parent 2 needs interpreter.**:
+      ${ word(yesno(parent2_needs_interpreter)) }
+  - Edit: guardian_needs_interpreter
+    button: |
+      **Guardian needs interpreter.**:
+      ${ word(yesno(guardian_needs_interpreter)) }
+  - Edit: parent1_needs_interpreter
+    button: |
+      **Legal Mother/Parent 1 needs interpreter.**:
+      ${ word(yesno(parent1_needs_interpreter)) }
+  - Edit: interpreter_language
+    button: |
+      **Interpreter language.**:
+      ${ interpreter_language }
+  - Edit: user_signature_date
+    button: |
+      **Date of user signature.**:
+      ${ user_signature_date }
+  - Edit: user_date_day
+    button: |
+      **User appearance day.**:
+      ${ user_date_day }
+  - Edit: user_date_year
+    button: |
+      **User appearance year.**:
+      ${ user_date_year }
+  - Edit: user_date_month
+    button: |
+      **User appearance month.**:
+      ${ user_date_month }
+  - Edit: user_id
+    button: |
+      **Minor ID form.**:
+      ${ user_id }
+  - Edit: date_commission_expiration
+    button: |
+      **Date of Notary Public commission expiration.**:
+      ${ date_commission_expiration }
+  - Edit: parent1_signature_date
+    button: |
+      **Date of Legal Mother/Parent 1 signature.**:
+      ${ parent1_signature_date }
+  - Edit: parent1_date_day
+    button: |
+      **Legal Mother/Parent 1 appearance day.**:
+      ${ parent1_date_day }
+  - Edit: parent1_date_year
+    button: |
+      **Legal Mother/Parent 1 appearance year.**:
+      ${ parent1_date_year }
+  - Edit: parent1_date_month
+    button: |
+      **Legal Mother/Parent 1 appearance month.**:
+      ${ parent1_date_month }
+  - Edit: parent1_id
+    button: |
+      **Legal Mother/Parent 1 ID form.**:
+      ${ parent1_id }
+  - Edit: parent2_signature_date
+    button: |
+      **Date of Legal Father/Parent 2 signature.**:
+      ${ parent2_signature_date }
+  - Edit: parent2_date_year
+    button: |
+      **Legal Father/Parent 2 appearance year.**:
+      ${ parent2_date_year }
+  - Edit: parent2_date_month
+    button: |
+      **Legal Father/Parent 2 appearance month.**:
+      ${ parent2_date_month }
+  - Edit: parent2_date_day
+    button: |
+      **Legal Father/Parent 2 appearance day.**:
+      ${ parent2_date_day }
+  - Edit: parent2_id
+    button: |
+      **Legal Father/Parent 2 ID form.**:
+      ${ parent2_id }
+  - Edit: guardian_signature_date
+    button: |
+      **Date of guardian signature**:
+      ${ guardian_signature_date }
+  - Edit: guardian_name_full_printed
+    button: |
+      **Full printed Guardian name.**:
+      ${ guardian_name_full_printed }
+  - Edit: guardian_date_month
+    button: |
+      **Guardian appearance month.**:
+      ${ guardian_date_month }
+  - Edit: guardian_date_year
+    button: |
+      **Guardian appearance year.**:
+      ${ guardian_date_year }
+  - Edit: guardian_date_day
+    button: |
+      **Guardian appearance day.**:
+      ${ guardian_date_day }
+  - Edit: guardian_id
+    button: |
+      **Guardian ID form.**:
+      ${ guardian_id }
+  - Edit: attorney_bbo
+    button: |
+      **Attorney BBO#.**:
+      ${ attorney_bbo }
+  - Edit: docket_number
+    button: |
+      **docket_number**:
+      ${ docket_number }
+  - Edit: users.revisit
+    button: |
+      **users**
+
+      % for item in users:
+        * ${ item }
+      % endfor
+  - Edit: courts.revisit
+    button: |
+      **courts**
+
+      % for item in courts:
+        * ${ item }
+      % endfor
+  - Edit: parents.revisit
+    button: |
+      **parents**
+
+      % for item in parents:
+        * ${ item }
+      % endfor
+  - Edit: guardians.revisit
+    button: |
+      **guardians**
+
+      % for item in guardians:
+        * ${ item }
+      % endfor
+  - Edit: user_needs_interpreter
+    button: |
+      **user_needs_interpreter**:
+      ${ user_needs_interpreter }
+  - Edit: attorneys.revisit
+    button: |
+      **attorneys**
+
+      % for item in attorneys:
+        * ${ item }
+      % endfor
+  - Edit: notary_public[0]
+    button: |
+      **notary_public[0]**:
+      ${ notary_public[0] }
+  - Edit: guardian2_full[0]
+    button: |
+      **guardian2_full[0]**:
+      ${ guardian2_full[0] }
+  - Edit: notary_public[0].signature
+    button: |
+      **notary_public[0].signature**:
+      ${ notary_public[0].signature }
+---
+continue button field: users.revisit
+question: |
+  Edit users
+subquestion: |
+  ${ users.table }
+
+  ${ users.add_action() }
+---
+table: users.table
+rows: users
+columns:
+  - name: |
+      row_item.name.full() if defined("row_item.name.first") else ""
+  - birthdate: |
+      row_item.birthdate if defined("row_item.birthdate") else ""
+  - address: |
+      row_item.address.block() if defined("row_item.address.county") else ""
+  - signature: |
+      row_item.signature if defined("row_item.signature") else ""
+edit:
+  - name.first
+  - birthdate
+  - address.county
+  - signature
+confirm: True
+
+---
+continue button field: courts.revisit
+question: |
+  Edit courts
+subquestion: |
+  ${ courts.table }
+
+  ${ courts.add_action() }
+---
+table: courts.table
+rows: courts
+columns:
+  - division: |
+      row_item.division if defined("row_item.division") else ""
+edit:
+  - division
+confirm: True
+
+---
+continue button field: parents.revisit
+question: |
+  Edit parents
+subquestion: |
+  ${ parents.table }
+
+  ${ parents.add_action() }
+---
+table: parents.table
+rows: parents
+columns:
+  - name: |
+      row_item.name.full() if defined("row_item.name.first") else ""
+  - address: |
+      row_item.address.block() if defined("row_item.address.county") else ""
+  - phone_number: |
+      row_item.phone_number if defined("row_item.phone_number") else ""
+  - email: |
+      row_item.email if defined("row_item.email") else ""
+  - signature: |
+      row_item.signature if defined("row_item.signature") else ""
+edit:
+  - name.first
+  - address.county
+  - phone_number
+  - email
+  - signature
+confirm: True
+
+---
+continue button field: guardians.revisit
+question: |
+  Edit guardians
+subquestion: |
+  ${ guardians.table }
+
+  ${ guardians.add_action() }
+---
+table: guardians.table
+rows: guardians
+columns:
+  - name: |
+      row_item.name.full() if defined("row_item.name.first") else ""
+  - address: |
+      row_item.address.block() if defined("row_item.address.county") else ""
+  - phone_number: |
+      row_item.phone_number if defined("row_item.phone_number") else ""
+  - email: |
+      row_item.email if defined("row_item.email") else ""
+  - signature: |
+      row_item.signature if defined("row_item.signature") else ""
+edit:
+  - name.first
+  - address.county
+  - phone_number
+  - email
+  - signature
+confirm: True
+
+---
+continue button field: attorneys.revisit
+question: |
+  Edit attorneys
+subquestion: |
+  ${ attorneys.table }
+
+  ${ attorneys.add_action() }
+---
+table: attorneys.table
+rows: attorneys
+columns:
+  - signature: |
+      row_item.signature if defined("row_item.signature") else ""
+  - name: |
+      row_item.name.full() if defined("row_item.name.first") else ""
+  - address: |
+      row_item.address.block() if defined("row_item.address.zip") else ""
+  - phone_number: |
+      row_item.phone_number if defined("row_item.phone_number") else ""
+  - email: |
+      row_item.email if defined("row_item.email") else ""
+edit:
+  - signature
+  - name.first
+  - address.zip
+  - phone_number
+  - email
+confirm: True
+
+---
+id: download petition_to_name_change_minor_CJP25
+event: petition_to_name_change_minor_CJP25_download
+question: |
+  Your form is ready to download.
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Make changes" button to fix any mistakes.
+
+  ${ action_button_html(url_action('review_petition_to_name_change_minor_CJP25'), label='Make changes', color='info') }
+  
+  
+  ${ al_user_bundle.download_list_html() }
+  
+
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
+
+progress: 100
+---
+objects:
+  - Post_interview_instructions: ALDocument.using(title="Instructions", filename="petition_to_name_change_minor_CJP25_next_steps.docx", enabled=True, has_addendum=False)
+  - petition_to_name_change_minor_CJP25_attachment: ALDocument.using(title="This form will help you to change the name for a minor child.", filename="petition_to_name_change_minor_CJP25_fielded.pdf", enabled=True, has_addendum=False)
+  - Post_interview_instructions: ALDocument.using(title="Instructions", filename="petition_to_name_change_minor_CJP25_next_steps.docx", enabled=True, has_addendum=False)
+  - petition_to_name_change_minor_CJP25_attachment: ALDocument.using(title="This form will help you to change the name for a minor child.", filename="petition_to_name_change_minor_CJP25_fielded.pdf", enabled=True, has_addendum=False)
+---
+objects:
+  - al_user_bundle: ALDocumentBundle.using(elements=[Post_interview_instructions,petition_to_name_change_minor_CJP25_attachment], filename="petition_to_name_change_minor_CJP25_package.pdf", title="All forms to download for your records")
+  - al_court_bundle: ALDocumentBundle.using(elements=[petition_to_name_change_minor_CJP25_attachment], filename="petition_to_name_change_minor_CJP25_package.pdf", title="All forms to download for your records")
+---
+attachments:
+  - name: Post interview instructions
+    filename: Post-interview-instructions     
+    variable name: Post_interview_instructions[i]        
+    docx template file: petition_to_name_change_minor_CJP25_next_steps.docx
+  - name: petition to name change minor CJP25 attachment
+    filename: petition_to_name_change_minor_CJP25     
+    variable name: petition_to_name_change_minor_CJP25_attachment[i]        
+    skip undefined: True
+    pdf template file: petition_to_name_change_minor_CJP25_fielded.pdf
+    fields:
+      - "docket_number": ${ docket_number }
+      - "user_name_middle": ${ users[0].name.middle }
+      - "user_name_middle__2": ${ users[0].name.middle }
+      - "user_name_middle__3": ${ users[0].name.middle }
+      - "user_name_last": ${ users[0].name.last }
+      - "user_name_last__2": ${ users[0].name.last }
+      - "user_name_last__3": ${ users[0].name.last }
+      - "court_division": ${ courts[0].division }
+      - "user_name_first": ${ users[0].name.first }
+      - "user_name_first__2": ${ users[0].name.first }
+      - "user_name_first__3": ${ users[0].name.first }
+      - "user_birthdate": ${ users[0].birthdate.format() }
+      - "user_age": ${ users[0].age_in_years() }
+      - "user_address_street": ${ users[0].address.address }
+      - "user_address_unit": ${ users[0].address.unit }
+      - "user_address_city": ${ users[0].address.city }
+      - "user_address_state": ${ users[0].address.state }
+      - "user_address_zip": ${ users[0].address.zip }
+      - "parent2_name_full": ${ parents[1] }
+      - "parent2_name_full__2": ${ parents[1] }
+      - "parent2_name_full__3": ${ parents[1] }
+      - "parent1_name_full": ${ parents[0] }
+      - "parent1_name_full__2": ${ parents[0] }
+      - "parent1_name_full__3": ${ parents[0] }
+      - "parent1_address_street": ${ parents[0].address.address }
+      - "parent1_address_unit": ${ parents[0].address.unit }
+      - "parent2_address_street": ${ parents[1].address.address }
+      - "parent2_address_unit": ${ parents[1].address.unit }
+      - "parent1_address_zip": ${ parents[0].address.zip }
+      - "parent1_address_city": ${ parents[0].address.city }
+      - "parent1_address_state": ${ parents[0].address.state }
+      - "parent2_address_city": ${ parents[1].address.city }
+      - "parent2_address_state": ${ parents[1].address.state }
+      - "parent2_address_zip": ${ parents[1].address.zip }
+      - "parent1_phone": ${ parents[0].phone_number }
+      - "parent2_phone": ${ parents[1].phone_number }
+      - "parent1_email": ${ parents[0].email }
+      - "parent2_email": ${ parents[1].email }
+      - "guardian_name_full": ${ guardians[0] }
+      - "guardian_address_street": ${ guardians[0].address.address }
+      - "guardian_address_unit": ${ guardians[0].address.unit }
+      - "guardian2_address_street": ${ guardians[1].address.address }
+      - "guardian2_address_unit": ${ guardians[1].address.unit }
+      - "guardian2_address_zip": ${ guardians[1].address.zip }
+      - "guardian_address_city": ${ guardians[0].address.city }
+      - "guardian_address_state": ${ guardians[0].address.state }
+      - "guardian_address_zip": ${ guardians[0].address.zip }
+      - "guardian2_address_city": ${ guardians[1].address.city }
+      - "guardian2_address_state": ${ guardians[1].address.state }
+      - "guardian2_phone": ${ guardians[1].phone_number }
+      - "guardian_phone": ${ guardians[0].phone_number }
+      - "guardian2_email": ${ guardians[1].email }
+      - "guardian_email": ${ guardians[0].email }
+      - "user_needs_interpreter": ${ user_needs_interpreter }
+      - "user_signature": ${ users[0].signature_if_final(i) }
+      - "user_name_full": ${ users[0] }
+      - "user_name_full__2": ${ users[0] }
+      - "user_address_county": ${ users[0].address.county }
+      - "parent1_signature": ${ parents[0].signature_if_final(i) }
+      - "parent1_address_county": ${ parents[0].address.county }
+      - "parent2_signature": ${ parents[1].signature_if_final(i) }
+      - "parent2_address_county": ${ parents[1].address.county }
+      - "guardian_signature": ${ guardians[0].signature_if_final(i) }
+      - "guardian_address_county": ${ guardians[0].address.county }
+      - "attorney_signature": ${ attorneys[0].signature_if_final(i) }
+      - "attorney_name_full": ${ attorneys[0] }
+      - "attorney_address_street": ${ attorneys[0].address.address }
+      - "attorney_address_unit": ${ attorneys[0].address.unit }
+      - "attorney_address_city": ${ attorneys[0].address.city }
+      - "attorney_address_state": ${ attorneys[0].address.state }
+      - "attorney_address_zip": ${ attorneys[0].address.zip }
+      - "attorney_phone": ${ attorneys[0].phone_number }
+      - "attorney_email": ${ attorneys[0].email }
+      - "notary_public_name": ${ notary_public[0] }
+      - "notary_public_name__2": ${ notary_public[0] }
+      - "notary_public_name__3": ${ notary_public[0] }
+      - "notary_public_name__4": ${ notary_public[0] }
+      - "guardian2_full_name": ${ guardian2_full[0] }
+      - "notary_public_signature": ${ notary_public[0].signature_if_final(i) }
+      - "notary_public_signature__2": ${ notary_public[0].signature_if_final(i) }
+      - "notary_public_signature__3": ${ notary_public[0].signature_if_final(i) }
+      - "notary_public_signature__4": ${ notary_public[0].signature_if_final(i) }
+      - "presented_by_parent2": ${ presented_by_parent2 }
+      - "presented_by_parent1": ${ presented_by_parent1 }
+      - "presented_by_guardian": ${ presented_by_guardian }
+      - "doc_or_dys_yes": ${ doc_or_dys_yes }
+      - "prior_name_change_yes": ${ prior_name_change }
+      - "prior_name_change_no": ${ not prior_name_change }
+      - "user_name_change_from": ${ user_name_change_from }
+      - "user_name_change_to": ${ user_name_change_to }
+      - "user_name_change_reason": ${ user_name_change_reason }
+      - "return_request_yes": ${ return_request_yes }
+      - "one_parent_listed_yes": ${ one_parent_listed_yes }
+      - "deceased_parent_listed_yes": ${ deceased_parent_listed_yes }
+      - "parent_listed_rights_terminated_yes": ${ parent_listed_rights_terminated_yes }
+      - "guardian_yes": ${ guardian }
+      - "guardian_no": ${ not guardian }
+      - "minor_under_12_yes": ${ minor_under_12_yes }
+      - "parent1_assent_yes": ${ parent1_assent }
+      - "parent1_assent_no": ${ not parent1_assent }
+      - "parent1_assent_no_explanation": ${ parent1_assent_no_explanation }
+      - "parent2_assent_yes": ${ parent2_assent }
+      - "parent2_assent_no": ${ not parent2_assent }
+      - "parent2_assent_no_explanation": ${ parent2_assent_no_explanation }
+      - "guardian_assent_yes": ${ guardian_assent }
+      - "guardian_assent_no": ${ not guardian_assent }
+      - "guardian_assent_no_explanation": ${ guardian_assent_no_explanation }
+      - "guardian_assent_not_applicable": ${ guardian_assent_not_applicable }
+      - "user_name_change_reason_1": ${ user_name_change_reason_1 }
+      - "parent2_needs_interpreter": ${ parent2_needs_interpreter }
+      - "guardian_needs_interpreter": ${ guardian_needs_interpreter }
+      - "parent1_needs_interpreter": ${ parent1_needs_interpreter }
+      - "interpreter_language": ${ interpreter_language }
+      - "user_signature_date": ${ user_signature_date }
+      - "user_date_day": ${ user_date_day }
+      - "user_date_year": ${ user_date_year }
+      - "user_date_month": ${ user_date_month }
+      - "user_id": ${ user_id }
+      - "date_commission_expiration": ${ date_commission_expiration }
+      - "date_commission_expiration__2": ${ date_commission_expiration }
+      - "date_commission_expiration__3": ${ date_commission_expiration }
+      - "date_commission_expiration__4": ${ date_commission_expiration }
+      - "parent1_signature_date": ${ parent1_signature_date }
+      - "parent1_date_day": ${ parent1_date_day }
+      - "parent1_date_year": ${ parent1_date_year }
+      - "parent1_date_month": ${ parent1_date_month }
+      - "parent1_id": ${ parent1_id }
+      - "parent2_signature_date": ${ parent2_signature_date }
+      - "parent2_date_year": ${ parent2_date_year }
+      - "parent2_date_month": ${ parent2_date_month }
+      - "parent2_date_day": ${ parent2_date_day }
+      - "parent2_id": ${ parent2_id }
+      - "guardian_signature_date": ${ guardian_signature_date }
+      - "guardian_name_full_printed": ${ guardian_name_full_printed }
+      - "guardian_name_full_printed__2": ${ guardian_name_full_printed }
+      - "guardian_date_month": ${ guardian_date_month }
+      - "guardian_date_year": ${ guardian_date_year }
+      - "guardian_date_day": ${ guardian_date_day }
+      - "guardian_id": ${ guardian_id }
+      - "attorney_bbo": ${ attorney_bbo }
+  - name: Post interview instructions
+    filename: Post-interview-instructions     
+    variable name: Post_interview_instructions[i]        
+    docx template file: petition_to_name_change_minor_CJP25_next_steps.docx
+  - name: petition to name change minor CJP25 attachment
+    filename: petition_to_name_change_minor_CJP25     
+    variable name: petition_to_name_change_minor_CJP25_attachment[i]        
+    skip undefined: True
+    pdf template file: petition_to_name_change_minor_CJP25_fielded.pdf
+    fields:
+      - "docket_number": ${ docket_number }
+      - "user_name_middle": ${ users[0].name.middle }
+      - "user_name_middle__2": ${ users[0].name.middle }
+      - "user_name_middle__3": ${ users[0].name.middle }
+      - "user_name_last": ${ users[0].name.last }
+      - "user_name_last__2": ${ users[0].name.last }
+      - "user_name_last__3": ${ users[0].name.last }
+      - "court_division": ${ courts[0].division }
+      - "user_name_first": ${ users[0].name.first }
+      - "user_name_first__2": ${ users[0].name.first }
+      - "user_name_first__3": ${ users[0].name.first }
+      - "user_birthdate": ${ users[0].birthdate.format() }
+      - "user_age": ${ users[0].age_in_years() }
+      - "user_address_street": ${ users[0].address.address }
+      - "user_address_unit": ${ users[0].address.unit }
+      - "user_address_city": ${ users[0].address.city }
+      - "user_address_state": ${ users[0].address.state }
+      - "user_address_zip": ${ users[0].address.zip }
+      - "parent2_name_full": ${ parents[1] }
+      - "parent2_name_full__2": ${ parents[1] }
+      - "parent2_name_full__3": ${ parents[1] }
+      - "parent1_name_full": ${ parents[0] }
+      - "parent1_name_full__2": ${ parents[0] }
+      - "parent1_name_full__3": ${ parents[0] }
+      - "parent1_address_street": ${ parents[0].address.address }
+      - "parent1_address_unit": ${ parents[0].address.unit }
+      - "parent2_address_street": ${ parents[1].address.address }
+      - "parent2_address_unit": ${ parents[1].address.unit }
+      - "parent1_address_zip": ${ parents[0].address.zip }
+      - "parent1_address_city": ${ parents[0].address.city }
+      - "parent1_address_state": ${ parents[0].address.state }
+      - "parent2_address_city": ${ parents[1].address.city }
+      - "parent2_address_state": ${ parents[1].address.state }
+      - "parent2_address_zip": ${ parents[1].address.zip }
+      - "parent1_phone": ${ parents[0].phone_number }
+      - "parent2_phone": ${ parents[1].phone_number }
+      - "parent1_email": ${ parents[0].email }
+      - "parent2_email": ${ parents[1].email }
+      - "guardian_name_full": ${ guardians[0] }
+      - "guardian_address_street": ${ guardians[0].address.address }
+      - "guardian_address_unit": ${ guardians[0].address.unit }
+      - "guardian2_address_street": ${ guardians[1].address.address }
+      - "guardian2_address_unit": ${ guardians[1].address.unit }
+      - "guardian2_address_zip": ${ guardians[1].address.zip }
+      - "guardian_address_city": ${ guardians[0].address.city }
+      - "guardian_address_state": ${ guardians[0].address.state }
+      - "guardian_address_zip": ${ guardians[0].address.zip }
+      - "guardian2_address_city": ${ guardians[1].address.city }
+      - "guardian2_address_state": ${ guardians[1].address.state }
+      - "guardian2_phone": ${ guardians[1].phone_number }
+      - "guardian_phone": ${ guardians[0].phone_number }
+      - "guardian2_email": ${ guardians[1].email }
+      - "guardian_email": ${ guardians[0].email }
+      - "user_needs_interpreter": ${ user_needs_interpreter }
+      - "user_signature": ${ users[0].signature_if_final(i) }
+      - "user_name_full": ${ users[0] }
+      - "user_name_full__2": ${ users[0] }
+      - "user_address_county": ${ users[0].address.county }
+      - "parent1_signature": ${ parents[0].signature_if_final(i) }
+      - "parent1_address_county": ${ parents[0].address.county }
+      - "parent2_signature": ${ parents[1].signature_if_final(i) }
+      - "parent2_address_county": ${ parents[1].address.county }
+      - "guardian_signature": ${ guardians[0].signature_if_final(i) }
+      - "guardian_address_county": ${ guardians[0].address.county }
+      - "attorney_signature": ${ attorneys[0].signature_if_final(i) }
+      - "attorney_name_full": ${ attorneys[0] }
+      - "attorney_address_street": ${ attorneys[0].address.address }
+      - "attorney_address_unit": ${ attorneys[0].address.unit }
+      - "attorney_address_city": ${ attorneys[0].address.city }
+      - "attorney_address_state": ${ attorneys[0].address.state }
+      - "attorney_address_zip": ${ attorneys[0].address.zip }
+      - "attorney_phone": ${ attorneys[0].phone_number }
+      - "attorney_email": ${ attorneys[0].email }
+      - "notary_public_name": ${ notary_public[0] }
+      - "notary_public_name__2": ${ notary_public[0] }
+      - "notary_public_name__3": ${ notary_public[0] }
+      - "notary_public_name__4": ${ notary_public[0] }
+      - "guardian2_full_name": ${ guardian2_full[0] }
+      - "notary_public_signature": ${ notary_public[0].signature_if_final(i) }
+      - "notary_public_signature__2": ${ notary_public[0].signature_if_final(i) }
+      - "notary_public_signature__3": ${ notary_public[0].signature_if_final(i) }
+      - "notary_public_signature__4": ${ notary_public[0].signature_if_final(i) }
+      - "presented_by_parent2": ${ presented_by_parent2 }
+      - "presented_by_parent1": ${ presented_by_parent1 }
+      - "presented_by_guardian": ${ presented_by_guardian }
+      - "doc_or_dys_yes": ${ doc_or_dys_yes }
+      - "prior_name_change_yes": ${ prior_name_change }
+      - "prior_name_change_no": ${ not prior_name_change }
+      - "user_name_change_from": ${ user_name_change_from }
+      - "user_name_change_to": ${ user_name_change_to }
+      - "user_name_change_reason": ${ user_name_change_reason }
+      - "return_request_yes": ${ return_request_yes }
+      - "one_parent_listed_yes": ${ one_parent_listed_yes }
+      - "deceased_parent_listed_yes": ${ deceased_parent_listed_yes }
+      - "parent_listed_rights_terminated_yes": ${ parent_listed_rights_terminated_yes }
+      - "guardian_yes": ${ guardian }
+      - "guardian_no": ${ not guardian }
+      - "minor_under_12_yes": ${ minor_under_12_yes }
+      - "parent1_assent_yes": ${ parent1_assent }
+      - "parent1_assent_no": ${ not parent1_assent }
+      - "parent1_assent_no_explanation": ${ parent1_assent_no_explanation }
+      - "parent2_assent_yes": ${ parent2_assent }
+      - "parent2_assent_no": ${ not parent2_assent }
+      - "parent2_assent_no_explanation": ${ parent2_assent_no_explanation }
+      - "guardian_assent_yes": ${ guardian_assent }
+      - "guardian_assent_no": ${ not guardian_assent }
+      - "guardian_assent_no_explanation": ${ guardian_assent_no_explanation }
+      - "guardian_assent_not_applicable": ${ guardian_assent_not_applicable }
+      - "user_name_change_reason_1": ${ user_name_change_reason_1 }
+      - "parent2_needs_interpreter": ${ parent2_needs_interpreter }
+      - "guardian_needs_interpreter": ${ guardian_needs_interpreter }
+      - "parent1_needs_interpreter": ${ parent1_needs_interpreter }
+      - "interpreter_language": ${ interpreter_language }
+      - "user_signature_date": ${ user_signature_date }
+      - "user_date_day": ${ user_date_day }
+      - "user_date_year": ${ user_date_year }
+      - "user_date_month": ${ user_date_month }
+      - "user_id": ${ user_id }
+      - "date_commission_expiration": ${ date_commission_expiration }
+      - "date_commission_expiration__2": ${ date_commission_expiration }
+      - "date_commission_expiration__3": ${ date_commission_expiration }
+      - "date_commission_expiration__4": ${ date_commission_expiration }
+      - "parent1_signature_date": ${ parent1_signature_date }
+      - "parent1_date_day": ${ parent1_date_day }
+      - "parent1_date_year": ${ parent1_date_year }
+      - "parent1_date_month": ${ parent1_date_month }
+      - "parent1_id": ${ parent1_id }
+      - "parent2_signature_date": ${ parent2_signature_date }
+      - "parent2_date_year": ${ parent2_date_year }
+      - "parent2_date_month": ${ parent2_date_month }
+      - "parent2_date_day": ${ parent2_date_day }
+      - "parent2_id": ${ parent2_id }
+      - "guardian_signature_date": ${ guardian_signature_date }
+      - "guardian_name_full_printed": ${ guardian_name_full_printed }
+      - "guardian_name_full_printed__2": ${ guardian_name_full_printed }
+      - "guardian_date_month": ${ guardian_date_month }
+      - "guardian_date_year": ${ guardian_date_year }
+      - "guardian_date_day": ${ guardian_date_day }
+      - "guardian_id": ${ guardian_id }
+      - "attorney_bbo": ${ attorney_bbo }
