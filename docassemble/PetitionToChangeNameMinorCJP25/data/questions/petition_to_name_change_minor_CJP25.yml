@@ -296,7 +296,7 @@ id: A name change is sought for the following reason
 question: |
   A name change is sought for the following reason:
 fields:
-  - "Reason for the minor\'s name change.": user_name_change_reason_1
+  - "Reason for the minor name change.": user_name_change_reason_1
     input type: area
     maxlength: 180
 ---
@@ -526,7 +526,7 @@ review:
       ${ word(yesno(guardian_assent_not_applicable)) }
   - Edit: user_name_change_reason_1
     button: |
-      **Reason for the minor\'s name change.**:
+      **Reason for the minor name change.**:
       > ${ single_paragraph(user_name_change_reason_1) }
   - Edit: parent2_needs_interpreter
     button: |
