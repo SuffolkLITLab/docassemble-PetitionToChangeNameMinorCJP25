@@ -48,7 +48,9 @@ code: |
 objects:
   - users: ALPeopleList.using(ask_number=True,target_number=1)
   - notary_public: ALPeopleList.using(there_are_any=True)
-  - guardian2_full: ALPeopleList
+  - guardian2: ALPeopleList
+  - parents: ALPeopleList
+  - guardians: ALPeopleList
 ---
 sections:
   - review_petition_to_name_change_minor_CJP25: Review your answers
@@ -80,56 +82,61 @@ code: |
   users[0].address.address
   doc_or_dys_yes
   prior_name_change
+  if prior_name_change == True:
+    user_name_change_from
   set_progress(15.0)
-  user_name_change_from
   return_request_yes
-  parents.gather()
-  parents[0].address.address
-  parents[0].address.address
-  set_progress(20.0)
-  parents[0].address.address
-  parents[0].address.address
-  parents[0].address.address
-  parents[0].phone_number
-  parents[0].email
-  set_progress(25.0)
-  parents.gather()
-  parents[1].address.address
-  parents[1].address.address
-  parents[1].address.address
-  parents[1].address.address
-  set_progress(30.0)
-  parents[1].address.address
-  parents[1].phone_number
-  parents[1].email
+  if presented_by_parent1 or presented_by_parent2:
+    parents.gather()
+    parents[0].address.address
+    parents[0].address.address
+    set_progress(20.0)
+    parents[0].address.address
+    parents[0].address.address
+    parents[0].address.address
+    parents[0].phone_number
+    parents[0].email
+    set_progress(25.0)
+    parents.gather()
+    parents[1].address.address
+    parents[1].address.address
+    parents[1].address.address
+    parents[1].address.address
+    set_progress(30.0)
+    parents[1].address.address
+    parents[1].phone_number
+    parents[1].email
   one_parent_listed_yes
   deceased_parent_listed_yes
   set_progress(35.0)
   parent_listed_rights_terminated_yes
-  guardian
-  guardians.gather()
-  guardians[0].address.address
-  guardians[0].address.address
-  set_progress(40.0)
-  guardians[0].address.address
-  guardians[0].address.address
-  guardians[0].address.address
-  guardians[0].phone_number
-  guardians[0].email
-  set_progress(45.0)
-  guardian2_full[0]
-  guardians[1].address.address
-  guardians[1].address.address
-  guardians[1].address.address
-  guardians[1].address.address
-  set_progress(50.0)
-  guardians[1].address.address
-  guardians[1].phone_number
-  guardians[1].email
+  if presented_by_guardian:
+    guardian
+    guardians.gather()
+    guardians[0].address.address
+    guardians[0].address.address
+    set_progress(40.0)
+    guardians[0].address.address
+    guardians[0].address.address
+    guardians[0].address.address
+    guardians[0].phone_number
+    guardians[0].email
+    set_progress(45.0)
+    guardian2[0]
+    guardians[1].address.address
+    guardians[1].address.address
+    guardians[1].address.address
+    guardians[1].address.address
+    set_progress(50.0)
+    guardians[1].address.address
+    guardians[1].phone_number
+    guardians[1].email
   minor_under_12_yes
-  parent1_assent
+  if parent1_assent == False:
+    parent1_assent_no_explanation
   set_progress(55.0)
-  parent2_assent
+  if parent2_assent ==False:
+    parent2_assent_no_explanation
   guardian_assent
   user_name_change_reason_1
   user_needs_interpreter
@@ -262,11 +269,16 @@ yesno: minor_under_12_yes
 ---
 id: The Legal Mother Parent 1
 question: |
-  The Legal Mother/Parent 1
+  Legal Mother/Parent 1
 fields:
   - "Legal Mother/Parent 1 Assents to the Petition.": parent1_assent
-    datatype: yesno
-  - "Legal Mother/Parent 1 explanation for no assent.": parent1_assent_no_explanation
+    datatype: yesnoradio
+---
+id: Parent 1 Reason for No Assent
+question: |
+  Legal Mother/Parent 1 does not assent because:
+fields:
+  - "Explanation": parent1_assent_no_explanation
     input type: area
     maxlength: 134
 ---
@@ -275,8 +287,13 @@ question: |
   Legal Father/Parent 2
 fields:
   - "Legal Father/Parent 2 Assents to the Petition.": parent2_assent
-    datatype: yesno
-  - "Legal Father/Parent 2 explanation for no assent.": parent2_assent_no_explanation
+    datatype: yesnoradio
+---
+id: Parent 2 Reason for No Assent
+question: |
+  Legal Father/Parent 2 does not assent because:
+fields:
+  - "Explanation": parent2_assent_no_explanation
     input type: area
     maxlength: 134
 ---
@@ -683,10 +700,10 @@ review:
     button: |
       **notary_public[0]**:
       ${ notary_public[0] }
-  - Edit: guardian2_full[0]
+  - Edit: guardian2[0]
     button: |
-      **guardian2_full[0]**:
-      ${ guardian2_full[0] }
+      **guardian2[0]**:
+      ${ guardian2[0] }
   - Edit: notary_public[0].signature
     button: |
       **notary_public[0].signature**:
@@ -944,7 +961,7 @@ attachments:
       - "notary_public_name__2": ${ notary_public[0] }
       - "notary_public_name__3": ${ notary_public[0] }
       - "notary_public_name__4": ${ notary_public[0] }
-      - "guardian2_full_name": ${ guardian2_full[0] }
+      - "guardian2_name_full": ${ guardian2[0] }
       - "notary_public_signature": ${ notary_public[0].signature_if_final(i) }
       - "notary_public_signature__2": ${ notary_public[0].signature_if_final(i) }
       - "notary_public_signature__3": ${ notary_public[0].signature_if_final(i) }
@@ -1094,7 +1111,7 @@ attachments:
       - "notary_public_name__2": ${ notary_public[0] }
       - "notary_public_name__3": ${ notary_public[0] }
       - "notary_public_name__4": ${ notary_public[0] }
-      - "guardian2_full_name": ${ guardian2_full[0] }
+      - "guardian2_name_full": ${ guardian2[0] }
       - "notary_public_signature": ${ notary_public[0].signature_if_final(i) }
       - "notary_public_signature__2": ${ notary_public[0].signature_if_final(i) }
       - "notary_public_signature__3": ${ notary_public[0].signature_if_final(i) }
