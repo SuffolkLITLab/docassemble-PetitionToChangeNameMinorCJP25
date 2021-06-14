@@ -209,11 +209,11 @@ id: Who is presenting the petition on behalf of the child
 question: |
   Who is presenting the petition on behalf of the child?
 fields:
-  - "Was the Presented by the Legal Father/Parent 2": presented_by_parent2
+  - "Presented by the Legal Mother/Parent 1": presented_by_parent1
+    datatype: yesno  
+  - "Presented by the Legal Father/Parent 2": presented_by_parent2
     datatype: yesno
-  - "Was the Presented by the Legal Mother/Parent 1": presented_by_parent1
-    datatype: yesno
-  - "Was the Presented by the Guardian": presented_by_guardian
+  - "Presented by the Guardian": presented_by_guardian
     datatype: yesno
 ---
 id: Is the current address a facility under the supervision of the Massachusetts Department of Corrections or Department of Youth Services
@@ -323,11 +323,11 @@ question: |
 subquestion: |
   (check all that apply)
 fields:
+  - "Legal Mother/Parent 1 needs interpreter.": parent1_needs_interpreter
+    datatype: yesno 
   - "Legal Father/Parent 2 needs interpreter.": parent2_needs_interpreter
     datatype: yesno
   - "Guardian needs interpreter.": guardian_needs_interpreter
-    datatype: yesno
-  - "Legal Mother/Parent 1 needs interpreter.": parent1_needs_interpreter
     datatype: yesno
   - "Interpreter language.": interpreter_language
     maxlength: 71
@@ -351,13 +351,15 @@ fields:
     maxlength: 7
   - "Minor ID form.": user_id
     maxlength: 21
+under: |
+  Note: Enter day, year, and month as a two-digit number. (i.e., 12/07/'21)
 ---
 id: Enter the date that the Notary Public s commission expires
 question: |
   Enter the date that the Notary Public's commission expires.
 fields:
   - "Date of Notary Public commission expiration.": date_commission_expiration
-    maxlength: 20
+    datatype: date
 ---
 id: Enter the date that the Legal Mother Parent 1 signed this form in the presence of the Notary Public
 question: |
