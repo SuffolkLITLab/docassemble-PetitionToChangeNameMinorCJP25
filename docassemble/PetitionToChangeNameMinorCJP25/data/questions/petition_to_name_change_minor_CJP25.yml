@@ -40,7 +40,7 @@ code: |
     })
 ---
 code: |
-  interview_short_title = "Ask the court for a Petition to Change the Name of a Minor"
+  interview_short_title = "File a Petition to Change the Name of a Minor."
 ---
 code: |
   al_form_type = 'starts_case'
@@ -48,9 +48,9 @@ code: |
 objects:
   - users: ALPeopleList.using(ask_number=True,target_number=1)
   - notary_public: ALPeopleList.using(there_are_any=True)
-  - guardian2: ALPeopleList
   - parents: ALPeopleList
   - guardians: ALPeopleList
+  - guardian2: ALPeopleList
 ---
 sections:
   - review_petition_to_name_change_minor_CJP25: Review your answers
@@ -111,7 +111,7 @@ code: |
   set_progress(35.0)
   parent_listed_rights_terminated_yes
   if presented_by_guardian:
-    guardian
+    guardian == True
     guardians.gather()
     guardians[0].address.address
     guardians[0].address.address
@@ -122,7 +122,7 @@ code: |
     guardians[0].phone_number
     guardians[0].email
     set_progress(45.0)
-    guardian2[0]
+    guardians[1]
     guardians[1].address.address
     guardians[1].address.address
     guardians[1].address.address
@@ -197,23 +197,27 @@ code: |
   petition_to_name_change_minor_CJP25_download
 ---
 comment: |
-  This question is used to introduce your interview. Please customize
+  This interview will guide you through the process of filing a CJP25 Petition to Change the Name of a Minor by Asking a Series of Questions concerning information on the child, their parents or guardians, and other relevant information.
 id: Petition_to_Change_the_Name_of_a_Minor
 continue button field: petition_to_name_change_minor_CJP25_intro
 question: |
-  Petition to Change the Name of a Minor
+  Minor Name Change Petition CJP25
 subquestion: |
-  This form will help you to change the name for a minor child.
+  This form will help you to request a name change for a minor child.
 ---
 id: Who is presenting the petition on behalf of the child
 question: |
   Who is presenting the petition on behalf of the child?
+subquestion: |
+  Select all that apply.
 fields:
   - "Presented by the Legal Mother/Parent 1": presented_by_parent1
     datatype: yesno  
   - "Presented by the Legal Father/Parent 2": presented_by_parent2
     datatype: yesno
-  - "Presented by the Guardian": presented_by_guardian
+  - "Presented by a Guardian": presented_by_guardian
+    datatype: yesno
+  - "No one, the child is presenting this petition on behalf of themselves": presented_by_no_one
     datatype: yesno
 ---
 id: Is the current address a facility under the supervision of the Massachusetts Department of Corrections or Department of Youth Services
