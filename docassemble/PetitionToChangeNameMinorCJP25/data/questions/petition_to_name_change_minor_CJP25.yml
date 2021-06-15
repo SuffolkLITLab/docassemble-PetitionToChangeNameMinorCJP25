@@ -384,6 +384,8 @@ fields:
     maxlength: 7
   - "Legal Mother/Parent 1 ID form.": parent1_id
     maxlength: 22
+under: |
+  Note: Enter day, year, and month as a two-digit number. (i.e., 12/07/'21)
 ---
 id: Enter the date that the Legal Father Parent 2 signed this form in the presence of a Notary Public
 question: |
@@ -404,6 +406,8 @@ fields:
     maxlength: 7
   - "Legal Father/Parent 2 ID form.": parent2_id
     maxlength: 22
+under: |
+  Note: Enter day, year, and month as a two-digit number. (i.e., 12/07/'21)
 ---
 id: Enter the date that the Guardian signed in the presence of the Notary Public
 question: |
