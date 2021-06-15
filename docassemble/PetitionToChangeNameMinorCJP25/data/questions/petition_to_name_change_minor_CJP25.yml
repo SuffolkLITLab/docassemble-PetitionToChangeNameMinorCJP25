@@ -243,7 +243,7 @@ fields:
 ---
 id: Do you want to request a return by first class mail of all certified copies of documents filed with the court after review and processing
 question: |
-  Do you want to request a return, by first class mail, of all certified copies of documents filed with the court after review and processing.
+  Would you like to request a return, by first class mail, of all certified copies of documents filed with the court after review and processing?
 yesno: return_request_yes
 ---
 id: Check if only one parent is listed on the child s birth certificate
