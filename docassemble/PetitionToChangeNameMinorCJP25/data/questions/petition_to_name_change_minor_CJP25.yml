@@ -48,8 +48,8 @@ code: |
 objects:
   - users: ALPeopleList.using(ask_number=True,target_number=1)
   - notary_public: ALPeopleList.using(there_are_any=True)
-  - parents: ALPeopleList
-  - guardians: ALPeopleList
+  - parents: ALPeopleList.using(complete_attribute="complete")
+  - guardians: ALPeopleList.using(complete_attribute="complete")
   - guardian2: ALPeopleList
 ---
 sections:
@@ -80,31 +80,8 @@ code: |
   if prior_name_change == True:
     user_name_change_from
   set_progress(15.0)
-  guardian
-  if presented_by_parent1 or presented_by_parent2:
-    parents.gather()
-    parents[0].address.address
-    set_progress(20.0)
-    parents[0].phone_number
-    parents[0].email
-    set_progress(25.0)
-    parents.gather()
-    parents[1].address.address
-    set_progress(30.0)
-    parents[1].phone_number
-    parents[1].email
-  if presented_by_guardian:
-    guardians.gather()
-    guardians[0].address.address
-    set_progress(35.0)
-    guardians[0].phone_number
-    guardians[0].email
-    set_progress(40.0)
-    guardians[1]
-    guardians[1].address.address
-    set_progress(45.0)
-    guardians[1].phone_number
-    guardians[1].email
+  parents.gather()
+  guardians.gather()
   one_parent_listed_yes
   deceased_parent_listed_yes
   parent_listed_rights_terminated_yes
@@ -113,7 +90,7 @@ code: |
   if parent1_assent == False:
     parent1_assent_no_explanation
   set_progress(55.0)
-  if parent2_assent ==False:
+  if parent2_assent == False:
     parent2_assent_no_explanation
   guardian_assent
   user_name_change_reason_1
@@ -152,6 +129,37 @@ code: |
   attorneys[0].email
   return_request_yes
   interview_order_petition_to_name_change_minor_CJP25 = True
+---
+code: |
+  parents[i].name.first
+  parents[i].address.address
+  parents[i].phone_number
+  parents[i].email
+  parents[i].complete = True
+---
+code: |
+  guardians[i].name.first
+  guardians[i].address.address
+  guardians[i].phone_number
+  guardians[i].email
+  guardians[i].complete = True
+---
+code: |
+   if presented_by_parent1 or presented_by_parent2:
+     parents.there_are_any = True
+     guardians.there_are_any = False
+   if presented_by_guardian:
+     guardians.there_are_any = True
+     parents.there_are_any = False
+---
+#id: qwx
+#question: |
+#  Are there any parents or guardians on this form?
+#fields:
+#  - "Yes": parents.there_are_any
+#    datatype: yesno
+#  - "Yes": guardians.there_are_any
+#    datatype: yesno
 ---
 ###################### Main order ######################
 comment: |
@@ -968,8 +976,8 @@ attachments:
       - "one_parent_listed_yes": ${ one_parent_listed_yes }
       - "deceased_parent_listed_yes": ${ deceased_parent_listed_yes }
       - "parent_listed_rights_terminated_yes": ${ parent_listed_rights_terminated_yes }
-      - "guardian_yes": ${ guardian }
-      - "guardian_no": ${ not guardian }
+      - "guardian_yes": ${ guardians.there_are_any }
+      - "guardian_no": ${ "not guardian" }
       - "minor_under_12_yes": ${ minor_under_12_yes }
       - "parent1_assent_yes": ${ parent1_assent }
       - "parent1_assent_no": ${ not parent1_assent }
