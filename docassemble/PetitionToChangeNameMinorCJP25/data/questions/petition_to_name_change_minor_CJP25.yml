@@ -71,66 +71,44 @@ code: |
   users.gather()
   users.gather()
   set_progress(5.0)
-  presented_by_parent2
+  presented_by_parent1
   users[0].birthdate
-  users[0].birthdate
-  users[0].address.address
   users[0].address.address
   set_progress(10.0)
-  users[0].address.address
-  users[0].address.address
-  users[0].address.address
   doc_or_dys_yes
   prior_name_change
   if prior_name_change == True:
     user_name_change_from
   set_progress(15.0)
-  return_request_yes
+  guardian
   if presented_by_parent1 or presented_by_parent2:
     parents.gather()
     parents[0].address.address
-    parents[0].address.address
     set_progress(20.0)
-    parents[0].address.address
-    parents[0].address.address
-    parents[0].address.address
     parents[0].phone_number
     parents[0].email
     set_progress(25.0)
     parents.gather()
     parents[1].address.address
-    parents[1].address.address
-    parents[1].address.address
-    parents[1].address.address
     set_progress(30.0)
-    parents[1].address.address
     parents[1].phone_number
     parents[1].email
-  one_parent_listed_yes
-  deceased_parent_listed_yes
-  set_progress(35.0)
-  parent_listed_rights_terminated_yes
   if presented_by_guardian:
-    guardian == True
     guardians.gather()
     guardians[0].address.address
-    guardians[0].address.address
-    set_progress(40.0)
-    guardians[0].address.address
-    guardians[0].address.address
-    guardians[0].address.address
+    set_progress(35.0)
     guardians[0].phone_number
     guardians[0].email
-    set_progress(45.0)
+    set_progress(40.0)
     guardians[1]
     guardians[1].address.address
-    guardians[1].address.address
-    guardians[1].address.address
-    guardians[1].address.address
-    set_progress(50.0)
-    guardians[1].address.address
+    set_progress(45.0)
     guardians[1].phone_number
     guardians[1].email
+  one_parent_listed_yes
+  deceased_parent_listed_yes
+  parent_listed_rights_terminated_yes
+  set_progress(50.0)
   minor_under_12_yes
   if parent1_assent == False:
     parent1_assent_no_explanation
@@ -172,6 +150,7 @@ code: |
   attorneys[0].phone_number
   attorney_bbo
   attorneys[0].email
+  return_request_yes
   interview_order_petition_to_name_change_minor_CJP25 = True
 ---
 ###################### Main order ######################
@@ -243,7 +222,7 @@ fields:
 ---
 id: Do you want to request a return by first class mail of all certified copies of documents filed with the court after review and processing
 question: |
-  Do you want to request a return, by first class mail, of all certified copies of documents filed with the court after review and processing.
+  Would you like to request a return, by first class mail, of all certified copies of documents filed with the court after review and processing?
 yesno: return_request_yes
 ---
 id: Check if only one parent is listed on the child s birth certificate
@@ -384,6 +363,8 @@ fields:
     maxlength: 7
   - "Legal Mother/Parent 1 ID form.": parent1_id
     maxlength: 22
+under: |
+  Note: Enter day, year, and month as a two-digit number. (i.e., 12/07/'21)
 ---
 id: Enter the date that the Legal Father Parent 2 signed this form in the presence of a Notary Public
 question: |
@@ -404,6 +385,8 @@ fields:
     maxlength: 7
   - "Legal Father/Parent 2 ID form.": parent2_id
     maxlength: 22
+under: |
+  Note: Enter day, year, and month as a two-digit number. (i.e., 12/07/'21)
 ---
 id: Enter the date that the Guardian signed in the presence of the Notary Public
 question: |
