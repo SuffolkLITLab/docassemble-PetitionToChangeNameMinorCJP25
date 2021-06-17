@@ -66,56 +66,60 @@ code: |
   user_role = 'plaintiff'
   docket_number
   courts[0].division
-  users.gather()
-  set_parts(subtitle=str(users))
-  users.gather()
-  users.gather()
-  set_progress(5.0)
-  presented_by_parent1
-  users[0].birthdate
-  users[0].address.address
-  set_progress(10.0)
-  doc_or_dys_yes
   prior_name_change
   if prior_name_change == True:
     user_name_change_from
+  users.gather()
+  set_parts(subtitle=str(users))
+  set_progress(5.0)
+  users[0].birthdate
+  users[0].address.address
+  doc_or_dys_yes
+  presented_by_parent1
+  set_progress(10.0)
   set_progress(15.0)
   parents.gather()
   guardians.gather()
+  minor_under_12_yes
+  if presented_by_parent1 or presented_by_parent2:
+    parent1_assent
+    parent2_assent
+    guardian_assent_not_applicable = True
+    guardian_no = True
+  if presented_by_guardian:
+    parent1_assent
+    parent2_assent
+    guardian_assent
+    guardian_assent_not_applicable = False
+    guardian_yes = True
   one_parent_listed_yes
   deceased_parent_listed_yes
   parent_listed_rights_terminated_yes
   set_progress(50.0)
-  minor_under_12_yes
-  if parent1_assent == False:
-    parent1_assent_no_explanation
   set_progress(55.0)
-  if parent2_assent == False:
-    parent2_assent_no_explanation
-  guardian_assent
   user_name_change_reason_1
   user_needs_interpreter
   parent2_needs_interpreter
   set_progress(60.0)
-  user_signature_date
-  users.gather()
-  users[0].address.address
-  user_date_day
-  notary_public[0]
-  set_progress(65.0)
-  date_commission_expiration
-  parent1_signature_date
-  parents[0].address.address
+  #user_signature_date
+  #users.gather()
+  #users[0].address.address
+  #user_date_day
+  #notary_public[0]
+  #set_progress(65.0)
+  #date_commission_expiration
+  #parent1_signature_date
+  #parents[0].address.address
   set_progress(70.0)
-  parent1_date_day
-  parent2_signature_date
-  parents[1].address.address
-  parent2_date_year
+  #parent1_date_day
+  #parent2_signature_date
+  #parents[1].address.address
+  #parent2_date_year
   set_progress(75.0)
-  guardian_signature_date
-  guardian_name_full_printed
-  guardians[0].address.address
-  guardian_date_month
+  #guardian_signature_date
+  #guardian_name_full_printed
+  #guardians[0].address.address
+  #guardian_date_month
   set_progress(80.0)
   attorneys.gather()
   attorneys[0].address.address
@@ -148,9 +152,13 @@ code: |
    if presented_by_parent1 or presented_by_parent2:
      parents.there_are_any = True
      guardians.there_are_any = False
+     guardian_assent_not_applicable = True
+     guardian_no = True
    if presented_by_guardian:
      guardians.there_are_any = True
      parents.there_are_any = False
+     guardian_assent_not_applicable = False
+     guardian_yes = True
 ---
 #id: qwx
 #question: |
@@ -204,8 +212,6 @@ fields:
     datatype: yesno
   - "Presented by a Guardian": presented_by_guardian
     datatype: yesno
-  - "No one, the child is presenting this petition on behalf of themselves": presented_by_no_one
-    datatype: yesno
 ---
 id: Is the current address a facility under the supervision of the Massachusetts Department of Corrections or Department of Youth Services
 question: |
@@ -253,52 +259,39 @@ question: |
   Does the child have a court-appointed guardian.
 yesno: guardian
 ---
-id: The minor child who is 12 years of age or older assents to the petition See notarized assent on this petition
+id: minor assent
 question: |
-  The minor child who is 12 years of age or older assents to the petition (See notarized assent on this petition).
+  Is the minor under the age of 12?
+subquestion: |
+  If the minor child is under 12 years of age, they cannot assent to this petition.
 yesno: minor_under_12_yes
 ---
-id: The Legal Mother Parent 1
+id: parent 1 assent
 question: |
-  Legal Mother/Parent 1
+  Legal Mother/Parent 1...
 fields:
-  - "Legal Mother/Parent 1 Assents to the Petition.": parent1_assent
+  - "Assents to this Petition.": parent1_assent
     datatype: yesnoradio
+  - "Explanation for not assenting.": parent1_assent_no_explanation
+    hide if: parent1_assent
 ---
-id: Parent 1 Reason for No Assent
+id: parent 2 assent
 question: |
-  Legal Mother/Parent 1 does not assent because:
+  Legal Father/Parent 2...
 fields:
-  - "Explanation": parent1_assent_no_explanation
-    input type: area
-    maxlength: 134
----
-id: Legal Father Parent 2
-question: |
-  Legal Father/Parent 2
-fields:
-  - "Legal Father/Parent 2 Assents to the Petition.": parent2_assent
+  - "Assents to the Petition.": parent2_assent
     datatype: yesnoradio
+  - "Explanation for not assenting.": parent2_assent_no_explanation
+    hide if: parent2_assent
 ---
-id: Parent 2 Reason for No Assent
+id: guardian assent
 question: |
-  Legal Father/Parent 2 does not assent because:
+  All court-appointed guardians...
 fields:
-  - "Explanation": parent2_assent_no_explanation
-    input type: area
-    maxlength: 134
----
-id: All court appointed guardians
-question: |
-  All court-appointed guardians
-fields:
-  - "Guardian Assents to the Petition.": guardian_assent
-    datatype: yesno
-  - "Guardian explanation for no assent.": guardian_assent_no_explanation
-    input type: area
-    maxlength: 134
-  - "Not applicable, no court-appointed guardian.": guardian_assent_not_applicable
-    datatype: yesno
+  - "Assent to this Petition.": guardian_assent
+    datatype: yesnoradio
+  - "Explanation for not assenting.": guardian_assent_no_explanation
+    hide if: guardian_assent
 ---
 id: A name change is sought for the following reason
 question: |
@@ -310,18 +303,22 @@ fields:
 ---
 id: If there is a hearing on this petition I request an interpreter for
 question: |
-  If there is a hearing on this petition, I request an interpreter for
+  If there is a hearing on this petition, I request an interpreter for...
 subquestion: |
   (check all that apply)
 fields:
-  - "Legal Mother/Parent 1 needs interpreter.": parent1_needs_interpreter
+  - "Legal Mother/Parent 1": parent1_needs_interpreter
     datatype: yesno 
-  - "Legal Father/Parent 2 needs interpreter.": parent2_needs_interpreter
+  - "Legal Father/Parent 2": parent2_needs_interpreter
     datatype: yesno
-  - "Guardian needs interpreter.": guardian_needs_interpreter
+  - "Guardian(s)": guardian_needs_interpreter
     datatype: yesno
-  - "Interpreter language.": interpreter_language
-    maxlength: 71
+  - "Parent 1 preferred language is:": interpreter_language
+    show if: parent1_needs_interpreter
+  - "Parent 2 preferred language is:": interpreter_language
+    show if: parent2_needs_interpreter
+  - "Guardian preferred language is:": interpreter_language
+    show if: guardian_needs_interpreter
 ---
 id: Enter the date that the minor signed the form in the presence of a Notary Public
 question: |
@@ -456,15 +453,15 @@ question: |
 review:
   - Edit: presented_by_parent2
     button: |
-      **Was the Presented by the Legal Father/Parent 2**:
+      **Presented by the Legal Father/Parent 2**:
       ${ word(yesno(presented_by_parent2)) }
   - Edit: presented_by_parent1
     button: |
-      **Was the Presented by the Legal Mother/Parent 1**:
+      **Presented by the Legal Mother/Parent 1**:
       ${ word(yesno(presented_by_parent1)) }
   - Edit: presented_by_guardian
     button: |
-      **Was the Presented by the Guardian**:
+      **Presented by the Guardian**:
       ${ word(yesno(presented_by_guardian)) }
   - Edit: doc_or_dys_yes
     button: |
@@ -920,6 +917,7 @@ attachments:
       - "parent1_email": ${ parents[0].email }
       - "parent2_email": ${ parents[1].email }
       - "guardian_name_full": ${ guardians[0] }
+      - "guardian2_name_full": ${ guardians[1] }
       - "guardian_address_street": ${ guardians[0].address.address }
       - "guardian_address_unit": ${ guardians[0].address.unit }
       - "guardian2_address_street": ${ guardians[1].address.address }
@@ -958,7 +956,6 @@ attachments:
       - "notary_public_name__2": ${ notary_public[0] }
       - "notary_public_name__3": ${ notary_public[0] }
       - "notary_public_name__4": ${ notary_public[0] }
-      - "guardian2_name_full": ${ guardian2[0] }
       - "notary_public_signature": ${ notary_public[0].signature_if_final(i) }
       - "notary_public_signature__2": ${ notary_public[0].signature_if_final(i) }
       - "notary_public_signature__3": ${ notary_public[0].signature_if_final(i) }
@@ -976,8 +973,8 @@ attachments:
       - "one_parent_listed_yes": ${ one_parent_listed_yes }
       - "deceased_parent_listed_yes": ${ deceased_parent_listed_yes }
       - "parent_listed_rights_terminated_yes": ${ parent_listed_rights_terminated_yes }
-      - "guardian_yes": ${ guardians.there_are_any }
-      - "guardian_no": ${ "not guardian" }
+      - "guardian_yes": ${ guardian }
+      - "guardian_no": ${ not guardian }
       - "minor_under_12_yes": ${ minor_under_12_yes }
       - "parent1_assent_yes": ${ parent1_assent }
       - "parent1_assent_no": ${ not parent1_assent }
@@ -1108,7 +1105,7 @@ attachments:
       - "notary_public_name__2": ${ notary_public[0] }
       - "notary_public_name__3": ${ notary_public[0] }
       - "notary_public_name__4": ${ notary_public[0] }
-      - "guardian2_name_full": ${ guardian2[0] }
+      - "guardian2_name_full": ${ guardians[1] }
       - "notary_public_signature": ${ notary_public[0].signature_if_final(i) }
       - "notary_public_signature__2": ${ notary_public[0].signature_if_final(i) }
       - "notary_public_signature__3": ${ notary_public[0].signature_if_final(i) }
