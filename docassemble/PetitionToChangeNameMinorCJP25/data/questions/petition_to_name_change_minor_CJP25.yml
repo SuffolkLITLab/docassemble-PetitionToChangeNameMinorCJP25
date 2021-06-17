@@ -313,6 +313,8 @@ fields:
     datatype: yesno
   - "Guardian(s)": guardian_needs_interpreter
     datatype: yesno
+  - "No Interpreter": no_need_for_interpreter 
+    datatype: yesno
   - "Parent 1 preferred language is:": interpreter_language
     show if: parent1_needs_interpreter
   - "Parent 2 preferred language is:": interpreter_language
