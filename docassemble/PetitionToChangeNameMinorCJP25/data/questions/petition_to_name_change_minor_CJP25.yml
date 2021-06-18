@@ -97,6 +97,7 @@ code: |
   parent_listed_rights_terminated_yes
   set_progress(50.0)
   set_progress(55.0)
+  new_name_first
   user_name_change_reason_1
   user_needs_interpreter
   parent2_needs_interpreter
@@ -178,17 +179,17 @@ code: |
   al_intro_screen
   petition_to_name_change_minor_CJP25_intro
   interview_order_petition_to_name_change_minor_CJP25
-  signature_date
+  #signature_date
   # Save anonymized interview statistics (customize the saved data below)
   store_variables_snapshot(data={'zip': users[0].address.zip})
   petition_to_name_change_minor_CJP25_preview_question
   basic_questions_signature_flow
-  notary_public[0].signature
-  attorneys[0].signature
-  parents[1].signature
-  guardians[0].signature
-  users[0].signature
-  parents[0].signature
+  #notary_public[0].signature
+  #attorneys[0].signature
+  #parents[1].signature
+  #guardians[0].signature
+  #users[0].signature
+  #parents[0].signature
   petition_to_name_change_minor_CJP25_download
 ---
 comment: |
@@ -293,6 +294,14 @@ fields:
   - "Explanation for not assenting.": guardian_assent_no_explanation
     hide if: guardian_assent
 ---
+id: name change new name
+question: |
+  Enter the name that the minor wishes to change to.
+fields:
+  - "New first name.": new_name_first
+  - "New middle name.": new_name_middle
+  - "New last name.": new_name_last
+---
 id: A name change is sought for the following reason
 question: |
   A name change is sought for the following reason:
@@ -312,6 +321,8 @@ fields:
   - "Legal Father/Parent 2": parent2_needs_interpreter
     datatype: yesno
   - "Guardian(s)": guardian_needs_interpreter
+    datatype: yesno
+  - "No Interpreter": no_need_for_interpreter 
     datatype: yesno
   - "Parent 1 preferred language is:": interpreter_language
     show if: parent1_needs_interpreter
@@ -443,8 +454,8 @@ subquestion: |
   Remember to come back to this window to continue and sign your form.
 continue button field: petition_to_name_change_minor_CJP25_preview_question    
 ---
-code: |
-  signature_fields = ['notary_public[0].signature', 'attorneys[0].signature', 'parents[1].signature', 'guardians[0].signature', 'users[0].signature', 'parents[0].signature']
+#code: |
+#  signature_fields = ['notary_public[0].signature', 'attorneys[0].signature', #'parents[1].signature', 'guardians[0].signature', 'users[0].signature', #'parents[0].signature']
 ---
 id: petition to name change minor CJP25 review screen
 event: review_petition_to_name_change_minor_CJP25
@@ -881,14 +892,14 @@ attachments:
       - "docket_number": ${ docket_number }
       - "user_name_middle": ${ users[0].name.middle }
       - "user_name_middle__2": ${ users[0].name.middle }
-      - "user_name_middle__3": ${ users[0].name.middle }
+      - "user_name_middle__3": ${ new_name_middle }
       - "user_name_last": ${ users[0].name.last }
       - "user_name_last__2": ${ users[0].name.last }
-      - "user_name_last__3": ${ users[0].name.last }
+      - "user_name_last__3": ${ new_name_last }
       - "court_division": ${ courts[0].division }
       - "user_name_first": ${ users[0].name.first }
       - "user_name_first__2": ${ users[0].name.first }
-      - "user_name_first__3": ${ users[0].name.first }
+      - "user_name_first__3": ${ new_name_first }
       - "user_birthdate": ${ users[0].birthdate.format() }
       - "user_age": ${ users[0].age_in_years() }
       - "user_address_street": ${ users[0].address.address }
@@ -897,11 +908,11 @@ attachments:
       - "user_address_state": ${ users[0].address.state }
       - "user_address_zip": ${ users[0].address.zip }
       - "parent2_name_full": ${ parents[1] }
-      - "parent2_name_full__2": ${ parents[1] }
-      - "parent2_name_full__3": ${ parents[1] }
+      #- "parent2_name_full__2": ${ parents[1] }
+      #- "parent2_name_full__3": ${ parents[1] }
       - "parent1_name_full": ${ parents[0] }
-      - "parent1_name_full__2": ${ parents[0] }
-      - "parent1_name_full__3": ${ parents[0] }
+      #- "parent1_name_full__2": ${ parents[0] }
+      #- "parent1_name_full__3": ${ parents[0] }
       - "parent1_address_street": ${ parents[0].address.address }
       - "parent1_address_unit": ${ parents[0].address.unit }
       - "parent2_address_street": ${ parents[1].address.address }
@@ -917,7 +928,7 @@ attachments:
       - "parent1_email": ${ parents[0].email }
       - "parent2_email": ${ parents[1].email }
       - "guardian_name_full": ${ guardians[0] }
-      - "guardian2_name_full": ${ guardians[1] }
+      - "guardian2_full_name": ${ guardians[1] }
       - "guardian_address_street": ${ guardians[0].address.address }
       - "guardian_address_unit": ${ guardians[0].address.unit }
       - "guardian2_address_street": ${ guardians[1].address.address }
@@ -933,17 +944,17 @@ attachments:
       - "guardian2_email": ${ guardians[1].email }
       - "guardian_email": ${ guardians[0].email }
       - "user_needs_interpreter": ${ user_needs_interpreter }
-      - "user_signature": ${ users[0].signature_if_final(i) }
-      - "user_name_full": ${ users[0] }
-      - "user_name_full__2": ${ users[0] }
-      - "user_address_county": ${ users[0].address.county }
-      - "parent1_signature": ${ parents[0].signature_if_final(i) }
-      - "parent1_address_county": ${ parents[0].address.county }
-      - "parent2_signature": ${ parents[1].signature_if_final(i) }
-      - "parent2_address_county": ${ parents[1].address.county }
-      - "guardian_signature": ${ guardians[0].signature_if_final(i) }
-      - "guardian_address_county": ${ guardians[0].address.county }
-      - "attorney_signature": ${ attorneys[0].signature_if_final(i) }
+      #- "user_signature": ${ users[0].signature_if_final(i) }
+      #- "user_name_full": ${ users[0] }
+      #- "user_name_full__2": ${ users[0] }
+      #- "user_address_county": ${ users[0].address.county }
+      #- "parent1_signature": ${ parents[0].signature_if_final(i) }
+      #- "parent1_address_county": ${ parents[0].address.county }
+      #- "parent2_signature": ${ parents[1].signature_if_final(i) }
+      #- "parent2_address_county": ${ parents[1].address.county }
+      #- "guardian_signature": ${ guardians[0].signature_if_final(i) }
+      #- "guardian_address_county": ${ guardians[0].address.county }
+      #- "attorney_signature": ${ attorneys[0].signature_if_final(i) }
       - "attorney_name_full": ${ attorneys[0] }
       - "attorney_address_street": ${ attorneys[0].address.address }
       - "attorney_address_unit": ${ attorneys[0].address.unit }
@@ -952,14 +963,14 @@ attachments:
       - "attorney_address_zip": ${ attorneys[0].address.zip }
       - "attorney_phone": ${ attorneys[0].phone_number }
       - "attorney_email": ${ attorneys[0].email }
-      - "notary_public_name": ${ notary_public[0] }
-      - "notary_public_name__2": ${ notary_public[0] }
-      - "notary_public_name__3": ${ notary_public[0] }
-      - "notary_public_name__4": ${ notary_public[0] }
-      - "notary_public_signature": ${ notary_public[0].signature_if_final(i) }
-      - "notary_public_signature__2": ${ notary_public[0].signature_if_final(i) }
-      - "notary_public_signature__3": ${ notary_public[0].signature_if_final(i) }
-      - "notary_public_signature__4": ${ notary_public[0].signature_if_final(i) }
+      #- "notary_public_name": ${ notary_public[0] }
+      #- "notary_public_name__2": ${ notary_public[0] }
+      #- "notary_public_name__3": ${ notary_public[0] }
+      #- "notary_public_name__4": ${ notary_public[0] }
+      #- "notary_public_signature": ${ notary_public[0].signature_if_final(i) }
+      #- "notary_public_signature__2": ${ notary_public[0].signature_if_final(i) }
+      #- "notary_public_signature__3": ${ notary_public[0].signature_if_final(i) }
+      #- "notary_public_signature__4": ${ notary_public[0].signature_if_final(i) }
       - "presented_by_parent2": ${ presented_by_parent2 }
       - "presented_by_parent1": ${ presented_by_parent1 }
       - "presented_by_guardian": ${ presented_by_guardian }
@@ -973,8 +984,8 @@ attachments:
       - "one_parent_listed_yes": ${ one_parent_listed_yes }
       - "deceased_parent_listed_yes": ${ deceased_parent_listed_yes }
       - "parent_listed_rights_terminated_yes": ${ parent_listed_rights_terminated_yes }
-      - "guardian_yes": ${ guardian }
-      - "guardian_no": ${ not guardian }
+      - "guardian_yes": ${ guardian_yes }
+      - "guardian_no": ${ guardian_no }
       - "minor_under_12_yes": ${ minor_under_12_yes }
       - "parent1_assent_yes": ${ parent1_assent }
       - "parent1_assent_no": ${ not parent1_assent }
@@ -991,32 +1002,32 @@ attachments:
       - "guardian_needs_interpreter": ${ guardian_needs_interpreter }
       - "parent1_needs_interpreter": ${ parent1_needs_interpreter }
       - "interpreter_language": ${ interpreter_language }
-      - "user_signature_date": ${ user_signature_date }
-      - "user_date_day": ${ user_date_day }
-      - "user_date_year": ${ user_date_year }
-      - "user_date_month": ${ user_date_month }
-      - "user_id": ${ user_id }
-      - "date_commission_expiration": ${ date_commission_expiration }
-      - "date_commission_expiration__2": ${ date_commission_expiration }
-      - "date_commission_expiration__3": ${ date_commission_expiration }
-      - "date_commission_expiration__4": ${ date_commission_expiration }
-      - "parent1_signature_date": ${ parent1_signature_date }
-      - "parent1_date_day": ${ parent1_date_day }
-      - "parent1_date_year": ${ parent1_date_year }
-      - "parent1_date_month": ${ parent1_date_month }
-      - "parent1_id": ${ parent1_id }
-      - "parent2_signature_date": ${ parent2_signature_date }
-      - "parent2_date_year": ${ parent2_date_year }
-      - "parent2_date_month": ${ parent2_date_month }
-      - "parent2_date_day": ${ parent2_date_day }
-      - "parent2_id": ${ parent2_id }
-      - "guardian_signature_date": ${ guardian_signature_date }
-      - "guardian_name_full_printed": ${ guardian_name_full_printed }
-      - "guardian_name_full_printed__2": ${ guardian_name_full_printed }
-      - "guardian_date_month": ${ guardian_date_month }
-      - "guardian_date_year": ${ guardian_date_year }
-      - "guardian_date_day": ${ guardian_date_day }
-      - "guardian_id": ${ guardian_id }
+      #- "user_signature_date": ${ user_signature_date }
+      #- "user_date_day": ${ user_date_day }
+      #- "user_date_year": ${ user_date_year }
+      #- "user_date_month": ${ user_date_month }
+      #- "user_id": ${ user_id }
+      #- "date_commission_expiration": ${ date_commission_expiration }
+      #- "date_commission_expiration__2": ${ date_commission_expiration }
+      #- "date_commission_expiration__3": ${ date_commission_expiration }
+      #- "date_commission_expiration__4": ${ date_commission_expiration }
+      #- "parent1_signature_date": ${ parent1_signature_date }
+      #- "parent1_date_day": ${ parent1_date_day }
+      #- "parent1_date_year": ${ parent1_date_year }
+      #- "parent1_date_month": ${ parent1_date_month }
+      #- "parent1_id": ${ parent1_id }
+      #- "parent2_signature_date": ${ parent2_signature_date }
+      #- "parent2_date_year": ${ parent2_date_year }
+      #- "parent2_date_month": ${ parent2_date_month }
+      #- "parent2_date_day": ${ parent2_date_day }
+      #- "parent2_id": ${ parent2_id }
+      #- "guardian_signature_date": ${ guardian_signature_date }
+      #- "guardian_name_full_printed": ${ guardian_name_full_printed }
+      #- "guardian_name_full_printed__2": ${ guardian_name_full_printed }
+      #- "guardian_date_month": ${ guardian_date_month }
+      #- "guardian_date_year": ${ guardian_date_year }
+      #- "guardian_date_day": ${ guardian_date_day }
+      #- "guardian_id": ${ guardian_id }
       - "attorney_bbo": ${ attorney_bbo }
   - name: Post interview instructions
     filename: Post-interview-instructions     
@@ -1031,14 +1042,14 @@ attachments:
       - "docket_number": ${ docket_number }
       - "user_name_middle": ${ users[0].name.middle }
       - "user_name_middle__2": ${ users[0].name.middle }
-      - "user_name_middle__3": ${ users[0].name.middle }
+      - "user_name_middle__3": ${ new_name_middle }
       - "user_name_last": ${ users[0].name.last }
       - "user_name_last__2": ${ users[0].name.last }
-      - "user_name_last__3": ${ users[0].name.last }
+      - "user_name_last__3": ${ new_name_last }
       - "court_division": ${ courts[0].division }
       - "user_name_first": ${ users[0].name.first }
       - "user_name_first__2": ${ users[0].name.first }
-      - "user_name_first__3": ${ users[0].name.first }
+      - "user_name_first__3": ${ new_name_first }
       - "user_birthdate": ${ users[0].birthdate.format() }
       - "user_age": ${ users[0].age_in_years() }
       - "user_address_street": ${ users[0].address.address }
@@ -1047,11 +1058,11 @@ attachments:
       - "user_address_state": ${ users[0].address.state }
       - "user_address_zip": ${ users[0].address.zip }
       - "parent2_name_full": ${ parents[1] }
-      - "parent2_name_full__2": ${ parents[1] }
-      - "parent2_name_full__3": ${ parents[1] }
+      #- "parent2_name_full__2": ${ parents[1] }
+      #- "parent2_name_full__3": ${ parents[1] }
       - "parent1_name_full": ${ parents[0] }
-      - "parent1_name_full__2": ${ parents[0] }
-      - "parent1_name_full__3": ${ parents[0] }
+      #- "parent1_name_full__2": ${ parents[0] }
+      #- "parent1_name_full__3": ${ parents[0] }
       - "parent1_address_street": ${ parents[0].address.address }
       - "parent1_address_unit": ${ parents[0].address.unit }
       - "parent2_address_street": ${ parents[1].address.address }
@@ -1082,16 +1093,16 @@ attachments:
       - "guardian2_email": ${ guardians[1].email }
       - "guardian_email": ${ guardians[0].email }
       - "user_needs_interpreter": ${ user_needs_interpreter }
-      - "user_signature": ${ users[0].signature_if_final(i) }
-      - "user_name_full": ${ users[0] }
-      - "user_name_full__2": ${ users[0] }
-      - "user_address_county": ${ users[0].address.county }
-      - "parent1_signature": ${ parents[0].signature_if_final(i) }
-      - "parent1_address_county": ${ parents[0].address.county }
-      - "parent2_signature": ${ parents[1].signature_if_final(i) }
-      - "parent2_address_county": ${ parents[1].address.county }
-      - "guardian_signature": ${ guardians[0].signature_if_final(i) }
-      - "guardian_address_county": ${ guardians[0].address.county }
+      #- "user_signature": ${ users[0].signature_if_final(i) }
+      #- "user_name_full": ${ users[0] }
+      #- "user_name_full__2": ${ users[0] }
+      #- "user_address_county": ${ users[0].address.county }
+      #- "parent1_signature": ${ parents[0].signature_if_final(i) }
+      #- "parent1_address_county": ${ parents[0].address.county }
+      #- "parent2_signature": ${ parents[1].signature_if_final(i) }
+      #- "parent2_address_county": ${ parents[1].address.county }
+      #- "guardian_signature": ${ guardians[0].signature_if_final(i) }
+      #- "guardian_address_county": ${ guardians[0].address.county }
       - "attorney_signature": ${ attorneys[0].signature_if_final(i) }
       - "attorney_name_full": ${ attorneys[0] }
       - "attorney_address_street": ${ attorneys[0].address.address }
@@ -1101,15 +1112,15 @@ attachments:
       - "attorney_address_zip": ${ attorneys[0].address.zip }
       - "attorney_phone": ${ attorneys[0].phone_number }
       - "attorney_email": ${ attorneys[0].email }
-      - "notary_public_name": ${ notary_public[0] }
-      - "notary_public_name__2": ${ notary_public[0] }
-      - "notary_public_name__3": ${ notary_public[0] }
-      - "notary_public_name__4": ${ notary_public[0] }
-      - "guardian2_name_full": ${ guardians[1] }
-      - "notary_public_signature": ${ notary_public[0].signature_if_final(i) }
-      - "notary_public_signature__2": ${ notary_public[0].signature_if_final(i) }
-      - "notary_public_signature__3": ${ notary_public[0].signature_if_final(i) }
-      - "notary_public_signature__4": ${ notary_public[0].signature_if_final(i) }
+      #- "notary_public_name": ${ notary_public[0] }
+      #- "notary_public_name__2": ${ notary_public[0] }
+      #- "notary_public_name__3": ${ notary_public[0] }
+      #- "notary_public_name__4": ${ notary_public[0] }
+      - "guardian2_full_name": ${ guardians[1] }
+      #- "notary_public_signature": ${ notary_public[0].signature_if_final(i) }
+      #- "notary_public_signature__2": ${ notary_public[0].signature_if_final(i) }
+      #- "notary_public_signature__3": ${ notary_public[0].signature_if_final(i) }
+      #- "notary_public_signature__4": ${ notary_public[0].signature_if_final(i) }
       - "presented_by_parent2": ${ presented_by_parent2 }
       - "presented_by_parent1": ${ presented_by_parent1 }
       - "presented_by_guardian": ${ presented_by_guardian }
@@ -1123,8 +1134,8 @@ attachments:
       - "one_parent_listed_yes": ${ one_parent_listed_yes }
       - "deceased_parent_listed_yes": ${ deceased_parent_listed_yes }
       - "parent_listed_rights_terminated_yes": ${ parent_listed_rights_terminated_yes }
-      - "guardian_yes": ${ guardian }
-      - "guardian_no": ${ not guardian }
+      - "guardian_yes": ${ guardian_yes }
+      - "guardian_no": ${ guardian_no }
       - "minor_under_12_yes": ${ minor_under_12_yes }
       - "parent1_assent_yes": ${ parent1_assent }
       - "parent1_assent_no": ${ not parent1_assent }
@@ -1141,30 +1152,30 @@ attachments:
       - "guardian_needs_interpreter": ${ guardian_needs_interpreter }
       - "parent1_needs_interpreter": ${ parent1_needs_interpreter }
       - "interpreter_language": ${ interpreter_language }
-      - "user_signature_date": ${ user_signature_date }
-      - "user_date_day": ${ user_date_day }
-      - "user_date_year": ${ user_date_year }
-      - "user_date_month": ${ user_date_month }
-      - "user_id": ${ user_id }
-      - "date_commission_expiration": ${ date_commission_expiration }
-      - "date_commission_expiration__2": ${ date_commission_expiration }
-      - "date_commission_expiration__3": ${ date_commission_expiration }
-      - "date_commission_expiration__4": ${ date_commission_expiration }
-      - "parent1_signature_date": ${ parent1_signature_date }
-      - "parent1_date_day": ${ parent1_date_day }
-      - "parent1_date_year": ${ parent1_date_year }
-      - "parent1_date_month": ${ parent1_date_month }
-      - "parent1_id": ${ parent1_id }
-      - "parent2_signature_date": ${ parent2_signature_date }
-      - "parent2_date_year": ${ parent2_date_year }
-      - "parent2_date_month": ${ parent2_date_month }
-      - "parent2_date_day": ${ parent2_date_day }
-      - "parent2_id": ${ parent2_id }
-      - "guardian_signature_date": ${ guardian_signature_date }
-      - "guardian_name_full_printed": ${ guardian_name_full_printed }
-      - "guardian_name_full_printed__2": ${ guardian_name_full_printed }
-      - "guardian_date_month": ${ guardian_date_month }
-      - "guardian_date_year": ${ guardian_date_year }
-      - "guardian_date_day": ${ guardian_date_day }
-      - "guardian_id": ${ guardian_id }
+      #- "user_signature_date": ${ user_signature_date }
+      #- "user_date_day": ${ user_date_day }
+      #- "user_date_year": ${ user_date_year }
+      #- "user_date_month": ${ user_date_month }
+      #- "user_id": ${ user_id }
+      #- "date_commission_expiration": ${ date_commission_expiration }
+      #- "date_commission_expiration__2": ${ date_commission_expiration }
+      #- "date_commission_expiration__3": ${ date_commission_expiration }
+      #- "date_commission_expiration__4": ${ date_commission_expiration }
+      #- "parent1_signature_date": ${ parent1_signature_date }
+      #- "parent1_date_day": ${ parent1_date_day }
+      #- "parent1_date_year": ${ parent1_date_year }
+      #- "parent1_date_month": ${ parent1_date_month }
+      #- "parent1_id": ${ parent1_id }
+      #- "parent2_signature_date": ${ parent2_signature_date }
+      #- "parent2_date_year": ${ parent2_date_year }
+      #- "parent2_date_month": ${ parent2_date_month }
+      #- "parent2_date_day": ${ parent2_date_day }
+      #- "parent2_id": ${ parent2_id }
+      #- "guardian_signature_date": ${ guardian_signature_date }
+      #- "guardian_name_full_printed": ${ guardian_name_full_printed }
+      #- "guardian_name_full_printed__2": ${ guardian_name_full_printed }
+      #- "guardian_date_month": ${ guardian_date_month }
+      #- "guardian_date_year": ${ guardian_date_year }
+      #- "guardian_date_day": ${ guardian_date_day }
+      #- "guardian_id": ${ guardian_id }
       - "attorney_bbo": ${ attorney_bbo }
