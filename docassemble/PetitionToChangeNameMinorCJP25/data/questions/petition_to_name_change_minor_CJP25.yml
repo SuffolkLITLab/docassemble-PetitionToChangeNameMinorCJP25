@@ -194,14 +194,14 @@ code: |
 ---
 comment: |
   This interview will guide you through the process of filing a CJP25 Petition to Change the Name of a Minor by Asking a Series of Questions concerning information on the child, their parents or guardians, and other relevant information.
-id: Petition_to_Change_the_Name_of_a_Minor
+id: minor name change petition
 continue button field: petition_to_name_change_minor_CJP25_intro
 question: |
   Minor Name Change Petition CJP25
 subquestion: |
   This form will help you to request a name change for a minor child.
 ---
-id: Who is presenting the petition on behalf of the child
+id: presenting petition
 question: |
   Who is presenting the petition on behalf of the child?
 subquestion: |
@@ -214,17 +214,17 @@ fields:
   - "Presented by a Guardian": presented_by_guardian
     datatype: yesno
 ---
-id: Is the current address a facility under the supervision of the Massachusetts Department of Corrections or Department of Youth Services
+id: address is DOC or DYS facility
 question: |
   Is the current address a facility under the supervision of the Massachusetts Department of Corrections or Department of Youth Services?
 yesno: doc_or_dys_yes
 ---
-id: Has the child ever previously changed their name
+id: prior name change yesno
 question: |
   Has the child ever previously changed their name?
 yesno: prior_name_change
 ---
-id: What was the previous name the name that the child changed to and the reason for the name change
+id: prior name change info
 question: |
   What was the previous name, the name that the child changed to, and the reason for the name change?
 fields:
@@ -235,27 +235,27 @@ fields:
   - "Reason for Name Change": user_name_change_reason
     maxlength: 82
 ---
-id: Do you want to request a return by first class mail of all certified copies of documents filed with the court after review and processing
+id: return request
 question: |
   Would you like to request a return, by first class mail, of all certified copies of documents filed with the court after review and processing?
 yesno: return_request_yes
 ---
-id: Check if only one parent is listed on the child s birth certificate
+id: one parent listed
 question: |
   Check if only one parent is listed on the child's birth certificate.
 yesno: one_parent_listed_yes
 ---
-id: Check if any legal parent listed on the child s birth certificate is deceased
+id: deceased parent
 question: |
   Check if any legal parent listed on the child's birth certificate is deceased.
 yesno: deceased_parent_listed_yes
 ---
-id: Check if any legal parent listed on the child s birth certificate had their parental rights terminated in a prior proceeding
+id: parental rights terminated
 question: |
   Check if any legal parent listed on the child's birth certificate had their parental rights terminated in a prior proceeding.
 yesno: parent_listed_rights_terminated_yes
 ---
-id: Does the child have a court appointed guardian
+id: court-appointed guardian
 question: |
   Does the child have a court-appointed guardian.
 yesno: guardian
@@ -294,7 +294,7 @@ fields:
   - "Explanation for not assenting.": guardian_assent_no_explanation
     hide if: guardian_assent
 ---
-id: name change new name
+id: new name info
 question: |
   Enter the name that the minor wishes to change to.
 fields:
@@ -302,7 +302,7 @@ fields:
   - "New middle name.": new_name_middle
   - "New last name.": new_name_last
 ---
-id: A name change is sought for the following reason
+id: new name reason
 question: |
   A name change is sought for the following reason:
 fields:
@@ -310,7 +310,7 @@ fields:
     input type: area
     maxlength: 180
 ---
-id: If there is a hearing on this petition I request an interpreter for
+id: interpreter selection
 question: |
   If there is a hearing on this petition, I request an interpreter for...
 subquestion: |
@@ -331,14 +331,14 @@ fields:
   - "Guardian preferred language is:": interpreter_language
     show if: guardian_needs_interpreter
 ---
-id: Enter the date that the minor signed the form in the presence of a Notary Public
+id: minor signature date
 question: |
   Enter the date that the minor signed the form in the presence of a Notary Public.
 fields:
   - "Date of user signature.": user_signature_date
     datatype: date
 ---
-id: Enter the date that minor appeared before the Notary Public and the form of ID presented
+id: minor appearance date
 question: |
   Enter the date that minor appeared before the Notary Public and the form of ID presented.
 fields:
@@ -353,21 +353,21 @@ fields:
 under: |
   Note: Enter day, year, and month as a two-digit number. (i.e., 12/07/'21)
 ---
-id: Enter the date that the Notary Public s commission expires
+id: NP commission expiration
 question: |
   Enter the date that the Notary Public's commission expires.
 fields:
   - "Date of Notary Public commission expiration.": date_commission_expiration
     datatype: date
 ---
-id: Enter the date that the Legal Mother Parent 1 signed this form in the presence of the Notary Public
+id: legal mother/parent 1 signature date
 question: |
   Enter the date that the Legal Mother/Parent 1 signed this form in the presence of the Notary Public.
 fields:
   - "Date of Legal Mother/Parent 1 signature.": parent1_signature_date
     datatype: date
 ---
-id: Enter the date that the Legal Mother Parent 1 appeared before the Notary Public and the form of ID presented
+id: legal mother/parent 1 appearance date
 question: |
   Enter the date that the Legal Mother/Parent 1 appeared before the Notary Public and the form of ID presented.
 fields:
@@ -382,14 +382,14 @@ fields:
 under: |
   Note: Enter day, year, and month as a two-digit number. (i.e., 12/07/'21)
 ---
-id: Enter the date that the Legal Father Parent 2 signed this form in the presence of a Notary Public
+id: legal father/parent 2 signature date
 question: |
   Enter the date that the Legal Father/Parent 2 signed this form in the presence of a Notary Public.
 fields:
   - "Date of Legal Father/Parent 2 signature.": parent2_signature_date
     datatype: date
 ---
-id: Enter the date that the Legal Father Parent 2 appeared before the Notary Public and the form of ID presented
+id: legal father/parent 2 appearance date
 question: |
   Enter the date that the Legal Father/Parent 2 appeared before the Notary Public and the form of ID presented.
 fields:
@@ -404,21 +404,21 @@ fields:
 under: |
   Note: Enter day, year, and month as a two-digit number. (i.e., 12/07/'21)
 ---
-id: Enter the date that the Guardian signed in the presence of the Notary Public
+id: guardian signature date
 question: |
   Enter the date that the Guardian signed in the presence of the Notary Public.
 fields:
   - "Date of guardian signature": guardian_signature_date
     datatype: date
 ---
-id: Enter the full printed Guardian name
+id: guardian name
 question: |
   Enter the full printed Guardian name.
 fields:
   - "Full printed Guardian name.": guardian_name_full_printed
     maxlength: 32
 ---
-id: Enter the date that the Guardian appeared before the Notary Public and the form of ID presented
+id: guardian appearance date
 question: |
   Enter the date that the Guardian appeared before the Notary Public and the form of ID presented.
 fields:
@@ -431,7 +431,7 @@ fields:
   - "Guardian ID form.": guardian_id
     maxlength: 22
 ---
-id: Enter the Attorney s BBO
+id: attorney BBO
 question: |
   Enter the Attorney's BBO#.
 fields:
