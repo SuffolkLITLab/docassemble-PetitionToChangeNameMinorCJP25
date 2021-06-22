@@ -48,9 +48,10 @@ code: |
 objects:
   - users: ALPeopleList.using(ask_number=True,target_number=1)
   - notary_public: ALPeopleList.using(there_are_any=True)
-  - parents: ALPeopleList.using(complete_attribute="complete")
+  - parents: ALPeopleList.using(ask_number=True,complete_attribute="complete")
   - guardians: ALPeopleList.using(complete_attribute="complete")
   - guardian2: ALPeopleList
+  - attorneys: ALPeopleList.using(ask_number=True,target_number=1)
 ---
 sections:
   - review_petition_to_name_change_minor_CJP25: Review your answers
@@ -71,15 +72,21 @@ code: |
     user_name_change_from
   users.gather()
   set_parts(subtitle=str(users))
-  set_progress(5.0)
+  set_progress(10.0)
   users[0].birthdate
   users[0].address.address
   doc_or_dys_yes
   presented_by_parent1
-  set_progress(10.0)
-  set_progress(15.0)
+  set_progress(20.0)
+  if one_parent_listed_yes==True:
+    parents.target_number=1
+  if one_parent_listed_yes==False:
+    parents.target_number=2
+  deceased_parent_listed_yes
+  parent_listed_rights_terminated_yes
   parents.gather()
   guardians.gather()
+  set_progress(30.0)
   minor_under_12_yes
   if presented_by_parent1 or presented_by_parent2:
     parent1_assent
@@ -92,16 +99,10 @@ code: |
     guardian_assent
     guardian_assent_not_applicable = False
     guardian_yes = True
-  one_parent_listed_yes
-  deceased_parent_listed_yes
-  parent_listed_rights_terminated_yes
-  set_progress(50.0)
-  set_progress(55.0)
+  set_progress(40.0)
   new_name_first
   user_name_change_reason_1
-  user_needs_interpreter
-  parent2_needs_interpreter
-  set_progress(60.0)
+  set_progress(50.0)
   #user_signature_date
   #users.gather()
   #users[0].address.address
@@ -111,12 +112,12 @@ code: |
   #date_commission_expiration
   #parent1_signature_date
   #parents[0].address.address
-  set_progress(70.0)
+  set_progress(60.0)
   #parent1_date_day
   #parent2_signature_date
   #parents[1].address.address
   #parent2_date_year
-  set_progress(75.0)
+  set_progress(70.0)
   #guardian_signature_date
   #guardian_name_full_printed
   #guardians[0].address.address
@@ -126,12 +127,14 @@ code: |
   attorneys[0].address.address
   attorneys[0].address.address
   attorneys[0].address.address
-  set_progress(85.0)
+  set_progress(90.0)
   attorneys[0].address.address
   attorneys[0].address.address
   attorneys[0].phone_number
   attorney_bbo
   attorneys[0].email
+  user_needs_interpreter
+  parent2_needs_interpreter
   return_request_yes
   interview_order_petition_to_name_change_minor_CJP25 = True
 ---
@@ -183,7 +186,7 @@ code: |
   # Save anonymized interview statistics (customize the saved data below)
   store_variables_snapshot(data={'zip': users[0].address.zip})
   petition_to_name_change_minor_CJP25_preview_question
-  basic_questions_signature_flow
+  #basic_questions_signature_flow
   #notary_public[0].signature
   #attorneys[0].signature
   #parents[1].signature
@@ -328,7 +331,7 @@ fields:
     show if: parent1_needs_interpreter
   - "Parent 2 preferred language is:": interpreter_language
     show if: parent2_needs_interpreter
-  - "Guardian preferred language is:": interpreter_language
+  - "Guardian(s) preferred language is:": interpreter_language
     show if: guardian_needs_interpreter
 ---
 id: minor signature date
@@ -440,7 +443,7 @@ fields:
 ---
 id: preview petition_to_name_change_minor_CJP25
 question: |
-  Preview your form before you sign it
+  Preview your form before finishing.
 subquestion: |
   Here is a preview of the form you will sign on the next page.   
   
