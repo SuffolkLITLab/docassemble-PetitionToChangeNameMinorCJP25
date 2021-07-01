@@ -49,7 +49,7 @@ objects:
   - users: ALPeopleList.using(ask_number=True,target_number=1)
   - notary_public: ALPeopleList.using(there_are_any=True)
   - parents: ALPeopleList.using(ask_number=True,complete_attribute="complete")
-  - guardians: ALPeopleList.using(ask_number=True,complete_attribute="complete")
+  - guardians: ALPeopleList.using(complete_attribute="complete")
   - attorneys: ALPeopleList.using(ask_number=True,target_number=1)
 ---
 sections:
@@ -77,36 +77,55 @@ code: |
   user_needs_interpreter
   doc_or_dys_yes
   set_progress(20.0)
-  if one_parent_listed==True:
+  if one_parent_listed == True:
     parents.target_number=1
     deceased_parent_listed_yes
-  if one_parent_listed==False:
+  if one_parent_listed == False:
     parents.target_number=2
   parent_listed_rights_terminated_yes
+  #parent personal info and interpreter question loop
   parents.gather()
   for parent in parents:
     if parent.is_presenting: 
       parent.needs_interpreter
-  if presented_by_guardian:
-    if one_guardian_listed==True:
-      guardians.target_number=1
-    if one_guardian_listed==False:
-      guardians.target_number=2
-    guardians.gather()
+  guardians.gather()
+  for guardian in guardians:
+    if guardian.is_presenting: 
+      guardian.needs_interpreter
+  #has_guardian
+  #if has_guardian == False:
+  #  guardians.there_are_any = False
+  #  guardian_needs_interpreter = False
+  #  presented_by_guardian = False
+  #if has_guardian == True:
+  #  one_guardian_listed
+  #  if one_guardian_listed == True:
+  #    guardians.target_number = 1
+  #  if one_guardian_listed == False:
+  #    guardians.target_number = 2
+  #  presented_by_guardian
+  #  if presented_by_guardian: 
+  #    guardian_needs_interpreter
   set_progress(30.0)
   minor_under_12_yes
-  if parents[0].is_presenting or parents[1].is_presenting:
-    parent1_assent
-    parent2_assent
-    guardian_assent_not_applicable = True
-    guardian_no = True
-  if presented_by_guardian:
-    parent1_assent
-    parent2_assent
-    guardian_assent
-    guardian_assent_not_applicable = False
-    guardian_yes = True
+  for parent in parents: 
+    if parent.is_presenting:
+      parent.gives_assent
+  for guardian in guardians: 
+    if guardian.is_presenting:
+      guardian.gives_assent
+    #guardian_assent_not_applicable = True
+    #guardian_no = True
+  #if parents[1].is_presenting:
+    #parent2_assent
+    #guardian_assent_not_applicable = True
+    #guardian_no = True
+  #if presented_by_guardian:
+  #  guardian_assent
+  #  guardian_assent_not_applicable = False
+  #  guardian_yes = True
   set_progress(40.0)
+  interpreter_languages
   new_name_first
   user_name_change_reason_1
   set_progress(50.0)
@@ -130,7 +149,6 @@ code: |
   #guardians[0].address.address
   #guardian_date_month
   set_progress(80.0)
-  interpreter_languages
   attorneys.gather()
   attorneys[0].address.address
   attorneys[0].address.address
@@ -143,6 +161,20 @@ code: |
   attorneys[0].email
   return_request_yes
   interview_order_petition_to_name_change_minor_CJP25 = True
+---
+#code: |
+#  if guardians.there_are_any == False:
+#    guardian_needs_interpreter = False
+#    presented_by_guardian = False
+#  if guardians.there_are_any == True:
+#    if one_guardian_listed == True:
+#      guardians.target_number = 1
+#    if one_guardian_listed == False:
+#      guardians.target_number = 2
+#    guardians.gather()
+#    presented_by_guardian
+#    if presented_by_guardian: 
+#      guardian_needs_interpreter
 ---
 code: |
   if one_parent_listed==True:
@@ -161,24 +193,22 @@ code: |
   guardians[i].address.address
   guardians[i].phone_number
   guardians[i].email
-  guardians[i].preferred_language
+  #if SME says that they can still have interpreter when not presenting then readdress this
+  if guardians[i].is_presenting == True:
+    guardians[i].needs_interpreter
+  else:
+    guardians[i].needs_interpreter = False
   guardians[i].complete = True
 ---
 code: |
    if parents[0].is_presenting or parents[1].is_presenting:
      parents.there_are_any = True
-     guardians.there_are_any = False
      guardian_assent_not_applicable = True
      guardian_no = True
    if presented_by_guardian:
      guardians.there_are_any = True
-     parents.there_are_any = False
      guardian_assent_not_applicable = False
      guardian_yes = True
----
-code: |
-  if guardian1_needs_interpreter==True or guardian2_needs_interpreter==True:
-    guardian_needs_interpreter==True
 ---
 ###################### Main order ######################
 comment: |
@@ -211,10 +241,20 @@ question: |
 subquestion: |
   This form will help you to request a name change for a minor child.
 ---
+id: guardian presenting
+question: |
+  Is this guardian presenting the form on behalf of the child?
+yesno: guardians[i].is_presenting
+---
 id: parent presenting
 question: |
   Is this parent presenting the form on behalf of the child?
 yesno: parents[i].is_presenting
+---
+id: any guardians
+question: |
+  Does the child have any guardians?
+yesno: guardians.there_are_any
 ---
 id: how many guardians
 question: |
@@ -232,18 +272,18 @@ buttons:
   - "One Parent": True
   - "Two Parents": False
 ---
-id: presenting petition
-question: |
-  Who is presenting the petition on behalf of the child?
-subquestion: |
-  Select all that apply.
-fields:
-  #- "Presented by the Legal Mother/Parent 1": parents[0].is_presenting
-  #  datatype: yesno  
-  #- "Presented by the Legal Father/Parent 2": parents[1].is_presenting
-  #  datatype: yesno
-  - "Presented by a Guardian": presented_by_guardian
-    datatype: yesno
+#id: presenting petition
+#question: |
+#  Who is presenting the petition on behalf of the child?
+#subquestion: |
+#  Select all that apply.
+#fields:
+#  - "Presented by the Legal Mother/Parent 1": parents[0].is_presenting
+#    datatype: yesno  
+#  - "Presented by the Legal Father/Parent 2": parents[1].is_presenting
+#    datatype: yesno
+#  - "Presented by a Guardian": presented_by_guardian
+#    datatype: yesno
 ---
 id: address is DOC or DYS facility
 question: |
@@ -302,10 +342,10 @@ id: parent 1 assent
 question: |
   Legal Mother/Parent 1...
 fields:
-  - "Assents to this Petition.": parent1_assent
+  - "Assents to this Petition.": parents[i].gives_assent
     datatype: yesnoradio
   - "Explanation for not assenting.": parent1_assent_no_explanation
-    hide if: parent1_assent
+    hide if: parents[i].gives_assent
 ---
 id: parent 2 assent
 question: |
@@ -320,10 +360,10 @@ id: guardian assent
 question: |
   All court-appointed guardians...
 fields:
-  - "Assent to this Petition.": guardian_assent
+  - "Assent to this Petition.": guardians[i].gives_assent
     datatype: yesnoradio
   - "Explanation for not assenting.": guardian_assent_no_explanation
-    hide if: guardian_assent
+    hide if: guardians[i].gives_assent
 ---
 id: new name info
 question: |
@@ -347,24 +387,34 @@ code: |
   if user_needs_interpreter == True:
     temp_interpreter_languages.append(user_preferred_language)
   
-  if parents[0].is_presenting == False:
-    parents[0].needs_interpreter == False
-  if parents[0].needs_interpreter == True:
-    temp_interpreter_languages.append(parents[0].preferred_language)
+  for parent in parents:
+    if parent.is_presenting == False: 
+      parent.needs_interpreter = False
+    if parent.needs_interpreter == True:
+      temp_interpreter_languages.append(parent.preferred_language)
+      
+  for guardian in guardians:
+    if guardian.is_presenting == False: 
+      guardian.needs_interpreter = False
+    if guardian.needs_interpreter == True:
+      temp_interpreter_languages.append(guardian.preferred_language)
+    
+  #if parents[0].is_presenting == False:
+  #  parents[0].needs_interpreter == False
+  #if parents[0].needs_interpreter == True:
+  #  temp_interpreter_languages.append(parents[0].preferred_language)
   
-  if parents[1].needs_interpreter == True:
-    temp_interpreter_languages.append(parents[1].preferred_language)
-  if guardian_needs_interpreter == True:
-    temp_interpreter_languages.append(guardians[0].preferred_language)
+  #if parents[1].is_presenting == False:
+  #  parents[1].needs_interpreter == False
+  #if parents[1].needs_interpreter == True:
+  #  temp_interpreter_languages.append(parents[1].preferred_language)
+    
+  #if presented_by_guardian == False:
+  #  guardian_needs_interpreter == False
+  #if guardian_needs_interpreter == True:
+  #  temp_interpreter_languages.append(guardian_preferred_language)  
+    
   interpreter_languages = temp_interpreter_languages
----
-code: |
-  if parents[0].is_presenting == False:
-    parents[0].needs_interpreter == False
----
-code: |
-  if parents[1].is_presenting == False:
-    parents[1].needs_interpreter == False
 ---
 id: user interpreter selection
 question: |
@@ -397,19 +447,10 @@ id: guardian 1 interpreter selection
 question: |
   Interpreter selection for Guardian 1.
 fields:
-  - "Does the Guardian require an interpreter?": guardian1_needs_interpreter
+  - "Does the Guardian require an interpreter?": guardians[i].needs_interpreter
     datatype: yesnoradio
-  - "Preferred interpreter language:": guardians[0].preferred_language
-    show if: guardian1_needs_interpreter
----
-id: guardian 2 interpreter selection
-question: |
-  Interpreter selection for Guardian 2.
-fields:
-  - "Does the Guardian require an interpreter?": guardian2_needs_interpreter
-    datatype: yesnoradio
-  - "Preferred interpreter language:": guardians[1].preferred_language
-    show if: guardian2_needs_interpreter
+  - "Preferred interpreter language:": guardians[i].preferred_language
+    show if: guardians[i].needs_interpreter
 ---
 id: minor signature date
 question: |
@@ -542,14 +583,14 @@ event: review_petition_to_name_change_minor_CJP25
 question: |
   Review your answers
 review:
-  - Edit: presented_by_parent2
+  - Edit: parents[1].is_presenting
     button: |
       **Presented by the Legal Father/Parent 2**:
-      ${ word(yesno(presented_by_parent2)) }
-  - Edit: presented_by_parent1
+      ${ word(yesno(parents[1].is_presenting)) }
+  - Edit: parents[0].is_presenting
     button: |
       **Presented by the Legal Mother/Parent 1**:
-      ${ word(yesno(presented_by_parent1)) }
+      ${ word(yesno(parents[0].is_presenting)) }
   - Edit: presented_by_guardian
     button: |
       **Presented by the Guardian**:
@@ -630,22 +671,22 @@ review:
     button: |
       **Reason for the minor name change.**:
       > ${ single_paragraph(user_name_change_reason_1) }
-  - Edit: parent2_needs_interpreter
+  - Edit: parents[1].needs_interpreter
     button: |
       **Legal Father/Parent 2 needs interpreter.**:
-      ${ word(yesno(parent2_needs_interpreter)) }
-  - Edit: guardian1_needs_interpreter
+      ${ word(yesno(parents[1].needs_interpreter)) }
+  - Edit: guardians[0].needs_interpreter
     button: |
       **Guardian 1 needs interpreter.**:
-      ${ word(yesno(guardian1_needs_interpreter)) }
-  - Edit: guardian2_needs_interpreter
+      ${ word(yesno(guardians[0].needs_interpreter)) }
+  - Edit: guardians[1].needs_interpreter
     button: |
       **Guardian 2 needs interpreter.**:
-      ${ word(yesno(guardian2_needs_interpreter)) }
-  - Edit: parent1_needs_interpreter
+      ${ word(yesno(guardians[1].needs_interpreter)) }
+  - Edit: parents[0].needs_interpreter
     button: |
       **Legal Mother/Parent 1 needs interpreter.**:
-      ${ word(yesno(parent1_needs_interpreter)) }
+      ${ word(yesno(parents[0].needs_interpreter)) }
   - Edit: interpreter_languages
     button: |
       **Interpreter language.**:
@@ -1071,7 +1112,7 @@ attachments:
       - "guardian_yes": ${ guardian_yes }
       - "guardian_no": ${ guardian_no }
       - "minor_under_12_yes": ${ minor_under_12_yes }
-      - "parent1_assent_yes": ${ parent1_assent }
+      - "parent1_assent_yes": ${ parents[0].gives_assent }
       - "parent1_assent_no": ${ not parent1_assent }
       - "parent1_assent_no_explanation": ${ parent1_assent_no_explanation }
       - "parent2_assent_yes": ${ parent2_assent }
@@ -1083,7 +1124,7 @@ attachments:
       - "guardian_assent_not_applicable": ${ guardian_assent_not_applicable }
       - "user_name_change_reason_1": ${ user_name_change_reason_1 }
       - "parent2_needs_interpreter": ${ parents[1].needs_interpreter }
-      - "guardian_needs_interpreter": ${ guardian_needs_interpreter }
+      - "guardian_needs_interpreter": ${ guardians[0].needs_interpreter or guardians[1].needs_interpreter }
       - "parent1_needs_interpreter": ${ parents[0].needs_interpreter }
       - "interpreter_language": ${ comma_and_list(interpreter_languages) }
       #- "user_signature_date": ${ user_signature_date }
