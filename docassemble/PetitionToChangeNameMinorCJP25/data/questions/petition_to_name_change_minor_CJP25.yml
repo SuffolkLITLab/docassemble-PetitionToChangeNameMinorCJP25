@@ -289,7 +289,7 @@ noyes: minor_under_12_yes
 ---
 id: parent 1 assent
 question: |
-  The x parent...
+  The ${ordinal(i)} parent...
 fields:
   - "Assents to this Petition.": parents[i].gives_assent
     datatype: yesnoradio
@@ -298,9 +298,9 @@ fields:
 ---
 id: guardian assent
 question: |
-  The x court-appointed guardian...
+  The ${ordinal(i)} court-appointed guardian...
 fields:
-  - "Assent to this Petition.": guardians[i].gives_assent
+  - "Assents to this Petition.": guardians[i].gives_assent
     datatype: yesnoradio
   - "Explanation for not assenting.": guardians[i].no_assent_explanation
     hide if: guardians[i].gives_assent
