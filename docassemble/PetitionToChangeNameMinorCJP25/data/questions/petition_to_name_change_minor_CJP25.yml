@@ -92,20 +92,6 @@ code: |
   for guardian in guardians:
     if guardian.is_presenting: 
       guardian.needs_interpreter
-  #has_guardian
-  #if has_guardian == False:
-  #  guardians.there_are_any = False
-  #  guardian_needs_interpreter = False
-  #  presented_by_guardian = False
-  #if has_guardian == True:
-  #  one_guardian_listed
-  #  if one_guardian_listed == True:
-  #    guardians.target_number = 1
-  #  if one_guardian_listed == False:
-  #    guardians.target_number = 2
-  #  presented_by_guardian
-  #  if presented_by_guardian: 
-  #    guardian_needs_interpreter
   set_progress(30.0)
   minor_under_12_yes
   for parent in parents: 
@@ -114,16 +100,6 @@ code: |
   for guardian in guardians: 
     if guardian.is_presenting:
       guardian.gives_assent
-    #guardian_assent_not_applicable = True
-    #guardian_no = True
-  #if parents[1].is_presenting:
-    #parent2_assent
-    #guardian_assent_not_applicable = True
-    #guardian_no = True
-  #if presented_by_guardian:
-  #  guardian_assent
-  #  guardian_assent_not_applicable = False
-  #  guardian_yes = True
   set_progress(40.0)
   interpreter_languages
   new_name_first
@@ -162,20 +138,6 @@ code: |
   return_request_yes
   interview_order_petition_to_name_change_minor_CJP25 = True
 ---
-#code: |
-#  if guardians.there_are_any == False:
-#    guardian_needs_interpreter = False
-#    presented_by_guardian = False
-#  if guardians.there_are_any == True:
-#    if one_guardian_listed == True:
-#      guardians.target_number = 1
-#    if one_guardian_listed == False:
-#      guardians.target_number = 2
-#    guardians.gather()
-#    presented_by_guardian
-#    if presented_by_guardian: 
-#      guardian_needs_interpreter
----
 code: |
   if one_parent_listed==True:
     parents[1].needs_interpreter==False
@@ -205,7 +167,7 @@ code: |
      parents.there_are_any = True
      guardian_assent_not_applicable = True
      guardian_no = True
-   if presented_by_guardian:
+   if guardians[0].is_presenting or guardians[1].is_presenting:
      guardians.there_are_any = True
      guardian_assent_not_applicable = False
      guardian_yes = True
@@ -272,19 +234,6 @@ buttons:
   - "One Parent": True
   - "Two Parents": False
 ---
-#id: presenting petition
-#question: |
-#  Who is presenting the petition on behalf of the child?
-#subquestion: |
-#  Select all that apply.
-#fields:
-#  - "Presented by the Legal Mother/Parent 1": parents[0].is_presenting
-#    datatype: yesno  
-#  - "Presented by the Legal Father/Parent 2": parents[1].is_presenting
-#    datatype: yesno
-#  - "Presented by a Guardian": presented_by_guardian
-#    datatype: yesno
----
 id: address is DOC or DYS facility
 question: |
   Is the current address a facility under the supervision of the Massachusetts Department of Corrections or Department of Youth Services?
@@ -340,29 +289,20 @@ noyes: minor_under_12_yes
 ---
 id: parent 1 assent
 question: |
-  Legal Mother/Parent 1...
+  The ${ordinal(i)} parent...
 fields:
   - "Assents to this Petition.": parents[i].gives_assent
     datatype: yesnoradio
-  - "Explanation for not assenting.": parent1_assent_no_explanation
+  - "Explanation for not assenting.": parents[i].no_assent_explanation
     hide if: parents[i].gives_assent
----
-id: parent 2 assent
-question: |
-  Legal Father/Parent 2...
-fields:
-  - "Assents to the Petition.": parent2_assent
-    datatype: yesnoradio
-  - "Explanation for not assenting.": parent2_assent_no_explanation
-    hide if: parent2_assent
 ---
 id: guardian assent
 question: |
-  All court-appointed guardians...
+  The ${ordinal(i)} court-appointed guardian...
 fields:
-  - "Assent to this Petition.": guardians[i].gives_assent
+  - "Assents to this Petition.": guardians[i].gives_assent
     datatype: yesnoradio
-  - "Explanation for not assenting.": guardian_assent_no_explanation
+  - "Explanation for not assenting.": guardians[i].no_assent_explanation
     hide if: guardians[i].gives_assent
 ---
 id: new name info
@@ -398,22 +338,7 @@ code: |
       guardian.needs_interpreter = False
     if guardian.needs_interpreter == True:
       temp_interpreter_languages.append(guardian.preferred_language)
-    
-  #if parents[0].is_presenting == False:
-  #  parents[0].needs_interpreter == False
-  #if parents[0].needs_interpreter == True:
-  #  temp_interpreter_languages.append(parents[0].preferred_language)
-  
-  #if parents[1].is_presenting == False:
-  #  parents[1].needs_interpreter == False
-  #if parents[1].needs_interpreter == True:
-  #  temp_interpreter_languages.append(parents[1].preferred_language)
-    
-  #if presented_by_guardian == False:
-  #  guardian_needs_interpreter == False
-  #if guardian_needs_interpreter == True:
-  #  temp_interpreter_languages.append(guardian_preferred_language)  
-    
+      
   interpreter_languages = temp_interpreter_languages
 ---
 id: user interpreter selection
@@ -425,29 +350,20 @@ fields:
   - "Preferred interpreter language:": user_preferred_language
     show if: user_needs_interpreter
 ---
-id: parent 1 interpreter selection
+id: parent interpreter selection
 question: |
-  Interpreter selection for Legal Mother/Parent 1.
+  Interpreter selection for the ${ordinal(i)} parent.
 fields:
-  - "Does the Legal Mother/Parent 1 require an interpreter?": parents[0].needs_interpreter
+  - "Does the ${ordinal(i)} parent require an interpreter?": parents[i].needs_interpreter
     datatype: yesnoradio
-  - "Preferred interpreter language:": parents[0].preferred_language
-    show if: parents[0].needs_interpreter
+  - "Preferred interpreter language:": parents[i].preferred_language
+    show if: parents[i].needs_interpreter
 ---
-id: parent 2 interpreter selection
+id: guardian interpreter selection
 question: |
-  Interpreter selection for Legal Father/Parent 2.
+  Interpreter selection for the ${ordinal(i)} guardian.
 fields:
-  - "Does the Legal Father/Parent 2 require an interpreter?": parents[1].needs_interpreter
-    datatype: yesnoradio
-  - "Preferred interpreter language:": parents[1].preferred_language
-    show if: parents[1].needs_interpreter
----
-id: guardian 1 interpreter selection
-question: |
-  Interpreter selection for Guardian 1.
-fields:
-  - "Does the Guardian require an interpreter?": guardians[i].needs_interpreter
+  - "Does the ${ordinal(i)} guardian require an interpreter?": guardians[i].needs_interpreter
     datatype: yesnoradio
   - "Preferred interpreter language:": guardians[i].preferred_language
     show if: guardians[i].needs_interpreter
@@ -591,10 +507,10 @@ review:
     button: |
       **Presented by the Legal Mother/Parent 1**:
       ${ word(yesno(parents[0].is_presenting)) }
-  - Edit: presented_by_guardian
+  - Edit: guardians[i].is_presenting
     button: |
       **Presented by the Guardian**:
-      ${ word(yesno(presented_by_guardian)) }
+      ${ word(yesno(guardians[0].is_presenting or guardians[1].is_presenting)) }
   - Edit: doc_or_dys_yes
     button: |
       **Under Supervision of Massachusetts Department of Corrections or Department of Youth Services**:
@@ -639,30 +555,30 @@ review:
     button: |
       **Not applicable. The minor child is not 12 years of age or older.**:
       ${ word(yesno(minor_under_12_yes)) }
-  - Edit: parent1_assent
+  - Edit: parents[0].gives_assent
     button: |
       **Legal Mother/Parent 1 Assents to the Petition.**:
-      ${ word(yesno(parent1_assent)) }
-  - Edit: parent1_assent_no_explanation
+      ${ word(yesno(parents[0].gives_assent)) }
+  - Edit: parents[0].no_assent_explanation
     button: |
       **Legal Mother/Parent 1 explanation for no assent.**:
-      > ${ single_paragraph(parent1_assent_no_explanation) }
-  - Edit: parent2_assent
+      > ${ single_paragraph(parents[0].no_assent_explanation) }
+  - Edit: parents[1].gives_assent
     button: |
       **Legal Father/Parent 2 Assents to the Petition.**:
-      ${ word(yesno(parent2_assent)) }
-  - Edit: parent2_assent_no_explanation
+      ${ word(yesno(parents[1].gives_assent)) }
+  - Edit: parents[1].no_assent_explanation
     button: |
       **Legal Father/Parent 2 explanation for no assent.**:
-      > ${ single_paragraph(parent2_assent_no_explanation) }
-  - Edit: guardian_assent
+      > ${ single_paragraph(parents[1].no_assent_explanation) }
+  - Edit: guardians[0].gives_assent or guardians[1].gives_assent
     button: |
       **Guardian Assents to the Petition.**:
-      ${ word(yesno(guardian_assent)) }
-  - Edit: guardian_assent_no_explanation
+      ${ word(yesno(guardians[0].gives_assent or guardians[1].gives_assent)) }
+  - Edit: guardians[0].no_assent_explanation or guardians[1].no_assent_explanation
     button: |
       **Guardian explanation for no assent.**:
-      > ${ single_paragraph(guardian_assent_no_explanation) }
+      > ${ single_paragraph(guardians[0].no_assent_explanation or guardians[1].no_assent_explanation) }
   - Edit: guardian_assent_not_applicable
     button: |
       **Not applicable, no court-appointed guardian.**:
@@ -1098,7 +1014,7 @@ attachments:
       #- "notary_public_signature__4": ${ notary_public[0].signature_if_final(i) }
       - "presented_by_parent2": ${ parents[1].is_presenting }
       - "presented_by_parent1": ${ parents[0].is_presenting }
-      - "presented_by_guardian": ${ presented_by_guardian }
+      - "presented_by_guardian": ${ guardians[0].is_presenting or guardians[1].is_presenting }
       - "doc_or_dys_yes": ${ doc_or_dys_yes }
       - "prior_name_change_yes": ${ prior_name_change }
       - "prior_name_change_no": ${ not prior_name_change }
@@ -1113,14 +1029,14 @@ attachments:
       - "guardian_no": ${ guardian_no }
       - "minor_under_12_yes": ${ minor_under_12_yes }
       - "parent1_assent_yes": ${ parents[0].gives_assent }
-      - "parent1_assent_no": ${ not parent1_assent }
-      - "parent1_assent_no_explanation": ${ parent1_assent_no_explanation }
-      - "parent2_assent_yes": ${ parent2_assent }
-      - "parent2_assent_no": ${ not parent2_assent }
-      - "parent2_assent_no_explanation": ${ parent2_assent_no_explanation }
-      - "guardian_assent_yes": ${ guardian_assent }
-      - "guardian_assent_no": ${ not guardian_assent }
-      - "guardian_assent_no_explanation": ${ guardian_assent_no_explanation }
+      - "parent1_assent_no": ${ not parents[0].gives_assent }
+      - "parent1_assent_no_explanation": ${ parents[0].no_assent_explanation }
+      - "parent2_assent_yes": ${ parents[1].gives_assent }
+      - "parent2_assent_no": ${ not parents[1].gives_assent }
+      - "parent2_assent_no_explanation": ${ parents[1].no_assent_explanation }
+      - "guardian_assent_yes": ${ guardians[0].gives_assent or guardians[1].gives_assent }
+      - "guardian_assent_no": ${ not guardians[0].gives_assent or not guardians[1].gives_assent }
+      - "guardian_assent_no_explanation": ${ guardians[0].no_assent_explanation or guardians[1].no_assent_explanation }
       - "guardian_assent_not_applicable": ${ guardian_assent_not_applicable }
       - "user_name_change_reason_1": ${ user_name_change_reason_1 }
       - "parent2_needs_interpreter": ${ parents[1].needs_interpreter }
