@@ -289,20 +289,20 @@ noyes: minor_under_12_yes
 ---
 id: parent 1 assent
 question: |
-  Legal Mother/Parent 1...
+  The x parent...
 fields:
   - "Assents to this Petition.": parents[i].gives_assent
     datatype: yesnoradio
-  - "Explanation for not assenting.": parent1_assent_no_explanation
+  - "Explanation for not assenting.": parents[i].no_assent_explanation
     hide if: parents[i].gives_assent
 ---
 id: guardian assent
 question: |
-  All court-appointed guardians...
+  The x court-appointed guardian...
 fields:
   - "Assent to this Petition.": guardians[i].gives_assent
     datatype: yesnoradio
-  - "Explanation for not assenting.": guardian_assent_no_explanation
+  - "Explanation for not assenting.": guardians[i].no_assent_explanation
     hide if: guardians[i].gives_assent
 ---
 id: new name info
@@ -564,30 +564,30 @@ review:
     button: |
       **Not applicable. The minor child is not 12 years of age or older.**:
       ${ word(yesno(minor_under_12_yes)) }
-  - Edit: parent1_assent
+  - Edit: parents[0].gives_assent
     button: |
       **Legal Mother/Parent 1 Assents to the Petition.**:
-      ${ word(yesno(parent1_assent)) }
-  - Edit: parent1_assent_no_explanation
+      ${ word(yesno(parents[0].gives_assent)) }
+  - Edit: parents[0].no_assent_explanation
     button: |
       **Legal Mother/Parent 1 explanation for no assent.**:
-      > ${ single_paragraph(parent1_assent_no_explanation) }
-  - Edit: parent2_assent
+      > ${ single_paragraph(parents[0].no_assent_explanation) }
+  - Edit: parents[1].gives_assent
     button: |
       **Legal Father/Parent 2 Assents to the Petition.**:
-      ${ word(yesno(parent2_assent)) }
-  - Edit: parent2_assent_no_explanation
+      ${ word(yesno(parents[1].gives_assent)) }
+  - Edit: parents[1].no_assent_explanation
     button: |
       **Legal Father/Parent 2 explanation for no assent.**:
-      > ${ single_paragraph(parent2_assent_no_explanation) }
-  - Edit: guardian_assent
+      > ${ single_paragraph(parents[1].no_assent_explanation) }
+  - Edit: guardians[0].gives_assent or guardians[1].gives_assent
     button: |
       **Guardian Assents to the Petition.**:
-      ${ word(yesno(guardian_assent)) }
-  - Edit: guardian_assent_no_explanation
+      ${ word(yesno(guardians[0].gives_assent or guardians[1].gives_assent)) }
+  - Edit: guardians[0].no_assent_explanation or guardians[1].no_assent_explanation
     button: |
       **Guardian explanation for no assent.**:
-      > ${ single_paragraph(guardian_assent_no_explanation) }
+      > ${ single_paragraph(guardians[0].no_assent_explanation or guardians[1].no_assent_explanation) }
   - Edit: guardian_assent_not_applicable
     button: |
       **Not applicable, no court-appointed guardian.**:
@@ -1038,14 +1038,14 @@ attachments:
       - "guardian_no": ${ guardian_no }
       - "minor_under_12_yes": ${ minor_under_12_yes }
       - "parent1_assent_yes": ${ parents[0].gives_assent }
-      - "parent1_assent_no": ${ not parent1_assent }
-      - "parent1_assent_no_explanation": ${ parent1_assent_no_explanation }
-      - "parent2_assent_yes": ${ parent2_assent }
-      - "parent2_assent_no": ${ not parent2_assent }
-      - "parent2_assent_no_explanation": ${ parent2_assent_no_explanation }
-      - "guardian_assent_yes": ${ guardian_assent }
-      - "guardian_assent_no": ${ not guardian_assent }
-      - "guardian_assent_no_explanation": ${ guardian_assent_no_explanation }
+      - "parent1_assent_no": ${ not parents[0].gives_assent }
+      - "parent1_assent_no_explanation": ${ parents[0].no_assent_explanation }
+      - "parent2_assent_yes": ${ parents[1].gives_assent }
+      - "parent2_assent_no": ${ not parents[1].gives_assent }
+      - "parent2_assent_no_explanation": ${ parents[1].no_assent_explanation }
+      - "guardian_assent_yes": ${ guardians[0].gives_assent or guardians[1].gives_assent }
+      - "guardian_assent_no": ${ not guardians[0].gives_assent or not guardians[1].gives_assent }
+      - "guardian_assent_no_explanation": ${ guardians[0].no_assent_explanation or guardians[1].no_assent_explanation }
       - "guardian_assent_not_applicable": ${ guardian_assent_not_applicable }
       - "user_name_change_reason_1": ${ user_name_change_reason_1 }
       - "parent2_needs_interpreter": ${ parents[1].needs_interpreter }
