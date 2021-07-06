@@ -166,11 +166,9 @@ code: |
    if parents[0].is_presenting or parents[1].is_presenting:
      parents.there_are_any = True
      guardian_assent_not_applicable = True
-     guardian_no = True
    if guardians[0].is_presenting or guardians[1].is_presenting:
      guardians.there_are_any = True
      guardian_assent_not_applicable = False
-     guardian_yes = True
 ---
 ###################### Main order ######################
 comment: |
@@ -1025,8 +1023,8 @@ attachments:
       - "one_parent_listed_yes": ${ one_parent_listed }
       - "deceased_parent_listed_yes": ${ deceased_parent_listed_yes }
       - "parent_listed_rights_terminated_yes": ${ parent_listed_rights_terminated_yes }
-      - "guardian_yes": ${ guardian_yes }
-      - "guardian_no": ${ guardian_no }
+      - "guardian_yes": ${ guardians.there_are_any }
+      - "guardian_no": ${ not guardians.there_are_any }
       - "minor_under_12_yes": ${ minor_under_12_yes }
       - "parent1_assent_yes": ${ parents[0].gives_assent }
       - "parent1_assent_no": ${ not parents[0].gives_assent }
