@@ -350,29 +350,20 @@ fields:
   - "Preferred interpreter language:": user_preferred_language
     show if: user_needs_interpreter
 ---
-id: parent 1 interpreter selection
+id: parent interpreter selection
 question: |
-  Interpreter selection for Legal Mother/Parent 1.
+  Interpreter selection for the ${ordinal(i)} parent.
 fields:
-  - "Does the Legal Mother/Parent 1 require an interpreter?": parents[0].needs_interpreter
+  - "Does the ${ordinal(i)} parent require an interpreter?": parents[i].needs_interpreter
     datatype: yesnoradio
-  - "Preferred interpreter language:": parents[0].preferred_language
-    show if: parents[0].needs_interpreter
+  - "Preferred interpreter language:": parents[i].preferred_language
+    show if: parents[i].needs_interpreter
 ---
-id: parent 2 interpreter selection
+id: guardian interpreter selection
 question: |
-  Interpreter selection for Legal Father/Parent 2.
+  Interpreter selection for the ${ordinal(i)} guardian.
 fields:
-  - "Does the Legal Father/Parent 2 require an interpreter?": parents[1].needs_interpreter
-    datatype: yesnoradio
-  - "Preferred interpreter language:": parents[1].preferred_language
-    show if: parents[1].needs_interpreter
----
-id: guardian 1 interpreter selection
-question: |
-  Interpreter selection for Guardian 1.
-fields:
-  - "Does the Guardian require an interpreter?": guardians[i].needs_interpreter
+  - "Does the ${ordinal(i)} guardian require an interpreter?": guardians[i].needs_interpreter
     datatype: yesnoradio
   - "Preferred interpreter language:": guardians[i].preferred_language
     show if: guardians[i].needs_interpreter
