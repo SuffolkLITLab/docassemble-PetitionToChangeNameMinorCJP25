@@ -165,10 +165,28 @@ code: |
 code: |
    if parents[0].is_presenting or parents[1].is_presenting:
      parents.there_are_any = True
-     guardian_assent_not_applicable = True
    if guardians[0].is_presenting or guardians[1].is_presenting:
      guardians.there_are_any = True
-     guardian_assent_not_applicable = False
+---
+recalculate: True
+code: |
+  temp_interpreter_languages = []
+  if user_needs_interpreter == True:
+    temp_interpreter_languages.append(user_preferred_language)
+  
+  for parent in parents:
+    if parent.is_presenting == False: 
+      parent.needs_interpreter = False
+    if parent.needs_interpreter == True:
+      temp_interpreter_languages.append(parent.preferred_language)
+      
+  for guardian in guardians:
+    if guardian.is_presenting == False: 
+      guardian.needs_interpreter = False
+    if guardian.needs_interpreter == True:
+      temp_interpreter_languages.append(guardian.preferred_language)
+      
+  interpreter_languages = temp_interpreter_languages
 ---
 ###################### Main order ######################
 comment: |
@@ -318,26 +336,6 @@ fields:
   - "Reason for the minor name change.": user_name_change_reason_1
     input type: area
     maxlength: 180
----
-recalculate: True
-code: |
-  temp_interpreter_languages = []
-  if user_needs_interpreter == True:
-    temp_interpreter_languages.append(user_preferred_language)
-  
-  for parent in parents:
-    if parent.is_presenting == False: 
-      parent.needs_interpreter = False
-    if parent.needs_interpreter == True:
-      temp_interpreter_languages.append(parent.preferred_language)
-      
-  for guardian in guardians:
-    if guardian.is_presenting == False: 
-      guardian.needs_interpreter = False
-    if guardian.needs_interpreter == True:
-      temp_interpreter_languages.append(guardian.preferred_language)
-      
-  interpreter_languages = temp_interpreter_languages
 ---
 id: user interpreter selection
 question: |
@@ -577,10 +575,10 @@ review:
     button: |
       **Guardian explanation for no assent.**:
       > ${ single_paragraph(guardians[0].no_assent_explanation or guardians[1].no_assent_explanation) }
-  - Edit: guardian_assent_not_applicable
+  - Edit: guardians.there_are_any
     button: |
       **Not applicable, no court-appointed guardian.**:
-      ${ word(yesno(guardian_assent_not_applicable)) }
+      ${ word(yesno(not guardians.there_are_any)) }
   - Edit: user_name_change_reason_1
     button: |
       **Reason for the minor name change.**:
@@ -1035,7 +1033,7 @@ attachments:
       - "guardian_assent_yes": ${ guardians[0].gives_assent or guardians[1].gives_assent }
       - "guardian_assent_no": ${ not guardians[0].gives_assent or not guardians[1].gives_assent }
       - "guardian_assent_no_explanation": ${ guardians[0].no_assent_explanation or guardians[1].no_assent_explanation }
-      - "guardian_assent_not_applicable": ${ guardian_assent_not_applicable }
+      - "guardian_assent_not_applicable": ${ not guardians.there_are_any }
       - "user_name_change_reason_1": ${ user_name_change_reason_1 }
       - "parent2_needs_interpreter": ${ parents[1].needs_interpreter }
       - "guardian_needs_interpreter": ${ guardians[0].needs_interpreter or guardians[1].needs_interpreter }
