@@ -219,6 +219,17 @@ question: |
 subquestion: |
   This form will help you to request a name change for a minor child.
 ---
+id: user information
+question: |
+  What is the minor child's current legal name?
+fields:
+  - "First Name": users[0].name.first
+    maxlength: 16
+  - "Middle Name": users[0].name.middle
+    maxlength: 16
+  - "Last Name": users[0].name.last
+    maxlength: 16
+---
 id: guardian presenting
 question: |
   Is this guardian presenting the form on behalf of the child?
