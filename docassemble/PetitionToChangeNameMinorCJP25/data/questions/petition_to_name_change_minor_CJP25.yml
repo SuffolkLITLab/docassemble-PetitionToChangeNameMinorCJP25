@@ -49,7 +49,7 @@ objects:
   - users: ALPeopleList.using(ask_number=True,target_number=1)
   - notary_public: ALPeopleList.using(there_are_any=True)
   - parents: ALPeopleList.using(ask_number=True,complete_attribute="complete")
-  - guardians: ALPeopleList.using(complete_attribute="complete")
+  - guardians: ALPeopleList.using(ask_number=True,complete_attribute="complete")
   - attorneys: ALPeopleList.using(ask_number=True,target_number=1)
 ---
 sections:
@@ -64,6 +64,8 @@ code: |
   allowed_courts = interview_metadata["petition_to_name_change_minor_CJP25"]["allowed courts"]
   nav.set_section('review_petition_to_name_change_minor_CJP25')
   user_role = 'plaintiff'
+  users[0].name.first
+  users[0].address.address
   docket_number
   courts[0].division
   prior_name_change
@@ -78,20 +80,30 @@ code: |
   doc_or_dys_yes
   set_progress(20.0)
   if one_parent_listed == True:
-    parents.target_number=1
     deceased_parent_listed_yes
-  if one_parent_listed == False:
-    parents.target_number=2
   parent_listed_rights_terminated_yes
   #parent personal info and interpreter question loop
-  parents.gather()
-  for parent in parents:
-    if parent.is_presenting: 
-      parent.needs_interpreter
-  guardians.gather()
-  for guardian in guardians:
-    if guardian.is_presenting: 
-      guardian.needs_interpreter
+  parents[0].name.first
+  parents[0].address.address
+  if parents.target_number == 2:
+    parents[1].name.first
+    parents[1].address.address
+  if parent_presenting == True:
+    parents.gather()
+    for parent in parents:
+      if parent.is_presenting: 
+        parent.needs_interpreter
+  if parent_presenting == False:
+    if number_of_guardians == True:  
+      guardians[0].name.first
+      guardians[0].address.address
+    else:
+      if number_of_guardians == False:
+        guardians[1].name.first
+        guardians[1].address.address
+    for guardian in guardians:
+      if guardian.is_presenting: 
+        guardian.needs_interpreter
   set_progress(30.0)
   minor_under_12_yes
   for parent in parents: 
@@ -139,8 +151,40 @@ code: |
   interview_order_petition_to_name_change_minor_CJP25 = True
 ---
 code: |
-  if one_parent_listed==True:
-    parents[1].needs_interpreter==False
+  if parent_presenting == True:
+    guardians.target_number = 0
+---
+code: |
+  if parent_presenting == False:
+    parents[0].is_presenting = False
+    parents[0].needs_interpreter = False
+    parents[1].is_presenting = False
+    parents[1].needs_interpreter = False
+---
+code: |
+   if parents[0].is_presenting or parents[1].is_presenting:
+     parents.there_are_any = True
+   if guardians[0].is_presenting or guardians[1].is_presenting:
+     guardians.there_are_any = True
+---
+code: |
+  if one_parent_listed == True:
+    parents.target_number = 1
+    parents[1].is_presenting = False
+    parents[1].needs_interpreter = False
+---
+code: |
+  if one_parent_listed == False:
+    parents.target_number = 2
+---
+code: |
+  if number_of_guardians == True:  
+    guardians.target_number = 1
+    guardians[1].is_presenting = False
+---
+code: |
+  if number_of_guardians == False:
+    guardians.target_number = 2
 ---
 code: |
   parents[i].name.first
@@ -161,12 +205,6 @@ code: |
   else:
     guardians[i].needs_interpreter = False
   guardians[i].complete = True
----
-code: |
-   if parents[0].is_presenting or parents[1].is_presenting:
-     parents.there_are_any = True
-   if guardians[0].is_presenting or guardians[1].is_presenting:
-     guardians.there_are_any = True
 ---
 recalculate: True
 code: |
@@ -219,6 +257,114 @@ question: |
 subquestion: |
   This form will help you to request a name change for a minor child.
 ---
+id: parent 1 bc information
+question: |
+  Enter the name of the first parent appearing on the minor child's birth certificate.
+fields:
+  - "First Name": parents[0].name.first
+  - "Middle Name": parents[0].name.middle
+  - "Last Name": parents[0].name.last
+---
+id: parent 2 bc information
+question: |
+  Enter the name of the second parent appearing on the minor child's birth certificate.
+fields:
+  - "First Name": parents[1].name.first
+  - "Middle Name": parents[1].name.middle
+  - "Last Name": parents[1].name.last
+---
+id: minor child address information
+question: |
+  Enter the minor child's address.
+fields:
+  - "Street Address": users[0].address.address
+  - "Apartment": users[0].address.unit
+  - "City": users[0].address.city
+  - "State": users[0].address.state
+  - "Zip Code": users[0].address.zip
+---
+id: parent 1 bc address information
+question: |
+  Enter the address and contact information of the first parent appearing on the minor child's birth certificate.
+fields:
+  - "Street Address": parents[0].address.address
+  - "Apartment": parents[0].address.unit
+  - "City": parents[0].address.city
+  - "State": parents[0].address.state
+  - "Zip Code": parents[0].address.zip
+  - "Phone Number": parents[0].phone_number
+  - "Email Address": parents[0].email
+---
+id: parent 2 bc address information
+question: |
+  Enter the address and contact information of the second parent appearing on the minor child's birth certificate.
+fields:
+  - "Street Address": parents[1].address.address
+  - "Apartment": parents[1].address.unit
+  - "City": parents[1].address.city
+  - "State": parents[1].address.state
+  - "Zip Code": parents[1].address.zip
+  - "Phone Number": parents[1].phone_number
+  - "Email Address": parents[1].email
+---
+id: guardian 1 name information
+question: |
+  Enter the name of the first guardian.
+fields:
+  - "First Name": guardians[0].name.first
+  - "Middle Name": guardians[0].name.middle
+  - "Last Name": guardians[0].name.last
+---
+id: guardian 2 name information
+question: |
+  Enter the name of the second guardian.
+fields:
+  - "First Name": guardians[1].name.first
+  - "Middle Name": guardians[1].name.middle
+  - "Last Name": guardians[1].name.last
+---
+id: guardian 1 address information
+question: |
+  Enter the address and contact information of the first guardian.
+fields:
+  - "Street Address": guardians[0].address.address
+  - "Apartment": guardians[0].address.unit
+  - "City": guardians[0].address.city
+  - "State": guardians[0].address.state
+  - "Zip Code": guardians[0].address.zip
+  - "Phone Number": guardians[0].phone_number
+  - "Email Address": guardians[0].email
+---
+id: guardian 2 address information
+question: |
+  Enter the address and contact information of the second guardian.
+fields:
+  - "Street Address": guardians[1].address.address
+  - "Apartment": guardians[1].address.unit
+  - "City": guardians[1].address.city
+  - "State": guardians[1].address.state
+  - "Zip Code": guardians[1].address.zip
+  - "Phone Number": guardians[1].phone_number
+  - "Email Address": guardians[1].email
+---
+id: number of guardians
+question: |
+  How many court-appointed guardians does the minor child have?
+subquestion: |
+  This form only provides space to enter the information for two guardians.
+field: number_of_guardians
+buttons: 
+  - "One": True
+  - "Two": False
+---
+id: parents or guardians
+question: |
+  Is the minor child currently in the custody of legal parents or court-appointed guardians?
+field: parent_presenting
+buttons: 
+  - "Parent(s)": True
+  - "Guardian(s)": False
+---
 id: user information
 question: |
   What is the minor child's current legal name?
@@ -237,7 +383,7 @@ yesno: guardians[i].is_presenting
 ---
 id: parent presenting
 question: |
-  Is this parent presenting the form on behalf of the child?
+  Is the ${ordinal(i)} parent presenting the form on behalf of the child?
 yesno: parents[i].is_presenting
 ---
 id: any guardians
