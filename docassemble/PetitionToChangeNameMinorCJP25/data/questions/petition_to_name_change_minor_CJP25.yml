@@ -94,11 +94,13 @@ code: |
       if parent.is_presenting: 
         parent.needs_interpreter
   if parent_presenting == False:
-    if number_of_guardians == True:  
+    if number_of_guardians == True:
       guardians[0].name.first
       guardians[0].address.address
     else:
       if number_of_guardians == False:
+        guardians[0].name.first
+        guardians[0].address.address
         guardians[1].name.first
         guardians[1].address.address
     for guardian in guardians:
@@ -162,14 +164,9 @@ code: |
     parents[1].needs_interpreter = False
 ---
 code: |
-   if parents[0].is_presenting or parents[1].is_presenting:
-     parents.there_are_any = True
-   if guardians[0].is_presenting or guardians[1].is_presenting:
-     guardians.there_are_any = True
----
-code: |
   if one_parent_listed == True:
     parents.target_number = 1
+    parents[1].complete = True
     parents[1].is_presenting = False
     parents[1].needs_interpreter = False
 ---
@@ -180,6 +177,7 @@ code: |
 code: |
   if number_of_guardians == True:  
     guardians.target_number = 1
+    guardians[1].complete = True
     guardians[1].is_presenting = False
 ---
 code: |
@@ -378,7 +376,7 @@ fields:
 ---
 id: guardian presenting
 question: |
-  Is this guardian presenting the form on behalf of the child?
+  Is the ${ordinal(i)} guardian presenting the form on behalf of the child?
 yesno: guardians[i].is_presenting
 ---
 id: parent presenting
