@@ -89,6 +89,7 @@ code: |
     parents[1].name.first
     parents[1].address.address
   if parent_presenting == True:
+    guardians.there_are_any = False
     parents.gather()
     for parent in parents:
       if parent.is_presenting: 
