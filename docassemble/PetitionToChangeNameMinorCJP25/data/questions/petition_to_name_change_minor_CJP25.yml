@@ -262,6 +262,7 @@ question: |
 fields:
   - "First Name": parents[0].name.first
   - "Middle Name": parents[0].name.middle
+    required: false
   - "Last Name": parents[0].name.last
 ---
 id: parent 2 bc information
@@ -270,6 +271,7 @@ question: |
 fields:
   - "First Name": parents[1].name.first
   - "Middle Name": parents[1].name.middle
+    required: false
   - "Last Name": parents[1].name.last
 ---
 id: minor child address information
@@ -277,7 +279,8 @@ question: |
   Enter the minor child's address.
 fields:
   - "Street Address": users[0].address.address
-  - "Apartment": users[0].address.unit
+  - "Apartment/Unit": users[0].address.unit
+    required: false
   - "City": users[0].address.city
   - "State": users[0].address.state
   - "Zip Code": users[0].address.zip
@@ -287,7 +290,8 @@ question: |
   Enter the address and contact information of the first parent appearing on the minor child's birth certificate.
 fields:
   - "Street Address": parents[0].address.address
-  - "Apartment": parents[0].address.unit
+  - "Apartment/Unit": parents[0].address.unit
+    required: false
   - "City": parents[0].address.city
   - "State": parents[0].address.state
   - "Zip Code": parents[0].address.zip
@@ -299,7 +303,8 @@ question: |
   Enter the address and contact information of the second parent appearing on the minor child's birth certificate.
 fields:
   - "Street Address": parents[1].address.address
-  - "Apartment": parents[1].address.unit
+  - "Apartment/Unit": parents[1].address.unit
+    required: false
   - "City": parents[1].address.city
   - "State": parents[1].address.state
   - "Zip Code": parents[1].address.zip
@@ -312,6 +317,7 @@ question: |
 fields:
   - "First Name": guardians[0].name.first
   - "Middle Name": guardians[0].name.middle
+    required: false
   - "Last Name": guardians[0].name.last
 ---
 id: guardian 2 name information
@@ -320,6 +326,7 @@ question: |
 fields:
   - "First Name": guardians[1].name.first
   - "Middle Name": guardians[1].name.middle
+    required: false
   - "Last Name": guardians[1].name.last
 ---
 id: guardian 1 address information
@@ -327,7 +334,8 @@ question: |
   Enter the address and contact information of the first guardian.
 fields:
   - "Street Address": guardians[0].address.address
-  - "Apartment": guardians[0].address.unit
+  - "Apartment/Unit": guardians[0].address.unit
+    required: false
   - "City": guardians[0].address.city
   - "State": guardians[0].address.state
   - "Zip Code": guardians[0].address.zip
@@ -339,7 +347,8 @@ question: |
   Enter the address and contact information of the second guardian.
 fields:
   - "Street Address": guardians[1].address.address
-  - "Apartment": guardians[1].address.unit
+  - "Apartment/Unit": guardians[1].address.unit
+    required: false
   - "City": guardians[1].address.city
   - "State": guardians[1].address.state
   - "Zip Code": guardians[1].address.zip
@@ -369,11 +378,9 @@ question: |
   What is the minor child's current legal name?
 fields:
   - "First Name": users[0].name.first
-    maxlength: 16
   - "Middle Name": users[0].name.middle
-    maxlength: 16
+    required: false
   - "Last Name": users[0].name.last
-    maxlength: 16
 ---
 id: guardian presenting
 question: |
@@ -483,6 +490,7 @@ question: |
 fields:
   - "New first name.": new_name_first
   - "New middle name.": new_name_middle
+    required: false
   - "New last name.": new_name_last
 ---
 id: new name reason
