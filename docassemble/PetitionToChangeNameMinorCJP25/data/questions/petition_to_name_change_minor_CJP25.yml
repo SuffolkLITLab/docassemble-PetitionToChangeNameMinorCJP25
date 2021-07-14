@@ -256,23 +256,43 @@ question: |
 subquestion: |
   This form will help you to request a name change for a minor child.
 ---
-id: parent 1 bc information
+id: parents names
+sets:
+  - parents[i].name.first
+  - parents[i].name.last
 question: |
-  Enter the name of the first parent appearing on the minor child's birth certificate.
+  Name of ${ ordinal(i) } parent
 fields:
-  - "First Name": parents[0].name.first
-  - "Middle Name": parents[0].name.middle
-    required: false
-  - "Last Name": parents[0].name.last
+  - code: |
+      parents[i].name_fields()
 ---
-id: parent 2 bc information
+id: guardians names
+sets:
+  - guardians[i].name.first
+  - guardians[i].name.last
 question: |
-  Enter the name of the second parent appearing on the minor child's birth certificate.
+  Name of ${ ordinal(i) } guardian
 fields:
-  - "First Name": parents[1].name.first
-  - "Middle Name": parents[1].name.middle
-    required: false
-  - "Last Name": parents[1].name.last
+  - code: |
+      guardians[i].name_fields()
+---
+#id: parent 1 bc information
+#question: |
+#  Enter the name of the first parent appearing on the minor child's birth certificate.
+#fields:
+#  - "First Name": parents[0].name.first
+#  - "Middle Name": parents[0].name.middle
+#    required: false
+#  - "Last Name": parents[0].name.last
+---
+#id: parent 2 bc information
+#question: |
+#  Enter the name of the second parent appearing on the minor child's birth certificate.
+#fields:
+#  - "First Name": parents[1].name.first
+#  - "Middle Name": parents[1].name.middle
+#    required: false
+#  - "Last Name": parents[1].name.last
 ---
 id: minor child address information
 question: |
@@ -311,23 +331,23 @@ fields:
   - "Phone Number": parents[1].phone_number
   - "Email Address": parents[1].email
 ---
-id: guardian 1 name information
-question: |
-  Enter the name of the first guardian.
-fields:
-  - "First Name": guardians[0].name.first
-  - "Middle Name": guardians[0].name.middle
-    required: false
-  - "Last Name": guardians[0].name.last
+#id: guardian 1 name information
+#question: |
+#  Enter the name of the first guardian.
+#fields:
+#  - "First Name": guardians[0].name.first
+#  - "Middle Name": guardians[0].name.middle
+#    required: false
+#  - "Last Name": guardians[0].name.last
 ---
-id: guardian 2 name information
-question: |
-  Enter the name of the second guardian.
-fields:
-  - "First Name": guardians[1].name.first
-  - "Middle Name": guardians[1].name.middle
-    required: false
-  - "Last Name": guardians[1].name.last
+#id: guardian 2 name information
+#question: |
+#  Enter the name of the second guardian.
+#fields:
+#  - "First Name": guardians[1].name.first
+#  - "Middle Name": guardians[1].name.middle
+#    required: false
+#  - "Last Name": guardians[1].name.last
 ---
 id: guardian 1 address information
 question: |
@@ -374,13 +394,23 @@ buttons:
   - "Guardian(s)": False
 ---
 id: user information
-question: |
-  What is the minor child's current legal name?
+sets:
+    - users[0].name.first
+    - users[0].name.last
+question:  |
+  What is the minor child's current full name?
 fields:
-  - "First Name": users[0].name.first
-  - "Middle Name": users[0].name.middle
-    required: false
-  - "Last Name": users[0].name.last
+  - code: |
+      users[0].name_fields()
+---
+#id: user information
+#question: |
+#  What is the minor child's current legal name?
+#fields:
+#  - "First Name": users[0].name.first
+#  - "Middle Name": users[0].name.middle
+#    required: false
+#  - "Last Name": users[0].name.last
 ---
 id: guardian presenting
 question: |
