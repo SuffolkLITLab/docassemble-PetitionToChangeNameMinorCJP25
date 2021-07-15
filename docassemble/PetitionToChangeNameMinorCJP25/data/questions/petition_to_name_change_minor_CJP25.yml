@@ -85,9 +85,11 @@ code: |
   #parent personal info and interpreter question loop
   parents[0].name.first
   parents[0].address.address
+  parents[0].phone_number
   if parents.target_number == 2:
     parents[1].name.first
     parents[1].address.address
+    parents[1].phone_number
   if parent_presenting == True:
     guardians.there_are_any = False
     parents.gather()
@@ -98,12 +100,15 @@ code: |
     if number_of_guardians == True:
       guardians[0].name.first
       guardians[0].address.address
+      guardians[0].phone_number
     else:
       if number_of_guardians == False:
         guardians[0].name.first
         guardians[0].address.address
+        guardians[0].phone_number
         guardians[1].name.first
         guardians[1].address.address
+        guardians[1].phone_number
     for guardian in guardians:
       if guardian.is_presenting: 
         guardian.needs_interpreter
@@ -116,29 +121,13 @@ code: |
     if guardian.is_presenting:
       guardian.gives_assent
   set_progress(40.0)
+  guardian_explanation
   interpreter_languages
   new_name_first
   user_name_change_reason_1
   set_progress(50.0)
-  #user_signature_date
-  #users.gather()
-  #users[0].address.address
-  #user_date_day
-  #notary_public[0]
-  #set_progress(65.0)
-  #date_commission_expiration
-  #parent1_signature_date
-  #parents[0].address.address
   set_progress(60.0)
-  #parent1_date_day
-  #parent2_signature_date
-  #parents[1].address.address
-  #parent2_date_year
   set_progress(70.0)
-  #guardian_signature_date
-  #guardian_name_full_printed
-  #guardians[0].address.address
-  #guardian_date_month
   set_progress(80.0)
   attorneys.gather()
   attorneys[0].address.address
@@ -225,6 +214,16 @@ code: |
       
   interpreter_languages = temp_interpreter_languages
 ---
+recalculate: True
+code: |
+  temp_guardian_explanation = []
+  
+  for guardian in guardians:
+    if guardian.gives_assent == False: 
+      temp_guardian_explanation.append(guardian.no_assent_explanation)
+  
+  guardian_explanation = temp_guardian_explanation
+---
 ###################### Main order ######################
 comment: |
   This block includes the logic for standalone interviews.
@@ -256,23 +255,25 @@ question: |
 subquestion: |
   This form will help you to request a name change for a minor child.
 ---
-id: parent 1 bc information
+id: parents names
+sets:
+  - parents[i].name.first
+  - parents[i].name.last
 question: |
-  Enter the name of the first parent appearing on the minor child's birth certificate.
+  Name of ${ ordinal(i) } parent
 fields:
-  - "First Name": parents[0].name.first
-  - "Middle Name": parents[0].name.middle
-    required: false
-  - "Last Name": parents[0].name.last
+  - code: |
+      parents[i].name_fields()
 ---
-id: parent 2 bc information
+id: guardians names
+sets:
+  - guardians[i].name.first
+  - guardians[i].name.last
 question: |
-  Enter the name of the second parent appearing on the minor child's birth certificate.
+  Name of ${ ordinal(i) } guardian
 fields:
-  - "First Name": parents[1].name.first
-  - "Middle Name": parents[1].name.middle
-    required: false
-  - "Last Name": parents[1].name.last
+  - code: |
+      guardians[i].name_fields()
 ---
 id: minor child address information
 question: |
@@ -287,7 +288,7 @@ fields:
 ---
 id: parent 1 bc address information
 question: |
-  Enter the address and contact information of the first parent appearing on the minor child's birth certificate.
+  Enter the address information of the first parent appearing on the minor child's birth certificate.
 fields:
   - "Street Address": parents[0].address.address
   - "Apartment/Unit": parents[0].address.unit
@@ -295,12 +296,17 @@ fields:
   - "City": parents[0].address.city
   - "State": parents[0].address.state
   - "Zip Code": parents[0].address.zip
+---
+id: parent 1 bc contact information
+question: |
+  Enter the contact information of the first parent appearing on the minor child's birth certificate.
+fields:
   - "Phone Number": parents[0].phone_number
   - "Email Address": parents[0].email
 ---
 id: parent 2 bc address information
 question: |
-  Enter the address and contact information of the second parent appearing on the minor child's birth certificate.
+  Enter the address information of the second parent appearing on the minor child's birth certificate.
 fields:
   - "Street Address": parents[1].address.address
   - "Apartment/Unit": parents[1].address.unit
@@ -308,30 +314,17 @@ fields:
   - "City": parents[1].address.city
   - "State": parents[1].address.state
   - "Zip Code": parents[1].address.zip
+---
+id: parent 2 bc contact information
+question: |
+  Enter the contact information of the second parent appearing on the minor child's birth certificate.
+fields:
   - "Phone Number": parents[1].phone_number
   - "Email Address": parents[1].email
 ---
-id: guardian 1 name information
-question: |
-  Enter the name of the first guardian.
-fields:
-  - "First Name": guardians[0].name.first
-  - "Middle Name": guardians[0].name.middle
-    required: false
-  - "Last Name": guardians[0].name.last
----
-id: guardian 2 name information
-question: |
-  Enter the name of the second guardian.
-fields:
-  - "First Name": guardians[1].name.first
-  - "Middle Name": guardians[1].name.middle
-    required: false
-  - "Last Name": guardians[1].name.last
----
 id: guardian 1 address information
 question: |
-  Enter the address and contact information of the first guardian.
+  Enter the address information of the first guardian.
 fields:
   - "Street Address": guardians[0].address.address
   - "Apartment/Unit": guardians[0].address.unit
@@ -339,12 +332,17 @@ fields:
   - "City": guardians[0].address.city
   - "State": guardians[0].address.state
   - "Zip Code": guardians[0].address.zip
+---
+id: guardian 1 contact information
+question: |
+  Enter the contact information of the first guardian.
+fields:
   - "Phone Number": guardians[0].phone_number
   - "Email Address": guardians[0].email
 ---
 id: guardian 2 address information
 question: |
-  Enter the address and contact information of the second guardian.
+  Enter the address information of the second guardian.
 fields:
   - "Street Address": guardians[1].address.address
   - "Apartment/Unit": guardians[1].address.unit
@@ -352,8 +350,20 @@ fields:
   - "City": guardians[1].address.city
   - "State": guardians[1].address.state
   - "Zip Code": guardians[1].address.zip
+---
+id: guardian 2 contact information
+question: |
+  Enter the contact information of the second guardian.
+fields:
   - "Phone Number": guardians[1].phone_number
   - "Email Address": guardians[1].email
+---
+id: attorney contact information
+question: |
+  Enter the contact information for your attorney.
+fields:
+  - "Phone Number": attorneys[0].phone_number
+  - "Email Address": attorneys[0].email
 ---
 id: number of guardians
 question: |
@@ -374,13 +384,14 @@ buttons:
   - "Guardian(s)": False
 ---
 id: user information
-question: |
-  What is the minor child's current legal name?
+sets:
+    - users[0].name.first
+    - users[0].name.last
+question:  |
+  What is the minor child's current full name?
 fields:
-  - "First Name": users[0].name.first
-  - "Middle Name": users[0].name.middle
-    required: false
-  - "Last Name": users[0].name.last
+  - code: |
+      users[0].name_fields()
 ---
 id: guardian presenting
 question: |
@@ -438,11 +449,6 @@ id: return request
 question: |
   Would you like to request a return, by first class mail, of all certified copies of documents filed with the court after review and processing?
 yesno: return_request_yes
----
-#id: one parent listed
-#question: |
-#  Check if only one parent is listed on the child's birth certificate.
-#yesno: one_parent_listed_yes
 ---
 id: deceased parent
 question: |
@@ -651,9 +657,6 @@ subquestion: |
   Remember to come back to this window to continue and sign your form.
 continue button field: petition_to_name_change_minor_CJP25_preview_question    
 ---
-#code: |
-#  signature_fields = ['notary_public[0].signature', 'attorneys[0].signature', #'parents[1].signature', 'guardians[0].signature', 'users[0].signature', #'parents[0].signature']
----
 id: petition to name change minor CJP25 review screen
 event: review_petition_to_name_change_minor_CJP25
 question: |
@@ -738,7 +741,7 @@ review:
   - Edit: guardians[0].no_assent_explanation or guardians[1].no_assent_explanation
     button: |
       **Guardian explanation for no assent.**:
-      > ${ single_paragraph(guardians[0].no_assent_explanation or guardians[1].no_assent_explanation) }
+      > ${ single_paragraph(guardian_explanation) }
   - Edit: guardians.there_are_any
     button: |
       **Not applicable, no court-appointed guardian.**:
@@ -906,10 +909,6 @@ review:
     button: |
       **notary_public[0]**:
       ${ notary_public[0] }
-  #- Edit: guardian2[0]
-   # button: |
-    #  **guardian2[0]**:
-     # ${ guardian2[0] }
   - Edit: notary_public[0].signature
     button: |
       **notary_public[0].signature**:
@@ -1196,7 +1195,7 @@ attachments:
       - "parent2_assent_no_explanation": ${ parents[1].no_assent_explanation }
       - "guardian_assent_yes": ${ guardians[0].gives_assent or guardians[1].gives_assent }
       - "guardian_assent_no": ${ not guardians[0].gives_assent or not guardians[1].gives_assent }
-      - "guardian_assent_no_explanation": ${ guardians[0].no_assent_explanation or guardians[1].no_assent_explanation }
+      - "guardian_assent_no_explanation": ${ comma_and_list(guardian_explanation) }
       - "guardian_assent_not_applicable": ${ not guardians.there_are_any }
       - "user_name_change_reason_1": ${ user_name_change_reason_1 }
       - "parent2_needs_interpreter": ${ parents[1].needs_interpreter }
