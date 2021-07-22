@@ -1198,7 +1198,7 @@ attachments:
       - "parent2_assent_no_explanation": ${ parents[1].no_assent_explanation }
       - "guardian_assent_yes": ${ guardians[0].gives_assent or guardians[1].gives_assent }
       - "guardian_assent_no": ${ not guardians[0].gives_assent or not guardians[1].gives_assent }
-      - "guardian_assent_no_explanation": ${ comma_and_list(guardian_explanation) }
+      - "guardian_assent_no_explanation": ${ comma_list(guardian_explanation) }
       - "guardian_assent_not_applicable": ${ not guardians.there_are_any }
       - "user_name_change_reason_1": ${ user_name_change_reason_1 }
       - "parent2_needs_interpreter": ${ parents[1].needs_interpreter }
