@@ -271,26 +271,26 @@ fields:
       guardians[i].name_fields()
 ---
 id: minor child address information
+sets:
+  - users[0].address.address
+  - users[0].address.city
+  - users[0].address.zip
 question: |
-  Enter the minor child's address.
+  Enter the minor child's current address.
 fields:
-  - "Street address": users[0].address.address
-  - "Apartment or unit number": users[0].address.unit
-    required: false
-  - "City": users[0].address.city
-  - "State": users[0].address.state
-  - "Zip code": users[0].address.zip
+  - code: |
+      users[0].address_fields()
 ---
-id: parent 1 bc address information
-question: |
-  Enter the address information of the first parent appearing on the minor child's birth certificate.
-fields:
-  - "Street address": parents[0].address.address
-  - "Apartment or unit number": parents[0].address.unit
-    required: false
-  - "City": parents[0].address.city
-  - "State": parents[0].address.state
-  - "Zip code": parents[0].address.zip
+#id: parent 1 bc address information
+#question: |
+#  Enter the address information of the first parent appearing on the minor child's birth certificate.
+#fields:
+#  - "Street address": parents[0].address.address
+#  - "Apartment or unit number": parents[0].address.unit
+#    required: false
+#  - "City": parents[0].address.city
+#  - "State": parents[0].address.state
+#  - "Zip code": parents[0].address.zip
 ---
 id: parent 1 bc contact information
 question: |
@@ -299,16 +299,16 @@ fields:
   - "Phone number": parents[0].phone_number
   - "Email address": parents[0].email
 ---
-id: parent 2 bc address information
-question: |
-  Enter the address information of the second parent appearing on the minor child's birth certificate.
-fields:
-  - "Street address": parents[1].address.address
-  - "Apartment or unit number": parents[1].address.unit
-    required: false
-  - "City": parents[1].address.city
-  - "State": parents[1].address.state
-  - "Zip code": parents[1].address.zip
+#id: parent 2 bc address information
+#question: |
+#  Enter the address information of the second parent appearing on the minor child's birth certificate.
+#fields:
+#  - "Street address": parents[1].address.address
+#  - "Apartment or unit number": parents[1].address.unit
+#    required: false
+#  - "City": parents[1].address.city
+#  - "State": parents[1].address.state
+#  - "Zip code": parents[1].address.zip
 ---
 id: parent 2 bc contact information
 question: |
@@ -317,16 +317,16 @@ fields:
   - "Phone number": parents[1].phone_number
   - "Email address": parents[1].email
 ---
-id: guardian 1 address information
-question: |
-  Enter the address information of the first guardian.
-fields:
-  - "Street address": guardians[0].address.address
-  - "Apartment or unit number": guardians[0].address.unit
-    required: false
-  - "City": guardians[0].address.city
-  - "State": guardians[0].address.state
-  - "Zip code": guardians[0].address.zip
+#id: guardian 1 address information
+#question: |
+#  Enter the address information of the first guardian.
+#fields:
+#  - "Street address": guardians[0].address.address
+#  - "Apartment or unit number": guardians[0].address.unit
+#    required: false
+#  - "City": guardians[0].address.city
+#  - "State": guardians[0].address.state
+#  - "Zip code": guardians[0].address.zip
 ---
 id: guardian 1 contact information
 question: |
@@ -335,16 +335,16 @@ fields:
   - "Phone number": guardians[0].phone_number
   - "Email address": guardians[0].email
 ---
-id: guardian 2 address information
-question: |
-  Enter the address information of the second guardian.
-fields:
-  - "Street address": guardians[1].address.address
-  - "Apartment or unit number": guardians[1].address.unit
-    required: false
-  - "City": guardians[1].address.city
-  - "State": guardians[1].address.state
-  - "Zip code": guardians[1].address.zip
+#id: guardian 2 address information
+#question: |
+#  Enter the address information of the second guardian.
+#fields:
+#  - "Street address": guardians[1].address.address
+#  - "Apartment or unit number": guardians[1].address.unit
+#    required: false
+#  - "City": guardians[1].address.city
+#  - "State": guardians[1].address.state
+#  - "Zip code": guardians[1].address.zip
 ---
 id: guardian 2 contact information
 question: |
@@ -373,6 +373,8 @@ buttons:
 id: parents or guardians
 question: |
   Is the minor child currently in the custody of legal parents or court-appointed guardians?
+subquestion: |
+  If the minor child is currently in the custody of court-appointed guardians, bring proof of guardianship when you go to see a notary public.
 field: parent_presenting
 buttons: 
   - "Parent(s)": True
@@ -448,17 +450,23 @@ yesno: return_request_yes
 id: deceased parent
 question: |
   Is any legal parent listed on the child's birth certificate deceased?
+subquestion: |
+  If so, bring a copy of the parent's death certificate with you when you go to see a notary public.
 yesno: deceased_parent_listed_yes
 ---
 id: parental rights terminated
 question: |
   Has any legal parent listed on the child's birth certificate had their parental rights terminated in a prior proceeding?
+subquestion: |
+  If so, bring proof of the parent's rights being terminated with you when you go to see a notary public.
 yesno: parent_listed_rights_terminated_yes
 ---
-id: court-appointed guardian
-question: |
-  Does the child have a court-appointed guardian?
-yesno: guardian
+#id: court-appointed guardian
+#question: |
+#  Does the child have a court-appointed guardian?
+#subquestion: |
+#  If so, bring proof of guardianship with you when you go to see a notary public.
+#yesno: guardian
 ---
 id: minor assent
 question: |
