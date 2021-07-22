@@ -373,6 +373,8 @@ buttons:
 id: parents or guardians
 question: |
   Is the minor child currently in the custody of legal parents or court-appointed guardians?
+subquestion: |
+  If the minor child is currently in the custody of court-appointed guardians, bring proof of guardianship when you go to see a notary public.
 field: parent_presenting
 buttons: 
   - "Parent(s)": True
@@ -448,17 +450,23 @@ yesno: return_request_yes
 id: deceased parent
 question: |
   Is any legal parent listed on the child's birth certificate deceased?
+subquestion: |
+  If so, bring a copy of the parent's death certificate with you when you go to see a notary public.
 yesno: deceased_parent_listed_yes
 ---
 id: parental rights terminated
 question: |
   Has any legal parent listed on the child's birth certificate had their parental rights terminated in a prior proceeding?
+subquestion: |
+  If so, bring proof of the parent's rights being terminated with you when you go to see a notary public.
 yesno: parent_listed_rights_terminated_yes
 ---
-id: court-appointed guardian
-question: |
-  Does the child have a court-appointed guardian?
-yesno: guardian
+#id: court-appointed guardian
+#question: |
+#  Does the child have a court-appointed guardian?
+#subquestion: |
+#  If so, bring proof of guardianship with you when you go to see a notary public.
+#yesno: guardian
 ---
 id: minor assent
 question: |
