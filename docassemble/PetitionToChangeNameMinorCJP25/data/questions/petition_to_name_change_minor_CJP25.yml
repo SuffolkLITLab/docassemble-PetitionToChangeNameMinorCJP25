@@ -40,7 +40,7 @@ code: |
     })
 ---
 code: |
-  interview_short_title = "File a Petition to Change the Name of a Minor."
+  interview_short_title = "Ask the court to change your child's name"
 ---
 code: |
   al_form_type = 'starts_case'
@@ -67,8 +67,6 @@ code: |
   users[0].name.first
   users[0].address.address
   doc_or_dys_yes
-  docket_number
-  courts[0].division
   prior_name_change
   if prior_name_change == True:
     user_name_change_from
@@ -135,7 +133,11 @@ code: |
   attorneys[0].phone_number
   attorney_bbo
   return_request_yes
+  courts[0].division
   interview_order_petition_to_name_change_minor_CJP25 = True
+---
+code: |
+  docket_number = ''
 ---
 code: |
   if parent_presenting == True:
@@ -242,20 +244,22 @@ code: |
   petition_to_name_change_minor_CJP25_download
 ---
 comment: |
-  This interview will guide you through the process of filing a CJP25 Petition to Change the Name of a Minor by Asking a Series of Questions concerning information on the child, their parents or guardians, and other relevant information.
+  This interview will guide you through the process of filing a CJP25 Petition to Change the Name of a Minor by Asking a Questions concerning information on the child, their parents or guardians, and other relevant information.
 id: minor name change petition
 continue button field: petition_to_name_change_minor_CJP25_intro
 question: |
-  Minor name change petition
+  File a petition to change the name of a minor child
 subquestion: |
-  This form will help you to request a name change for a minor child.
+  This interview will require the name, address, and contact information for the parents on the minor child's birth certificate. 
+  
+  If you are a guardian filling this form out on behalf of a minor child, you will need to bring proof of guardianship with you to get these documents notarized.
 ---
 id: parents names
 sets:
   - parents[i].name.first
   - parents[i].name.last
 question: |
-  Name of the ${ ordinal(i) } parent
+  What is the name of the ${ ordinal(i) } parent appearing on the minor child's birth certificate?
 fields:
   - code: |
       parents[i].name_fields()
@@ -265,7 +269,7 @@ sets:
   - guardians[i].name.first
   - guardians[i].name.last
 question: |
-  Name of the ${ ordinal(i) } guardian
+  What is the ${ ordinal(i) } guardian's name?
 fields:
   - code: |
       guardians[i].name_fields()
@@ -276,86 +280,42 @@ sets:
   - users[0].address.city
   - users[0].address.zip
 question: |
-  Enter the minor child's current address.
+  What is the minor child's current address?
 fields:
   - code: |
       users[0].address_fields()
 ---
-#id: parent 1 bc address information
-#question: |
-#  Enter the address information of the first parent appearing on the minor child's birth certificate.
-#fields:
-#  - "Street address": parents[0].address.address
-#  - "Apartment or unit number": parents[0].address.unit
-#    required: false
-#  - "City": parents[0].address.city
-#  - "State": parents[0].address.state
-#  - "Zip code": parents[0].address.zip
----
 id: parent 1 bc contact information
 question: |
-  Enter the contact information of the first parent appearing on the minor child's birth certificate.
+  What is the first parent's contact information?
 fields:
   - "Phone number": parents[0].phone_number
   - "Email address": parents[0].email
 ---
-#id: parent 2 bc address information
-#question: |
-#  Enter the address information of the second parent appearing on the minor child's birth certificate.
-#fields:
-#  - "Street address": parents[1].address.address
-#  - "Apartment or unit number": parents[1].address.unit
-#    required: false
-#  - "City": parents[1].address.city
-#  - "State": parents[1].address.state
-#  - "Zip code": parents[1].address.zip
----
 id: parent 2 bc contact information
 question: |
-  Enter the contact information of the second parent appearing on the minor child's birth certificate.
+  What is the second parent's contact information?
 fields:
   - "Phone number": parents[1].phone_number
   - "Email address": parents[1].email
 ---
-#id: guardian 1 address information
-#question: |
-#  Enter the address information of the first guardian.
-#fields:
-#  - "Street address": guardians[0].address.address
-#  - "Apartment or unit number": guardians[0].address.unit
-#    required: false
-#  - "City": guardians[0].address.city
-#  - "State": guardians[0].address.state
-#  - "Zip code": guardians[0].address.zip
----
 id: guardian 1 contact information
 question: |
-  Enter the contact information of the first guardian.
+  What is the first guardian's contact information?
 fields:
   - "Phone number": guardians[0].phone_number
   - "Email address": guardians[0].email
 ---
-#id: guardian 2 address information
-#question: |
-#  Enter the address information of the second guardian.
-#fields:
-#  - "Street address": guardians[1].address.address
-#  - "Apartment or unit number": guardians[1].address.unit
-#    required: false
-#  - "City": guardians[1].address.city
-#  - "State": guardians[1].address.state
-#  - "Zip code": guardians[1].address.zip
----
 id: guardian 2 contact information
 question: |
-  Enter the contact information of the second guardian.
+  What is the second guardian's contact information?
 fields:
   - "Phone number": guardians[1].phone_number
   - "Email address": guardians[1].email
 ---
 id: attorney contact information
 question: |
-  Enter the contact information for your attorney.
+  What is your attorney's contact information?
 fields:
   - "Phone number": attorneys[0].phone_number
   - "Email address": attorneys[0].email
@@ -385,7 +345,7 @@ sets:
     - users[0].name.first
     - users[0].name.last
 question:  |
-  Enter the minor child's current full name.
+  What is the minor child's full name?
 fields:
   - code: |
       users[0].name_fields()
@@ -418,8 +378,8 @@ question: |
   How many parents are listed on the child's birth certificate?"
 field: one_parent_listed
 buttons:
-  - "One parent": True
-  - "Two parents": False
+  - "1 parent": True
+  - "2 parents": False
 ---
 id: address is DOC or DYS facility
 question: |
@@ -428,12 +388,12 @@ yesno: doc_or_dys_yes
 ---
 id: prior name change yesno
 question: |
-  Has the child ever previously changed their name?
+  Has any court changed the minor child's name before?
 yesno: prior_name_change
 ---
 id: prior name change info
 question: |
-  Enter the child's previous name, the name that the child changed to, and the reason for the child's name change.
+  What is the minor child's most recent prior name?
 fields:
   - "Previous name": user_name_change_from
     maxlength: 82
@@ -477,25 +437,25 @@ noyes: minor_under_12_yes
 ---
 id: parent 1 assent
 question: |
-  The ${ordinal(i)} parent...
+  Does the ${ordinal(i)} parent agree to this petition?
 fields:
-  - "Assents to this petition": parents[i].gives_assent
+  - "Assent": parents[i].gives_assent
     datatype: yesnoradio
   - "Explanation for not assenting": parents[i].no_assent_explanation
     hide if: parents[i].gives_assent
 ---
 id: guardian assent
 question: |
-  The ${ordinal(i)} court-appointed guardian...
+  Does the ${ordinal(i)} court-appointed guardian agree to this petition?
 fields:
-  - "Assents to this petition": guardians[i].gives_assent
+  - "Assent": guardians[i].gives_assent
     datatype: yesnoradio
   - "Explanation for not assenting": guardians[i].no_assent_explanation
     hide if: guardians[i].gives_assent
 ---
 id: new name info
 question: |
-  Enter the name that the minor child wishes to change to.
+  What name does the minor child wish to change to?
 fields:
   - "New first name": new_name_first
   - "New middle name": new_name_middle
@@ -504,35 +464,35 @@ fields:
 ---
 id: new name reason
 question: |
-  A name change is sought for the following reason:
+  Why does the minor child wish to change their name?
 fields:
-  - "Reason for the minor child's name change": user_name_change_reason_1
+  - "Reason": user_name_change_reason_1
     input type: area
     maxlength: 180
 ---
 id: user interpreter selection
 question: |
-  Interpreter selection for the minor child.
+  Will the minor child require an interpreter in the event of a hearing?
 fields:
-  - "Does the minor child require an interpreter?": user_needs_interpreter
+  - "Interpreter": user_needs_interpreter
     datatype: yesnoradio
   - "Preferred interpreter language:": user_preferred_language
     show if: user_needs_interpreter
 ---
 id: parent interpreter selection
 question: |
-  Interpreter selection for the ${ordinal(i)} parent.
+  Will the ${ordinal(i)} parent require an interpreter in the event of a hearing?
 fields:
-  - "Does the ${ordinal(i)} parent require an interpreter?": parents[i].needs_interpreter
+  - "Interpreter": parents[i].needs_interpreter
     datatype: yesnoradio
   - "Preferred interpreter language:": parents[i].preferred_language
     show if: parents[i].needs_interpreter
 ---
 id: guardian interpreter selection
 question: |
-  Interpreter selection for the ${ordinal(i)} guardian.
+  Will the ${ordinal(i)} guardian require an interpreter in the event of a hearing?
 fields:
-  - "Does the ${ordinal(i)} guardian require an interpreter?": guardians[i].needs_interpreter
+  - "Interpreter": guardians[i].needs_interpreter
     datatype: yesnoradio
   - "Preferred interpreter language:": guardians[i].preferred_language
     show if: guardians[i].needs_interpreter
