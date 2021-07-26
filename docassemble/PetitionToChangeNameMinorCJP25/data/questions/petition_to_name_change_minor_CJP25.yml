@@ -127,11 +127,11 @@ code: |
   set_progress(60.0)
   set_progress(70.0)
   set_progress(80.0)
-  attorneys.gather()
-  attorneys[0].address.address
-  set_progress(90.0)
-  attorneys[0].phone_number
-  attorney_bbo
+  if attorney_yes_no == True:
+    attorneys.gather()
+    attorneys[0].address.address
+    attorneys[0].phone_number
+    attorney_bbo
   return_request_yes
   courts[0].division
   interview_order_petition_to_name_change_minor_CJP25 = True
@@ -253,6 +253,16 @@ subquestion: |
   This interview will require the name, address, and contact information for the parents on the minor child's birth certificate. 
   
   If you are a guardian filling this form out on behalf of a minor child, you will need to bring proof of guardianship with you to get these documents notarized.
+---
+id: attorney_yes_no
+question: |
+  Do you have an attorney?
+subquestion: |
+  An attorney is not required to file, but you may have one if you wish in the event that there is a hearing regarding this name change petition (i.e., if an involved party does not agree to the filing of this petition).
+field: attorney_yes_no
+buttons: 
+  - "Yes": True
+  - "No": False
 ---
 id: parents names
 sets:
@@ -383,7 +393,9 @@ buttons:
 ---
 id: address is DOC or DYS facility
 question: |
-  Is the current address a facility under the supervision of the Massachusetts Department of Corrections or Department of Youth Services?
+  Is the child's current address a correctional facility?
+subquestion: |
+  Examples of correctional facilities include those under the supervision of the Department of Corrections or the Department of Youth Services.
 yesno: doc_or_dys_yes
 ---
 id: prior name change yesno
