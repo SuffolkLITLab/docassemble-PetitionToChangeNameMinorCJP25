@@ -77,14 +77,14 @@ code: |
   users[0].address.address
   user_needs_interpreter
   set_progress(20.0)
-  if one_parent_listed == True:
-    deceased_parent_listed_yes
+  how_many_parents
+  deceased_parent_listed_yes
   parent_listed_rights_terminated_yes
   #parent personal info and interpreter question loop
   parents[0].name.first
   parents[0].address.address
   parents[0].phone_number
-  if parents.target_number == 2:
+  if how_many_parents == '2 parents':
     parents[1].name.first
     parents[1].address.address
     parents[1].phone_number
@@ -151,14 +151,15 @@ code: |
     parents[1].needs_interpreter = False
 ---
 code: |
-  if one_parent_listed == True:
+  if how_many_parents == '1 parent':
     parents.target_number = 1
     parents[1].complete = True
     parents[1].is_presenting = False
     parents[1].needs_interpreter = False
+    one_parent_listed_yes = True
 ---
 code: |
-  if one_parent_listed == False:
+  if how_many_parents == '2 parents':
     parents.target_number = 2
 ---
 code: |
@@ -385,11 +386,11 @@ buttons:
 ---
 id: how many parents on bc
 question: |
-  How many parents are listed on the child's birth certificate?"
-field: one_parent_listed
+  How many parents are listed on the child's birth certificate?
+field: how_many_parents
 buttons:
-  - "1 parent": True
-  - "2 parents": False
+  - "1 parent"
+  - "2 parents"
 ---
 id: address is DOC or DYS facility
 question: |
@@ -615,6 +616,7 @@ question: |
 fields:
   - "Attorney BBO#.": attorney_bbo
     maxlength: 44
+    required: False
 ---
 id: preview petition_to_name_change_minor_CJP25
 question: |
@@ -673,10 +675,10 @@ review:
     button: |
       **Request Return by First Class Mail**:
       ${ word(yesno(return_request_yes)) }
-  - Edit: one_parent_listed
+  - Edit: how_many_parents
     button: |
       **One Parent Listed on Child\'s Birth Certificate**:
-      ${ word(yesno(one_parent_listed)) }
+      ${ word(yesno(how_many_parents)) }
   - Edit: deceased_parent_listed_yes
     button: |
       **One Parent Listed on Child\'s Birth Certificate is Deceased**:
@@ -1156,7 +1158,7 @@ attachments:
       - "user_name_change_to": ${ user_name_change_to }
       - "user_name_change_reason": ${ user_name_change_reason }
       - "return_request_yes": ${ return_request_yes }
-      - "one_parent_listed_yes": ${ one_parent_listed }
+      - "one_parent_listed_yes": ${ one_parent_listed_yes }
       - "deceased_parent_listed_yes": ${ deceased_parent_listed_yes }
       - "parent_listed_rights_terminated_yes": ${ parent_listed_rights_terminated_yes }
       - "guardian_yes": ${ guardians.there_are_any }
