@@ -177,7 +177,10 @@ code: |
   parents[i].address.address
   parents[i].phone_number
   parents[i].email
-  parents[i].is_presenting
+  if parents[i].is_presenting == True:
+    parents[i].needs_interpreter
+  else:
+    parents[i].needs_interpreter = False
   parents[i].complete = True
 ---
 code: |
@@ -434,7 +437,7 @@ yesno: return_request_yes
 ---
 id: deceased parent
 question: |
-  Is any legal parent listed on the child's birth certificate deceased?
+  Is either legal parent listed on the child's birth certificate deceased?
 subquestion: |
   If so, bring a copy of the parent's death certificate with you when you go to see a notary public.
 yesno: deceased_parent_listed_yes
