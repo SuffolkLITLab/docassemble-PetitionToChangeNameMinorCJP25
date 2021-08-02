@@ -95,12 +95,12 @@ code: |
       if parent.is_presenting: 
         parent.needs_interpreter
   if parent_presenting == False:
-    if number_of_guardians == True:
+    if number_of_guardians == 'One':
       guardians[0].name.first
       guardians[0].address.address
       guardians[0].phone_number
     else:
-      if number_of_guardians == False:
+      if number_of_guardians == 'Two':
         guardians[0].name.first
         guardians[0].address.address
         guardians[0].phone_number
@@ -163,13 +163,13 @@ code: |
     parents.target_number = 2
 ---
 code: |
-  if number_of_guardians == True:  
+  if number_of_guardians == 'One':  
     guardians.target_number = 1
     guardians[1].complete = True
     guardians[1].is_presenting = False
 ---
 code: |
-  if number_of_guardians == False:
+  if number_of_guardians == 'Two':
     guardians.target_number = 2
 ---
 code: |
@@ -214,13 +214,25 @@ code: |
 ---
 recalculate: True
 code: |
-  temp_guardian_explanation = []
-  
-  for guardian in guardians:
-    if guardian.gives_assent == False: 
-      temp_guardian_explanation.append(guardian.no_assent_explanation)
-  
-  guardian_explanation = temp_guardian_explanation
+  if parent_presenting == True:  
+    guardian_explanation = ''  
+  if parent_presenting == False:  
+    if number_of_guardians == 'One':  
+      temp_guardian_explanation = []
+       
+      if guardians[0].gives_assent == False:
+        temp_guardian_explanation.append(guardians[0].no_assent_explanation)
+      
+      guardian_explanation = temp_guardian_explanation
+      
+    if number_of_guardians == 'Two':
+      temp_guardian_explanation = []
+      
+      for guardian in guardians:
+        if guardian.gives_assent == False: 
+          temp_guardian_explanation.append(guardian.no_assent_explanation)
+          
+      guardian_explanation = temp_guardian_explanation
 ---
 ###################### Main order ######################
 comment: |
@@ -338,8 +350,8 @@ subquestion: |
   This form only provides space to enter the information for two court-appointed guardians.
 field: number_of_guardians
 buttons: 
-  - "One": True
-  - "Two": False
+  - "One"
+  - "Two"
 ---
 id: parents or guardians
 question: |
@@ -663,10 +675,10 @@ review:
     button: |
       **Previous Name**:
       ${ user_name_change_from }
-  - Edit: user_name_change_to
-    button: |
-      **New Name**:
-      ${ user_name_change_to }
+  #- Edit: user_name_change_to
+  #  button: |
+  #    **New Name**:
+  #    ${ user_name_change_to }
   - Edit: user_name_change_reason
     button: |
       **Reason for Name Change**:
