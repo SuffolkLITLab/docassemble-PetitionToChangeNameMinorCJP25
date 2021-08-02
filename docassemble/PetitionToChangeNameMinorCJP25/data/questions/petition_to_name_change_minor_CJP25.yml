@@ -66,6 +66,13 @@ code: |
   user_role = 'plaintiff'
   users[0].name.first
   users[0].address.address
+  if minor_age == 'Between 12 and 18':
+    if minor_child_assent == False:
+      kickout
+  if minor_age == '18 or older':
+    adult_kickout
+  if minor_age == 'Under 12':
+    minor_under_12_yes = True
   doc_or_dys_yes
   prior_name_change
   if prior_name_change == True:
@@ -111,7 +118,7 @@ code: |
       if guardian.is_presenting: 
         guardian.needs_interpreter
   set_progress(30.0)
-  minor_under_12_yes
+  minor_age
   for parent in parents: 
     if parent.is_presenting:
       parent.gives_assent
@@ -138,6 +145,10 @@ code: |
 ---
 code: |
   docket_number = ''
+---
+#code: |
+#  if minor_age == 'Under 12':
+#    minor_under_12_yes = True
 ---
 code: |
   if parent_presenting == True:
@@ -269,6 +280,26 @@ subquestion: |
   This interview will require the name, address, and contact information for the parents on the minor child's birth certificate. 
   
   If you are a guardian filling this form out on behalf of a minor child, you will need to bring proof of guardianship with you to get these documents notarized.
+---
+id: minor_child_assent
+question: |
+  Does the minor child agree to this name change petition?
+yesno: minor_child_assent
+---
+id: minor_child_adult_kickout
+question: |
+  You should file an adult name change petition instead.
+sets: adult_kickout
+buttons:
+  - Exit: exit
+---
+id: minor_child_no_assent_kickout
+question: |
+  The minor child must agree to this petition in order to continue.
+sets: kickout
+buttons:
+  - Exit: exit
+  - Restart: restart
 ---
 id: attorney_yes_no
 question: |
@@ -456,12 +487,16 @@ yesno: parent_listed_rights_terminated_yes
 #  If so, bring proof of guardianship with you when you go to see a notary public.
 #yesno: guardian
 ---
-id: minor assent
+id: minor age
 question: |
-  Is the minor child over the age of 12 and able to assent to this petition?
+  How old is the minor child?
 subquestion: |
-  If the minor child is under 12 years of age, they cannot assent to this petition.
-noyes: minor_under_12_yes
+  If the minor child is under 12 years of age, their parent(s) or guardian(s) can provide assent on the child's behalf.
+field: minor_age
+buttons:
+  - "18 or older"
+  - "Between 12 and 18"
+  - "Under 12"
 ---
 id: parent 1 assent
 question: |
@@ -706,10 +741,10 @@ review:
     button: |
       **Does the Child have a Court-Appointed Guardian**:
       ${ word(yesno(guardian)) }
-  - Edit: minor_under_12_yes
+  - Edit: minor_age
     button: |
       **Not applicable. The minor child is not 12 years of age or older.**:
-      ${ word(yesno(minor_under_12_yes)) }
+      ${ word(yesno(minor_age)) }
   - Edit: parents[0].gives_assent
     button: |
       **Legal Mother/Parent 1 Assents to the Petition.**:
