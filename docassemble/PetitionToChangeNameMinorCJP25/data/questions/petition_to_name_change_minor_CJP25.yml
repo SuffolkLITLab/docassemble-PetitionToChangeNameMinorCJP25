@@ -419,7 +419,7 @@ yesno: guardians[i].is_presenting
 ---
 id: parent presenting
 question: |
-  Is the ${ordinal(i)} parent presenting the form on behalf of the child?
+  Is ${parents[i].name.first} ${parents[i].name.last} presenting the form on behalf of the child?
 yesno: parents[i].is_presenting
 ---
 id: any guardians
@@ -503,7 +503,7 @@ buttons:
 ---
 id: parent 1 assent
 question: |
-  Does the ${ordinal(i)} parent agree to this petition?
+  Does ${parents[i].name.first} ${parents[i].name.last} agree to this petition?
 fields:
   - "Assent": parents[i].gives_assent
     datatype: yesnoradio
@@ -547,7 +547,7 @@ fields:
 ---
 id: parent interpreter selection
 question: |
-  Will the ${ordinal(i)} parent require an interpreter in the event of a hearing?
+  Will ${parents[i].name.first} ${parents[i].name.last} require an interpreter in the event of a hearing?
 fields:
   - "Interpreter": parents[i].needs_interpreter
     datatype: yesnoradio
