@@ -288,12 +288,12 @@ subquestion: |
 ---
 id: minor_child_assent
 question: |
-  Does the minor child agree to this name change petition?
+  Does ${users[0].name.first} ${users[0].name.last} agree to this petition?
 yesno: minor_child_assent
 ---
 id: minor_child_adult_kickout
 question: |
-  You should file an adult name change petition instead.
+  ${users[0].name.first} ${users[0].name.last} should file an adult name change petition instead.
 sets: adult_kickout
 buttons:
   - Exit: exit
@@ -321,7 +321,7 @@ sets:
   - parents[i].name.first
   - parents[i].name.last
 question: |
-  What is the name of the ${ ordinal(i) } parent appearing on the child's birth certificate?
+  What is the name of the ${ ordinal(i) } parent appearing on ${users[0].name.first} ${users[0].name.last}'s birth certificate?
 fields:
   - code: |
       parents[i].name_fields()
@@ -342,49 +342,49 @@ sets:
   - users[0].address.city
   - users[0].address.zip
 question: |
-  What is the minor child's current address?
+  What is ${users[0].name.first} ${users[0].name.last}'s current address?
 fields:
   - code: |
       users[0].address_fields()
 ---
 id: parent 1 bc contact information
 question: |
-  What is the first parent's contact information?
+  What is ${parents[0].name.first} ${parents[0].name.last}'s contact information?
 fields:
   - "Phone number": parents[0].phone_number
   - "Email address": parents[0].email
 ---
 id: parent 2 bc contact information
 question: |
-  What is the second parent's contact information?
+  What is ${parents[1].name.first} ${parents[1].name.last}'s contact information?
 fields:
   - "Phone number": parents[1].phone_number
   - "Email address": parents[1].email
 ---
 id: guardian 1 contact information
 question: |
-  What is the first guardian's contact information?
+  What is ${guardians[0].name.first} ${guardians[0].name.last}'s contact information?
 fields:
   - "Phone number": guardians[0].phone_number
   - "Email address": guardians[0].email
 ---
 id: guardian 2 contact information
 question: |
-  What is the second guardian's contact information?
+  What is ${guardians[1].name.first} ${guardians[1].name.last}'s contact information?
 fields:
   - "Phone number": guardians[1].phone_number
   - "Email address": guardians[1].email
 ---
 id: attorney contact information
 question: |
-  What is your attorney's contact information?
+  What is ${attorneys[0].name.first} ${attorneys[0].name.last}'s contact information?
 fields:
   - "Phone number": attorneys[0].phone_number
   - "Email address": attorneys[0].email
 ---
 id: number of guardians
 question: |
-  How many court-appointed guardians does the child have?
+  How many court-appointed guardians does ${users[0].name.first} ${users[0].name.last} have?
 subquestion: |
   This form only provides space to enter the information for two court-appointed guardians.
 field: number_of_guardians
@@ -394,9 +394,9 @@ buttons:
 ---
 id: parents or guardians
 question: |
-  Is the child currently in the custody of legal parents or court-appointed guardians?
+  Is ${users[0].name.first} ${users[0].name.last} currently in the custody of legal parents or court-appointed guardians?
 subquestion: |
-  If the child is currently in the custody of court-appointed guardians, bring proof of guardianship when you go to see a notary public.
+  If ${users[0].name.first} is currently in the custody of court-appointed guardians, bring proof of guardianship when you go to see a notary public.
 field: parent_presenting
 buttons: 
   - "Parent(s)": True
@@ -414,7 +414,7 @@ fields:
 ---
 id: guardian presenting
 question: |
-  Is the ${ordinal(i)} guardian presenting the form on behalf of the child?
+  Is ${guardians[i].name.first} ${guardians[i].name.last} presenting the form on behalf of the child?
 yesno: guardians[i].is_presenting
 ---
 id: parent presenting
@@ -437,7 +437,7 @@ buttons:
 ---
 id: how many parents on bc
 question: |
-  How many parents are listed on the child's birth certificate?
+  How many parents are listed on ${users[0].name.first} ${users[0].name.last}'s birth certificate?
 field: how_many_parents
 buttons:
   - "1 parent"
@@ -445,19 +445,19 @@ buttons:
 ---
 id: address is DOC or DYS facility
 question: |
-  Is the child's current address a correctional facility?
+  Is ${users[0].name.first} ${users[0].name.last}'s current address a correctional facility?
 subquestion: |
   Examples of correctional facilities include those under the supervision of the Department of Corrections or the Department of Youth Services.
 yesno: doc_or_dys_yes
 ---
 id: prior name change yesno
 question: |
-  Has any court changed the child's name before?
+  Has any court changed ${users[0].name.first} ${users[0].name.last}'s name before?
 yesno: prior_name_change
 ---
 id: prior name change info
 question: |
-  What is the child's most recent prior name?
+  What was ${users[0].name.first} ${users[0].name.last}'s most recent prior name?
 fields:
   - "Previous name": user_name_change_from
     maxlength: 82
@@ -466,19 +466,19 @@ fields:
 ---
 id: return request
 question: |
-  Would you like to request a return, by first class mail, of all certified copies of documents filed with the court after review and processing?
+  Would you like to receive a copy of all certified documents filed with the court,  by mail, following their review and processing?
 yesno: return_request_yes
 ---
 id: deceased parent
 question: |
-  Is either legal parent listed on the child's birth certificate deceased?
+  Is either legal parent listed on ${users[0].name.first} ${users[0].name.last}'s birth certificate deceased?
 subquestion: |
   If so, bring a copy of the parent's death certificate with you when you go to see a notary public.
 yesno: deceased_parent_listed_yes
 ---
 id: parental rights terminated
 question: |
-  Has any legal parent listed on the child's birth certificate had their parental rights terminated in a prior proceeding?
+  Has any legal parent listed on ${users[0].name.first} ${users[0].name.last}'s birth certificate had their parental rights terminated in a prior proceeding?
 subquestion: |
   If so, bring proof of the parent's rights being terminated with you when you go to see a notary public.
 yesno: parent_listed_rights_terminated_yes
@@ -492,9 +492,9 @@ yesno: parent_listed_rights_terminated_yes
 ---
 id: minor age
 question: |
-  How old is the minor child?
+  How old is ${users[0].name.first} ${users[0].name.last}?
 subquestion: |
-  If the minor child is under 12 years of age, their parent(s) or guardian(s) can provide assent on their behalf.
+  If ${users[0].name.first} is under 12 years of age, their parent(s) or guardian(s) can provide assent on their behalf.
 field: minor_age
 buttons:
   - "18 or older"
@@ -512,7 +512,7 @@ fields:
 ---
 id: guardian assent
 question: |
-  Does the ${ordinal(i)} court-appointed guardian agree to this petition?
+  Does ${guardians[i].name.first} ${guardians[i].name.last} agree to this petition?
 fields:
   - "Assent": guardians[i].gives_assent
     datatype: yesnoradio
@@ -521,7 +521,7 @@ fields:
 ---
 id: new name info
 question: |
-  What name does the child wish to change to?
+  What name does ${users[0].name.first} ${users[0].name.last} wish to change to?
 fields:
   - "New first name": new_name_first
   - "New middle name": new_name_middle
@@ -530,7 +530,7 @@ fields:
 ---
 id: new name reason
 question: |
-  Why does the child wish to change their name?
+  Why does ${new_name_first} ${new_name_last} wish to change their name?
 fields:
   - "Reason": user_name_change_reason_1
     input type: area
@@ -538,7 +538,7 @@ fields:
 ---
 id: user interpreter selection
 question: |
-  Will the child require an interpreter in the event of a hearing?
+  Will ${users[0].name.first} ${users[0].name.last} require an interpreter in the event of a hearing?
 fields:
   - "Interpreter": user_needs_interpreter
     datatype: yesnoradio
@@ -556,7 +556,7 @@ fields:
 ---
 id: guardian interpreter selection
 question: |
-  Will the ${ordinal(i)} guardian require an interpreter in the event of a hearing?
+  Will ${guardians[i].name.first} ${guardians[i].name.last} require an interpreter in the event of a hearing?
 fields:
   - "Interpreter": guardians[i].needs_interpreter
     datatype: yesnoradio
@@ -665,9 +665,9 @@ fields:
 ---
 id: attorney BBO
 question: |
-  Enter your attorney's BBO#.
+  What is ${attorneys[0].name.first} ${attorneys[0].name.last}'s BBO#?
 fields:
-  - "Attorney BBO#.": attorney_bbo
+  - "Attorney BBO#": attorney_bbo
     maxlength: 44
     required: False
 ---
