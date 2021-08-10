@@ -146,10 +146,6 @@ code: |
 code: |
   docket_number = ''
 ---
-#code: |
-#  if minor_age == 'Under 12':
-#    minor_under_12_yes = True
----
 code: |
   if parent_guardian_custody == 'Parent(s)':
     guardians.target_number = 0
@@ -483,13 +479,6 @@ subquestion: |
   If so, bring proof of the parent's rights being terminated with you when you go to see a notary public.
 yesno: parent_listed_rights_terminated_yes
 ---
-#id: court-appointed guardian
-#question: |
-#  Does the child have a court-appointed guardian?
-#subquestion: |
-#  If so, bring proof of guardianship with you when you go to see a notary public.
-#yesno: guardian
----
 id: minor age
 question: |
   How old is ${users[0].name.first} ${users[0].name.last}?
@@ -513,6 +502,8 @@ fields:
 id: guardian assent
 question: |
   Does ${guardians[i].name.first} ${guardians[i].name.last} agree to this petition?
+subquestion: |
+  If two guardians both do not agree to the petition, enter G1: or G2 before their respective reasoning for not agreeing.
 fields:
   - "Assent": guardians[i].gives_assent
     datatype: yesnoradio
