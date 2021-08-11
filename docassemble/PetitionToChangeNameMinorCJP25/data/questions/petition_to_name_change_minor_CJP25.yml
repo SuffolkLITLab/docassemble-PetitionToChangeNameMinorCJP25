@@ -1199,7 +1199,12 @@ attachments:
       - "prior_name_change_yes": ${ prior_name_change }
       - "prior_name_change_no": ${ not prior_name_change }
       - "user_name_change_from": ${ user_name_change_from }
-      - "user_name_change_to": ${ users[0].name.full() }
+      - "user_name_change_to": |
+          % if prior_name_change == True:
+          ${ users[0].name.full() }
+          % else:
+          ${ ' ' }
+          % endif
       - "user_name_change_reason": ${ user_name_change_reason }
       - "return_request_yes": ${ return_request_yes }
       - "one_parent_listed_yes": ${ one_parent_listed_yes }
