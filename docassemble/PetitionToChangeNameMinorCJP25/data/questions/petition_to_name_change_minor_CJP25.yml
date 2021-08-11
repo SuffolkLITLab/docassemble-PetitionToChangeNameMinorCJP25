@@ -176,6 +176,7 @@ code: |
   if number_of_guardians == 'One':  
     guardians.target_number = 1
     guardians[1].is_presenting = False
+    guardians[1].gives_assent = True
     guardians[1].complete = True
 ---
 code: |
@@ -506,7 +507,7 @@ id: guardian assent
 question: |
   Does ${guardians[i].name.first} ${guardians[i].name.last} agree to this petition?
 subquestion: |
-  If two guardians both do not agree to the petition, enter G1: or G2 before their respective reasoning for not agreeing.
+  When providing an explanation for a guardian's lack of consent, enter G1: or G2: before the respective reasoning show which guardian is providing said explanation.
 fields:
   - "Assent": guardians[i].gives_assent
     datatype: yesnoradio
