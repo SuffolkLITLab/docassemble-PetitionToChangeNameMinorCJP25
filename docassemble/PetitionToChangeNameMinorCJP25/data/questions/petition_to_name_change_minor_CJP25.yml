@@ -154,10 +154,10 @@ code: |
   if parent_guardian_custody == 'Guardian(s)':
     parents[0].is_presenting = False
     parents[0].needs_interpreter = False
-    parents[0].gives_assent = True
+    parents[0].gives_assent = None
     parents[1].is_presenting = False
     parents[1].needs_interpreter = False
-    parents[1].gives_assent = True
+    parents[1].gives_assent = None
     parents[1].complete = True
 ---
 code: |
@@ -165,7 +165,7 @@ code: |
     parents.target_number = 1
     parents[1].is_presenting = False
     parents[1].needs_interpreter = False
-    parents[1].gives_assent = True
+    parents[1].gives_assent = None
     parents[1].complete = True
     one_parent_listed_yes = True
 ---
@@ -177,7 +177,7 @@ code: |
   if number_of_guardians == 'One':  
     guardians.target_number = 1
     guardians[1].is_presenting = False
-    guardians[1].gives_assent = True
+    guardians[1].gives_assent = None
     guardians[1].complete = True
 ---
 code: |
@@ -528,7 +528,7 @@ id: new name reason
 question: |
   Why does ${new_name_first} ${new_name_last} wish to change their name?
 fields:
-  - "Reason": user_name_change_reason_1
+  - no label: user_name_change_reason_1
     input type: area
     maxlength: 180
 ---
@@ -1221,12 +1221,16 @@ attachments:
       - "parent1_assent_yes": | 
           % if parent_guardian_custody == 'Parents(s)': 
           ${ parents[0].gives_assent }
+          #% else:
+          #${ parents[0].gives_assent }
           % endif
       - "parent1_assent_no": ${ not parents[0].gives_assent }
       - "parent1_assent_no_explanation": ${ parents[0].no_assent_explanation }
       - "parent2_assent_yes": |
           % if parent_guardian_custody == 'Parents(s)' and how_many_parents == '2 parent':
           ${ parents[1].gives_assent }
+          #% else:
+          #${ parents[1].gives_assent }
           % endif
       - "parent2_assent_no": ${ not parents[1].gives_assent }
       - "parent2_assent_no_explanation": ${ parents[1].no_assent_explanation }
