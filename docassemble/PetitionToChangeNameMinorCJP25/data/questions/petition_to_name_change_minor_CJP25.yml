@@ -158,6 +158,7 @@ code: |
     parents[1].is_presenting = False
     parents[1].needs_interpreter = False
     parents[1].gives_assent = True
+    parents[1].complete = True
 ---
 code: |
   if how_many_parents == '1 parent':
@@ -1217,22 +1218,18 @@ attachments:
       - "guardian_yes": ${ guardians.there_are_any }
       - "guardian_no": ${ not guardians.there_are_any }
       - "minor_under_12_yes": ${ minor_under_12_yes }
-      - "parent1_assent_yes": ${ parents[0].gives_assent }
+      - "parent1_assent_yes": | 
+          % if parent_guardian_custody == 'Parents(s)': 
+          ${ parents[0].gives_assent }
+          % endif
       - "parent1_assent_no": ${ not parents[0].gives_assent }
-      - "parent1_assent_no_explanation": |
-          % if parent_guardian_custody == 'Guardian(s)':
-          ${ 'N/A - this party is not involved in the filing of this petition' }
-          % else:
-          ${ parents[0].no_assent_explanation }
+      - "parent1_assent_no_explanation": ${ parents[0].no_assent_explanation }
+      - "parent2_assent_yes": |
+          % if parent_guardian_custody == 'Parents(s)' and how_many_parents == '2 parent':
+          ${ parents[1].gives_assent }
           % endif
-      - "parent2_assent_yes": ${ parents[1].gives_assent }
       - "parent2_assent_no": ${ not parents[1].gives_assent }
-      - "parent2_assent_no_explanation": |
-          % if parent_guardian_custody == 'Guardian(s)' or how_many_parents == '1 parent':
-          ${ 'N/A - this party is not involved in the filing of this petition' }
-          % else:
-          ${ parents[1].no_assent_explanation }
-          % endif
+      - "parent2_assent_no_explanation": ${ parents[1].no_assent_explanation }
       - "guardian_assent_yes": ${ guardians[0].gives_assent or guardians[1].gives_assent }
       - "guardian_assent_no": ${ not guardians[0].gives_assent or not guardians[1].gives_assent }
       - "guardian_assent_no_explanation": ${ comma_list(guardian_explanation) }
