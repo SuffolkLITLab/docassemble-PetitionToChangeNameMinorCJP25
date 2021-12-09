@@ -6,11 +6,16 @@ include:
 ---
 metadata:
   title: |
-    Petition to Change the Name of a Minor - CJP25
+    Change the Name of a Minor
   short title: |
-    Minor name change petition
+    Name change
   tags:
     - FA-00-00-00-00
+  authors:
+    - Ryan Ditcham
+    - Bohdana Tabachuk
+    - Dana Ireland
+    - Conor Perry
 ---
 mandatory: True
 comment: |
