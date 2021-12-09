@@ -125,11 +125,11 @@ code: |
   set_progress(30.0)
   minor_age
   for parent in parents: 
-    if parent.is_presenting:
-      parent.gives_assent
+    parent.is_presenting
+    parent.gives_assent
   for guardian in guardians: 
-    if guardian.is_presenting:
-      guardian.gives_assent
+    guardian.is_presenting
+    guardian.gives_assent
   set_progress(40.0)
   guardian_explanation
   interpreter_languages
@@ -159,15 +159,19 @@ code: |
   if parent_guardian_custody == 'Guardian(s)':
     parents[0].is_presenting = False
     parents[0].needs_interpreter = False
+    parents[0].gives_assent = None
     parents[1].is_presenting = False
     parents[1].needs_interpreter = False
+    parents[1].gives_assent = None
+    parents[1].complete = True
 ---
 code: |
   if how_many_parents == '1 parent':
     parents.target_number = 1
-    parents[1].complete = True
     parents[1].is_presenting = False
     parents[1].needs_interpreter = False
+    parents[1].gives_assent = None
+    parents[1].complete = True
     one_parent_listed_yes = True
 ---
 code: |
@@ -177,8 +181,9 @@ code: |
 code: |
   if number_of_guardians == 'One':  
     guardians.target_number = 1
-    guardians[1].complete = True
     guardians[1].is_presenting = False
+    guardians[1].gives_assent = None
+    guardians[1].complete = True
 ---
 code: |
   if number_of_guardians == 'Two':
@@ -508,7 +513,7 @@ id: guardian assent
 question: |
   Does ${guardians[i].name.first} ${guardians[i].name.last} agree to this petition?
 subquestion: |
-  If two guardians both do not agree to the petition, enter G1: or G2 before their respective reasoning for not agreeing.
+  When providing an explanation for a guardian's lack of consent, enter G1: or G2: before the respective reasoning show which guardian is providing said explanation.
 fields:
   - "Assent": guardians[i].gives_assent
     datatype: yesnoradio
@@ -528,7 +533,7 @@ id: new name reason
 question: |
   Why does ${new_name_first} ${new_name_last} wish to change their name?
 fields:
-  - "Reason": user_name_change_reason_1
+  - no label: user_name_change_reason_1
     input type: area
     maxlength: 180
 ---
@@ -1218,10 +1223,20 @@ attachments:
       - "guardian_yes": ${ guardians.there_are_any }
       - "guardian_no": ${ not guardians.there_are_any }
       - "minor_under_12_yes": ${ minor_under_12_yes }
-      - "parent1_assent_yes": ${ parents[0].gives_assent }
+      - "parent1_assent_yes": | 
+          % if parent_guardian_custody == 'Parents(s)': 
+          ${ parents[0].gives_assent }
+          #% else:
+          #${ parents[0].gives_assent }
+          % endif
       - "parent1_assent_no": ${ not parents[0].gives_assent }
       - "parent1_assent_no_explanation": ${ parents[0].no_assent_explanation }
-      - "parent2_assent_yes": ${ parents[1].gives_assent }
+      - "parent2_assent_yes": |
+          % if parent_guardian_custody == 'Parents(s)' and how_many_parents == '2 parent':
+          ${ parents[1].gives_assent }
+          #% else:
+          #${ parents[1].gives_assent }
+          % endif
       - "parent2_assent_no": ${ not parents[1].gives_assent }
       - "parent2_assent_no_explanation": ${ parents[1].no_assent_explanation }
       - "guardian_assent_yes": ${ guardians[0].gives_assent or guardians[1].gives_assent }
