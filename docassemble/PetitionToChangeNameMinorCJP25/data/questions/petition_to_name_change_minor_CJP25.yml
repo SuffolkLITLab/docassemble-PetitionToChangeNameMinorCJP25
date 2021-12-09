@@ -145,7 +145,13 @@ code: |
     attorneys[0].phone_number
     attorney_bbo
   return_request_yes
-  courts[0].division
+  trial_court.division
+  store_variables_snapshot({
+    'zip': users[0].address.zip,
+    'city': users[0].address.city,
+    'trial_court': str(trial_court),
+    'minor_age': minor_age,
+  })
   interview_order_petition_to_name_change_minor_CJP25 = True
 ---
 code: |
@@ -1127,7 +1133,7 @@ attachments:
       - "user_name_last": ${ users[0].name.last }
       - "user_name_last__2": ${ users[0].name.last }
       - "user_name_last__3": ${ new_name_last }
-      - "court_division": ${ courts[0].division }
+      - "court_division": ${ trial_court.division }
       - "user_name_first": ${ users[0].name.first }
       - "user_name_first__2": ${ users[0].name.first }
       - "user_name_first__3": ${ new_name_first }
