@@ -6,16 +6,11 @@ include:
 ---
 metadata:
   title: |
-    Change the Name of a Minor
+    Petition to Change the Name of a Minor
   short title: |
-    Name change
+    Name change minor petition cjp25
   tags:
     - FA-00-00-00-00
-  authors:
-    - Ryan Ditcham
-    - Bohdana Tabachuk
-    - Dana Ireland
-    - Conor Perry
 ---
 mandatory: True
 comment: |
@@ -45,7 +40,7 @@ code: |
     })
 ---
 code: |
-  interview_short_title = "Ask the court to change your child's name"
+  interview_short_title = "File a Petition to Change the Name of a Minor."
 ---
 code: |
   al_form_type = 'starts_case'
@@ -71,14 +66,8 @@ code: |
   user_role = 'plaintiff'
   users[0].name.first
   users[0].address.address
-  if minor_age == 'Between 12 and 18':
-    if minor_child_assent == False:
-      kickout
-  if minor_age == '18 or older':
-    adult_kickout
-  if minor_age == 'Under 12':
-    minor_under_12_yes = True
-  doc_or_dys_yes
+  docket_number
+  courts[0].division
   prior_name_change
   if prior_name_change == True:
     user_name_change_from
@@ -88,111 +77,113 @@ code: |
   users[0].birthdate
   users[0].address.address
   user_needs_interpreter
+  doc_or_dys_yes
   set_progress(20.0)
-  how_many_parents
-  deceased_parent_listed_yes
+  if one_parent_listed == True:
+    deceased_parent_listed_yes
   parent_listed_rights_terminated_yes
   #parent personal info and interpreter question loop
   parents[0].name.first
   parents[0].address.address
-  parents[0].phone_number
-  if how_many_parents == '2 parents':
+  if parents.target_number == 2:
     parents[1].name.first
     parents[1].address.address
-    parents[1].phone_number
-  if parent_guardian_custody == 'Parent(s)':
-    guardians.there_are_any = False
+  if parent_presenting == True:
     parents.gather()
     for parent in parents:
       if parent.is_presenting: 
         parent.needs_interpreter
-  if parent_guardian_custody == 'Guardian(s)':
-    if number_of_guardians == 'One':
+  if parent_presenting == False:
+    if number_of_guardians == True:  
       guardians[0].name.first
       guardians[0].address.address
-      guardians[0].phone_number
     else:
-      if number_of_guardians == 'Two':
-        guardians[0].name.first
-        guardians[0].address.address
-        guardians[0].phone_number
+      if number_of_guardians == False:
         guardians[1].name.first
         guardians[1].address.address
-        guardians[1].phone_number
     for guardian in guardians:
       if guardian.is_presenting: 
         guardian.needs_interpreter
   set_progress(30.0)
-  minor_age
+  minor_under_12_yes
   for parent in parents: 
-    parent.is_presenting
-    parent.gives_assent
+    if parent.is_presenting:
+      parent.gives_assent
   for guardian in guardians: 
-    guardian.is_presenting
-    guardian.gives_assent
+    if guardian.is_presenting:
+      guardian.gives_assent
   set_progress(40.0)
-  guardian_explanation
   interpreter_languages
   new_name_first
   user_name_change_reason_1
   set_progress(50.0)
+  #user_signature_date
+  #users.gather()
+  #users[0].address.address
+  #user_date_day
+  #notary_public[0]
+  #set_progress(65.0)
+  #date_commission_expiration
+  #parent1_signature_date
+  #parents[0].address.address
   set_progress(60.0)
+  #parent1_date_day
+  #parent2_signature_date
+  #parents[1].address.address
+  #parent2_date_year
   set_progress(70.0)
+  #guardian_signature_date
+  #guardian_name_full_printed
+  #guardians[0].address.address
+  #guardian_date_month
   set_progress(80.0)
-  if attorney_yes_no == True:
-    attorneys.gather()
-    attorneys[0].address.address
-    attorneys[0].phone_number
-    attorney_bbo
+  attorneys.gather()
+  attorneys[0].address.address
+  attorneys[0].address.address
+  attorneys[0].address.address
+  set_progress(90.0)
+  attorneys[0].address.address
+  attorneys[0].address.address
+  attorneys[0].phone_number
+  attorney_bbo
+  attorneys[0].email
   return_request_yes
-  trial_court.division
-  store_variables_snapshot({
-    'zip': users[0].address.zip,
-    'city': users[0].address.city,
-    'trial_court': str(trial_court),
-    'minor_age': minor_age,
-  })
   interview_order_petition_to_name_change_minor_CJP25 = True
 ---
 code: |
-  docket_number = ''
----
-code: |
-  if parent_guardian_custody == 'Parent(s)':
+  if parent_presenting == True:
     guardians.target_number = 0
 ---
 code: |
-  if parent_guardian_custody == 'Guardian(s)':
+  if parent_presenting == False:
     parents[0].is_presenting = False
     parents[0].needs_interpreter = False
-    parents[0].gives_assent = None
     parents[1].is_presenting = False
     parents[1].needs_interpreter = False
-    parents[1].gives_assent = None
-    parents[1].complete = True
 ---
 code: |
-  if how_many_parents == '1 parent':
+   if parents[0].is_presenting or parents[1].is_presenting:
+     parents.there_are_any = True
+   if guardians[0].is_presenting or guardians[1].is_presenting:
+     guardians.there_are_any = True
+---
+code: |
+  if one_parent_listed == True:
     parents.target_number = 1
     parents[1].is_presenting = False
     parents[1].needs_interpreter = False
-    parents[1].gives_assent = None
-    parents[1].complete = True
-    one_parent_listed_yes = True
 ---
 code: |
-  if how_many_parents == '2 parents':
+  if one_parent_listed == False:
     parents.target_number = 2
 ---
 code: |
-  if number_of_guardians == 'One':  
+  if number_of_guardians == True:  
     guardians.target_number = 1
     guardians[1].is_presenting = False
-    guardians[1].gives_assent = None
-    guardians[1].complete = True
 ---
 code: |
-  if number_of_guardians == 'Two':
+  if number_of_guardians == False:
     guardians.target_number = 2
 ---
 code: |
@@ -200,10 +191,7 @@ code: |
   parents[i].address.address
   parents[i].phone_number
   parents[i].email
-  if parents[i].is_presenting == True:
-    parents[i].needs_interpreter
-  else:
-    parents[i].needs_interpreter = False
+  parents[i].is_presenting
   parents[i].complete = True
 ---
 code: |
@@ -238,28 +226,6 @@ code: |
       
   interpreter_languages = temp_interpreter_languages
 ---
-recalculate: True
-code: |
-  if parent_guardian_custody == 'Parent(s)':  
-    guardian_explanation = ''  
-  if parent_guardian_custody == 'Guardian(s)':  
-    if number_of_guardians == 'One':  
-      temp_guardian_explanation = []
-       
-      if guardians[0].gives_assent == False:
-        temp_guardian_explanation.append(guardians[0].no_assent_explanation)
-      
-      guardian_explanation = temp_guardian_explanation
-      
-    if number_of_guardians == 'Two':
-      temp_guardian_explanation = []
-      
-      for guardian in guardians:
-        if guardian.gives_assent == False: 
-          temp_guardian_explanation.append(guardian.no_assent_explanation)
-          
-      guardian_explanation = temp_guardian_explanation
----
 ###################### Main order ######################
 comment: |
   This block includes the logic for standalone interviews.
@@ -283,155 +249,141 @@ code: |
   petition_to_name_change_minor_CJP25_download
 ---
 comment: |
-  This interview will guide you through the process of filing a CJP25 Petition to Change the Name of a Minor by Asking a Questions concerning information on the child, their parents or guardians, and other relevant information.
+  This interview will guide you through the process of filing a CJP25 Petition to Change the Name of a Minor by Asking a Series of Questions concerning information on the child, their parents or guardians, and other relevant information.
 id: minor name change petition
 continue button field: petition_to_name_change_minor_CJP25_intro
 question: |
-  File a petition to change the name of a minor child
+  Minor Name Change Petition CJP25
 subquestion: |
-  **Before you begin this form**, you will need the name, address, and contact information of each of the parents on the minor child's birth certificate.
-  
-  To file a juvenile name change petition in Massachusetts, you will need to have this petition notarized to prove that all involved parties assent to its filing. 
-  
-  * This petition will not automatically be filed with the court upon completion. Instead, you should print out the documents that are generated at the end of the interveiw and bring them to a notary public, or email them to a notary public and appear in person to have them notarized.
-  * A next steps document will become available at the end of the interview that outlines how to find a notary public and what is required to have these documents notarized.
-  
-  If you are a guardian filling this form out on behalf of a minor child, you will need to bring proof of guardianship with you to get these documents notarized.
+  This form will help you to request a name change for a minor child.
 ---
-id: minor_child_assent
+id: parent 1 bc information
 question: |
-  Does ${users[0].name.first} ${users[0].name.last} agree to this petition?
-yesno: minor_child_assent
----
-id: minor_child_adult_kickout
-question: |
-  ${users[0].name.first} ${users[0].name.last} should file an adult name change petition instead.
-sets: adult_kickout
-buttons:
-  - Exit: exit
----
-id: minor_child_no_assent_kickout
-question: |
-  The minor child must agree to this petition in order to continue.
-sets: kickout
-buttons:
-  - Exit: exit
-  - Restart: restart
----
-id: attorney_yes_no
-question: |
-  Do you have an attorney?
-subquestion: |
-  An attorney is not required to file, but you may have one if you wish in the event that there is a hearing regarding this name change petition (i.e., if an involved party does not agree to the filing of this petition).
-field: attorney_yes_no
-buttons: 
-  - "Yes": True
-  - "No": False
----
-id: parents names
-sets:
-  - parents[i].name.first
-  - parents[i].name.last
-question: |
-  What is the name of the ${ ordinal(i) } parent appearing on ${users[0].name.first} ${users[0].name.last}'s birth certificate?
+  Enter the name of the first parent appearing on the minor child's birth certificate.
 fields:
-  - code: |
-      parents[i].name_fields()
+  - "First Name": parents[0].name.first
+  - "Middle Name": parents[0].name.middle
+  - "Last Name": parents[0].name.last
 ---
-id: guardians names
-sets:
-  - guardians[i].name.first
-  - guardians[i].name.last
+id: parent 2 bc information
 question: |
-  What is the ${ ordinal(i) } guardian's name?
+  Enter the name of the second parent appearing on the minor child's birth certificate.
 fields:
-  - code: |
-      guardians[i].name_fields()
+  - "First Name": parents[1].name.first
+  - "Middle Name": parents[1].name.middle
+  - "Last Name": parents[1].name.last
 ---
 id: minor child address information
-sets:
-  - users[0].address.address
-  - users[0].address.city
-  - users[0].address.zip
 question: |
-  What is ${users[0].name.first} ${users[0].name.last}'s current address?
+  Enter the minor child's address.
 fields:
-  - code: |
-      users[0].address_fields()
+  - "Street Address": users[0].address.address
+  - "Apartment": users[0].address.unit
+  - "City": users[0].address.city
+  - "State": users[0].address.state
+  - "Zip Code": users[0].address.zip
 ---
-id: parent 1 bc contact information
+id: parent 1 bc address information
 question: |
-  What is ${parents[0].name.first} ${parents[0].name.last}'s contact information?
+  Enter the address and contact information of the first parent appearing on the minor child's birth certificate.
 fields:
-  - "Phone number": parents[0].phone_number
-  - "Email address": parents[0].email
+  - "Street Address": parents[0].address.address
+  - "Apartment": parents[0].address.unit
+  - "City": parents[0].address.city
+  - "State": parents[0].address.state
+  - "Zip Code": parents[0].address.zip
+  - "Phone Number": parents[0].phone_number
+  - "Email Address": parents[0].email
 ---
-id: parent 2 bc contact information
+id: parent 2 bc address information
 question: |
-  What is ${parents[1].name.first} ${parents[1].name.last}'s contact information?
+  Enter the address and contact information of the second parent appearing on the minor child's birth certificate.
 fields:
-  - "Phone number": parents[1].phone_number
-  - "Email address": parents[1].email
+  - "Street Address": parents[1].address.address
+  - "Apartment": parents[1].address.unit
+  - "City": parents[1].address.city
+  - "State": parents[1].address.state
+  - "Zip Code": parents[1].address.zip
+  - "Phone Number": parents[1].phone_number
+  - "Email Address": parents[1].email
 ---
-id: guardian 1 contact information
+id: guardian 1 name information
 question: |
-  What is ${guardians[0].name.first} ${guardians[0].name.last}'s contact information?
+  Enter the name of the first guardian.
 fields:
-  - "Phone number": guardians[0].phone_number
-  - "Email address": guardians[0].email
+  - "First Name": guardians[0].name.first
+  - "Middle Name": guardians[0].name.middle
+  - "Last Name": guardians[0].name.last
 ---
-id: guardian 2 contact information
+id: guardian 2 name information
 question: |
-  What is ${guardians[1].name.first} ${guardians[1].name.last}'s contact information?
+  Enter the name of the second guardian.
 fields:
-  - "Phone number": guardians[1].phone_number
-  - "Email address": guardians[1].email
+  - "First Name": guardians[1].name.first
+  - "Middle Name": guardians[1].name.middle
+  - "Last Name": guardians[1].name.last
 ---
-id: attorney contact information
+id: guardian 1 address information
 question: |
-  What is ${attorneys[0].name.first} ${attorneys[0].name.last}'s contact information?
+  Enter the address and contact information of the first guardian.
 fields:
-  - "Phone number": attorneys[0].phone_number
-  - "Email address": attorneys[0].email
+  - "Street Address": guardians[0].address.address
+  - "Apartment": guardians[0].address.unit
+  - "City": guardians[0].address.city
+  - "State": guardians[0].address.state
+  - "Zip Code": guardians[0].address.zip
+  - "Phone Number": guardians[0].phone_number
+  - "Email Address": guardians[0].email
+---
+id: guardian 2 address information
+question: |
+  Enter the address and contact information of the second guardian.
+fields:
+  - "Street Address": guardians[1].address.address
+  - "Apartment": guardians[1].address.unit
+  - "City": guardians[1].address.city
+  - "State": guardians[1].address.state
+  - "Zip Code": guardians[1].address.zip
+  - "Phone Number": guardians[1].phone_number
+  - "Email Address": guardians[1].email
 ---
 id: number of guardians
 question: |
-  How many court-appointed guardians does ${users[0].name.first} ${users[0].name.last} have?
+  How many court-appointed guardians does the minor child have?
 subquestion: |
-  This form only provides space to enter the information for two court-appointed guardians.
+  This form only provides space to enter the information for two guardians.
 field: number_of_guardians
 buttons: 
-  - "One"
-  - "Two"
+  - "One": True
+  - "Two": False
 ---
 id: parents or guardians
 question: |
-  Is ${users[0].name.first} ${users[0].name.last} currently in the custody of legal parents or court-appointed guardians?
-subquestion: |
-  If ${users[0].name.first} is currently in the custody of court-appointed guardians, bring proof of guardianship when you go to see a notary public.
-field: parent_guardian_custody
+  Is the minor child currently in the custody of legal parents or court-appointed guardians?
+field: parent_presenting
 buttons: 
-  - "Parent(s)"
-  - "Guardian(s)"
+  - "Parent(s)": True
+  - "Guardian(s)": False
 ---
 id: user information
-sets:
-    - users[0].name.first
-    - users[0].name.last
-question:  |
-  What is the minor child's full legal name?
+question: |
+  What is the minor child's current legal name?
 fields:
-  - code: |
-      users[0].name_fields()
+  - "First Name": users[0].name.first
+    maxlength: 16
+  - "Middle Name": users[0].name.middle
+    maxlength: 16
+  - "Last Name": users[0].name.last
+    maxlength: 16
 ---
 id: guardian presenting
 question: |
-  Is ${guardians[i].name.first} ${guardians[i].name.last} presenting the form on behalf of the child?
+  Is this guardian presenting the form on behalf of the child?
 yesno: guardians[i].is_presenting
 ---
 id: parent presenting
 question: |
-  Is ${parents[i].name.first} ${parents[i].name.last} presenting the form on behalf of the child?
+  Is the ${ordinal(i)} parent presenting the form on behalf of the child?
 yesno: parents[i].is_presenting
 ---
 id: any guardians
@@ -449,123 +401,122 @@ buttons:
 ---
 id: how many parents on bc
 question: |
-  How many parents are listed on ${users[0].name.first} ${users[0].name.last}'s birth certificate?
-field: how_many_parents
+  How many parents are listed on the child's birth certificate?"
+field: one_parent_listed
 buttons:
-  - "1 parent"
-  - "2 parents"
+  - "One Parent": True
+  - "Two Parents": False
 ---
 id: address is DOC or DYS facility
 question: |
-  Is ${users[0].name.first} ${users[0].name.last}'s current address a correctional facility?
-subquestion: |
-  Examples of correctional facilities include those under the supervision of the Department of Corrections or the Department of Youth Services.
+  Is the current address a facility under the supervision of the Massachusetts Department of Corrections or Department of Youth Services?
 yesno: doc_or_dys_yes
 ---
 id: prior name change yesno
 question: |
-  Has any court changed ${users[0].name.first} ${users[0].name.last}'s name before?
+  Has the child ever previously changed their name?
 yesno: prior_name_change
 ---
 id: prior name change info
 question: |
-  What was ${users[0].name.first} ${users[0].name.last}'s most recent prior name?
+  What was the previous name, the name that the child changed to, and the reason for the name change?
 fields:
-  - "Previous name": user_name_change_from
+  - "Previous Name": user_name_change_from
     maxlength: 82
-  - "Reason for name change": user_name_change_reason
+  - "New Name": user_name_change_to
+    maxlength: 82
+  - "Reason for Name Change": user_name_change_reason
     maxlength: 82
 ---
 id: return request
 question: |
-  Would you like to receive a copy of all certified documents filed with the court,  by mail, following their review and processing?
+  Would you like to request a return, by first class mail, of all certified copies of documents filed with the court after review and processing?
 yesno: return_request_yes
+---
+#id: one parent listed
+#question: |
+#  Check if only one parent is listed on the child's birth certificate.
+#yesno: one_parent_listed_yes
 ---
 id: deceased parent
 question: |
-  Is either legal parent listed on ${users[0].name.first} ${users[0].name.last}'s birth certificate deceased?
-subquestion: |
-  If so, bring a copy of the parent's death certificate with you when you go to see a notary public.
+  Is any legal parent listed on the child's birth certificate deceased?
 yesno: deceased_parent_listed_yes
 ---
 id: parental rights terminated
 question: |
-  Has any legal parent listed on ${users[0].name.first} ${users[0].name.last}'s birth certificate had their parental rights terminated in a prior proceeding?
-subquestion: |
-  If so, bring proof of the parent's rights being terminated with you when you go to see a notary public.
+  Has any legal parent listed on the child's birth certificate had their parental rights terminated in a prior proceeding?
 yesno: parent_listed_rights_terminated_yes
 ---
-id: minor age
+id: court-appointed guardian
 question: |
-  How old is ${users[0].name.first} ${users[0].name.last}?
+  Does the child have a court-appointed guardian?
+yesno: guardian
+---
+id: minor assent
+question: |
+  Is the minor over the age of 12 and able to assent to this petition?
 subquestion: |
-  If ${users[0].name.first} is under 12 years of age, their parent(s) or guardian(s) can provide assent on their behalf.
-field: minor_age
-buttons:
-  - "18 or older"
-  - "Between 12 and 18"
-  - "Under 12"
+  If the minor child is under 12 years of age, they cannot assent to this petition.
+noyes: minor_under_12_yes
 ---
 id: parent 1 assent
 question: |
-  Does ${parents[i].name.first} ${parents[i].name.last} agree to this petition?
+  The ${ordinal(i)} parent...
 fields:
-  - "Assent": parents[i].gives_assent
+  - "Assents to this Petition.": parents[i].gives_assent
     datatype: yesnoradio
-  - "Explanation for not assenting": parents[i].no_assent_explanation
+  - "Explanation for not assenting.": parents[i].no_assent_explanation
     hide if: parents[i].gives_assent
 ---
 id: guardian assent
 question: |
-  Does ${guardians[i].name.first} ${guardians[i].name.last} agree to this petition?
-subquestion: |
-  When providing an explanation for a guardian's lack of consent, enter G1: or G2: before the respective reasoning show which guardian is providing said explanation.
+  The ${ordinal(i)} court-appointed guardian...
 fields:
-  - "Assent": guardians[i].gives_assent
+  - "Assents to this Petition.": guardians[i].gives_assent
     datatype: yesnoradio
-  - "Explanation for not assenting": guardians[i].no_assent_explanation
+  - "Explanation for not assenting.": guardians[i].no_assent_explanation
     hide if: guardians[i].gives_assent
 ---
 id: new name info
 question: |
-  What name does ${users[0].name.first} ${users[0].name.last} wish to change to?
+  Enter the name that the minor wishes to change to.
 fields:
-  - "New first name": new_name_first
-  - "New middle name": new_name_middle
-    required: false
-  - "New last name": new_name_last
+  - "New first name.": new_name_first
+  - "New middle name.": new_name_middle
+  - "New last name.": new_name_last
 ---
 id: new name reason
 question: |
-  Why does ${new_name_first} ${new_name_last} wish to change their name?
+  A name change is sought for the following reason:
 fields:
-  - no label: user_name_change_reason_1
+  - "Reason for the minor name change.": user_name_change_reason_1
     input type: area
     maxlength: 180
 ---
 id: user interpreter selection
 question: |
-  Will ${users[0].name.first} ${users[0].name.last} require an interpreter in the event of a hearing?
+  Interpreter selection for the Minor Child.
 fields:
-  - "Interpreter": user_needs_interpreter
+  - "Does the Minor Child require an interpreter?": user_needs_interpreter
     datatype: yesnoradio
   - "Preferred interpreter language:": user_preferred_language
     show if: user_needs_interpreter
 ---
 id: parent interpreter selection
 question: |
-  Will ${parents[i].name.first} ${parents[i].name.last} require an interpreter in the event of a hearing?
+  Interpreter selection for the ${ordinal(i)} parent.
 fields:
-  - "Interpreter": parents[i].needs_interpreter
+  - "Does the ${ordinal(i)} parent require an interpreter?": parents[i].needs_interpreter
     datatype: yesnoradio
   - "Preferred interpreter language:": parents[i].preferred_language
     show if: parents[i].needs_interpreter
 ---
 id: guardian interpreter selection
 question: |
-  Will ${guardians[i].name.first} ${guardians[i].name.last} require an interpreter in the event of a hearing?
+  Interpreter selection for the ${ordinal(i)} guardian.
 fields:
-  - "Interpreter": guardians[i].needs_interpreter
+  - "Does the ${ordinal(i)} guardian require an interpreter?": guardians[i].needs_interpreter
     datatype: yesnoradio
   - "Preferred interpreter language:": guardians[i].preferred_language
     show if: guardians[i].needs_interpreter
@@ -672,11 +623,10 @@ fields:
 ---
 id: attorney BBO
 question: |
-  What is ${attorneys[0].name.first} ${attorneys[0].name.last}'s BBO#?
+  Enter the Attorney's BBO#.
 fields:
-  - "Attorney BBO#": attorney_bbo
+  - "Attorney BBO#.": attorney_bbo
     maxlength: 44
-    required: False
 ---
 id: preview petition_to_name_change_minor_CJP25
 question: |
@@ -693,6 +643,9 @@ subquestion: |
   
   Remember to come back to this window to continue and sign your form.
 continue button field: petition_to_name_change_minor_CJP25_preview_question    
+---
+#code: |
+#  signature_fields = ['notary_public[0].signature', 'attorneys[0].signature', #'parents[1].signature', 'guardians[0].signature', 'users[0].signature', #'parents[0].signature']
 ---
 id: petition to name change minor CJP25 review screen
 event: review_petition_to_name_change_minor_CJP25
@@ -723,10 +676,10 @@ review:
     button: |
       **Previous Name**:
       ${ user_name_change_from }
-  #- Edit: user_name_change_to
-  #  button: |
-  #    **New Name**:
-  #    ${ user_name_change_to }
+  - Edit: user_name_change_to
+    button: |
+      **New Name**:
+      ${ user_name_change_to }
   - Edit: user_name_change_reason
     button: |
       **Reason for Name Change**:
@@ -735,10 +688,10 @@ review:
     button: |
       **Request Return by First Class Mail**:
       ${ word(yesno(return_request_yes)) }
-  - Edit: how_many_parents
+  - Edit: one_parent_listed
     button: |
       **One Parent Listed on Child\'s Birth Certificate**:
-      ${ word(yesno(how_many_parents)) }
+      ${ word(yesno(one_parent_listed)) }
   - Edit: deceased_parent_listed_yes
     button: |
       **One Parent Listed on Child\'s Birth Certificate is Deceased**:
@@ -751,10 +704,10 @@ review:
     button: |
       **Does the Child have a Court-Appointed Guardian**:
       ${ word(yesno(guardian)) }
-  - Edit: minor_age
+  - Edit: minor_under_12_yes
     button: |
       **Not applicable. The minor child is not 12 years of age or older.**:
-      ${ word(yesno(minor_age)) }
+      ${ word(yesno(minor_under_12_yes)) }
   - Edit: parents[0].gives_assent
     button: |
       **Legal Mother/Parent 1 Assents to the Petition.**:
@@ -778,7 +731,7 @@ review:
   - Edit: guardians[0].no_assent_explanation or guardians[1].no_assent_explanation
     button: |
       **Guardian explanation for no assent.**:
-      > ${ single_paragraph(guardian_explanation) }
+      > ${ single_paragraph(guardians[0].no_assent_explanation or guardians[1].no_assent_explanation) }
   - Edit: guardians.there_are_any
     button: |
       **Not applicable, no court-appointed guardian.**:
@@ -946,6 +899,10 @@ review:
     button: |
       **notary_public[0]**:
       ${ notary_public[0] }
+  #- Edit: guardian2[0]
+   # button: |
+    #  **guardian2[0]**:
+     # ${ guardian2[0] }
   - Edit: notary_public[0].signature
     button: |
       **notary_public[0].signature**:
@@ -1133,7 +1090,7 @@ attachments:
       - "user_name_last": ${ users[0].name.last }
       - "user_name_last__2": ${ users[0].name.last }
       - "user_name_last__3": ${ new_name_last }
-      - "court_division": ${ trial_court.division }
+      - "court_division": ${ courts[0].division }
       - "user_name_first": ${ users[0].name.first }
       - "user_name_first__2": ${ users[0].name.first }
       - "user_name_first__3": ${ new_name_first }
@@ -1215,39 +1172,24 @@ attachments:
       - "prior_name_change_yes": ${ prior_name_change }
       - "prior_name_change_no": ${ not prior_name_change }
       - "user_name_change_from": ${ user_name_change_from }
-      - "user_name_change_to": |
-          % if prior_name_change == True:
-          ${ users[0].name.full() }
-          % else:
-          ${ ' ' }
-          % endif
+      - "user_name_change_to": ${ user_name_change_to }
       - "user_name_change_reason": ${ user_name_change_reason }
       - "return_request_yes": ${ return_request_yes }
-      - "one_parent_listed_yes": ${ one_parent_listed_yes }
+      - "one_parent_listed_yes": ${ one_parent_listed }
       - "deceased_parent_listed_yes": ${ deceased_parent_listed_yes }
       - "parent_listed_rights_terminated_yes": ${ parent_listed_rights_terminated_yes }
       - "guardian_yes": ${ guardians.there_are_any }
       - "guardian_no": ${ not guardians.there_are_any }
       - "minor_under_12_yes": ${ minor_under_12_yes }
-      - "parent1_assent_yes": | 
-          % if parent_guardian_custody == 'Parents(s)': 
-          ${ parents[0].gives_assent }
-          #% else:
-          #${ parents[0].gives_assent }
-          % endif
+      - "parent1_assent_yes": ${ parents[0].gives_assent }
       - "parent1_assent_no": ${ not parents[0].gives_assent }
       - "parent1_assent_no_explanation": ${ parents[0].no_assent_explanation }
-      - "parent2_assent_yes": |
-          % if parent_guardian_custody == 'Parents(s)' and how_many_parents == '2 parent':
-          ${ parents[1].gives_assent }
-          #% else:
-          #${ parents[1].gives_assent }
-          % endif
+      - "parent2_assent_yes": ${ parents[1].gives_assent }
       - "parent2_assent_no": ${ not parents[1].gives_assent }
       - "parent2_assent_no_explanation": ${ parents[1].no_assent_explanation }
       - "guardian_assent_yes": ${ guardians[0].gives_assent or guardians[1].gives_assent }
       - "guardian_assent_no": ${ not guardians[0].gives_assent or not guardians[1].gives_assent }
-      - "guardian_assent_no_explanation": ${ comma_list(guardian_explanation) }
+      - "guardian_assent_no_explanation": ${ guardians[0].no_assent_explanation or guardians[1].no_assent_explanation }
       - "guardian_assent_not_applicable": ${ not guardians.there_are_any }
       - "user_name_change_reason_1": ${ user_name_change_reason_1 }
       - "parent2_needs_interpreter": ${ parents[1].needs_interpreter }

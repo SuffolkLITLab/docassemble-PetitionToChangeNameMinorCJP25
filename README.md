@@ -4,5 +4,5 @@ Petition to Change the Name of a Minor
 
 ## Author
 
-Ryan Ditcham
+author@example.com
 
