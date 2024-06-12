@@ -44,7 +44,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.PetitionToChangeNameMinorCJP25',
-      version='1.0',
+      version='1.0.1',
       description=('Petition to Change the Name of a Minor'),
       long_description='# docassemble.PetitionToNameChangeMinorCjp25\r\n\r\nPetition to Change the Name of a Minor\r\n\r\n## Author\r\n\r\nauthor@example.com\r\n\r\n',
       long_description_content_type='text/markdown',

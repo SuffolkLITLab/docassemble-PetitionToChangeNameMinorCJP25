@@ -8,9 +8,62 @@ metadata:
   title: |
     Petition to Change the Name of a Minor
   short title: |
-    Name change minor petition cjp25
+    Minor Name Change
+  description: |
+    If you are the parent or guardian of a minor (someone younger than 18), you can use this form to 
+    legally change the minor's legal name.
+
+    You need to tell the judge why you need the name change. But "it is the name that I use" is 
+    a good reason.
+
+    This interview makes the "Petition for Change of Name of a Minor" form to file with the court.
+    You must also **separately** make:
+
+    * The Court Activity Record Information form
+    * The Affidavit Disclosing Care or Custody Proceedings form
+  can_I_use_this_form: |
+    If you are the parent or legal guardian of a minor, you can use this form. If you are a minor,
+    your parent or guardian needs to fill out this form for you.
+
+    If the child is over 12, the judge will only approve the name change if the child agrees to it.
+  before_you_start: |
+    Before you file the document that this interview makes, you will need:
+
+    * A certified copy of the birth certificate
+    * A certified copy of any previous name changes
+    * If the child is over 11, the child's notarized signature
+    * The completed CARI and Affidavit Disclosing Care or Custody Proceedings documents
+
+    Changing the legal name of the child is only one step in the name change process. You may
+    also need to change the minor's:
+
+    * Birth certificate
+    * Social Security card
+    * Passport
+  maturity: production
+  estimated_completion_minutes: 30
+  estimated_completion_delta: 10
+  languages:
+    - en
+  help_page_url: https://www.mass.gov/how-to/legally-change-the-name-of-a-child-under-18
+  help_page_title: Legally change the name of a child under 18
+  LIST_topics: 
+    - FA-11-02-00-00
   tags:
-    - FA-00-00-00-00
+    - FA-11-02-00-00
+  jurisdiction: NAM-US-US+MA
+  original_form: https://courtforms.jud.state.ma.us/publicforms/PFC0021
+  original_form_published_on: 
+  review_date: 2024
+  form_titles:
+    - Petition to Change Name of Minor
+  form_numbers:
+    - CJP-25
+  fees:
+    - Filing fee: 180.0
+    - Processing fee: 22.0
+    - Publication fee (unless waived): Unknown
+  update_notes: |
 ---
 mandatory: True
 comment: |
