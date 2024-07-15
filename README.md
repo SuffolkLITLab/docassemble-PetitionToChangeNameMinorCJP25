@@ -1,8 +1,3 @@
-# docassemble.PetitionToNameChangeMinorCjp25
+# A Docassemble interview for the Massachusetts Petition to Change the Name of a Minor
 
-Petition to Change the Name of a Minor
-
-## Author
-
-author@example.com
-
+This is a Docassemble interview to complete the Massachusetts Petition to Change the Name of a Minor forms online. The live interview can be found at [https://www.courtformsonline.org/family/#minor_name_change](https://www.courtformsonline.org/family/#minor_name_change).
