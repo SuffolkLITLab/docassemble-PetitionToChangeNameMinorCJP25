@@ -777,11 +777,11 @@ review:
     button: |
       **Legal Father/Parent 2 explanation for no assent.**:
       > ${ single_paragraph(parents[1].no_assent_explanation) }
-  - Edit: guardians[0].gives_assent or guardians[1].gives_assent
+  - Edit: guardians[0].gives_assent
     button: |
       **Guardian Assents to the Petition.**:
       ${ word(yesno(guardians[0].gives_assent or guardians[1].gives_assent)) }
-  - Edit: guardians[0].no_assent_explanation or guardians[1].no_assent_explanation
+  - Edit: guardians[0].no_assent_explanation
     button: |
       **Guardian explanation for no assent.**:
       > ${ single_paragraph(guardians[0].no_assent_explanation or guardians[1].no_assent_explanation) }
