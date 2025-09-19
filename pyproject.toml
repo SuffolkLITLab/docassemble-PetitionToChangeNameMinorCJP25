@@ -1,0 +1,32 @@
+license = "MIT"
+license-files = [
+    "LICENSE",
+]
+
+[build-system]
+requires = [
+    "setuptools==80.9.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "docassemble.PetitionToChangeNameMinorCJP25"
+version = "1.0.2"
+description = "Petition to Change the Name of a Minor"
+readme = "README.md"
+authors = [
+    { name = "Ryan Ditcham", email = "rditcham@suffolk.edu" },
+]
+dependencies = [
+    "docassemble.ALMassachusetts @ git+https://github.com/SuffolkLITLab/docassemble-ALMassachusetts.git@main",
+    "docassemble.AssemblyLine @ git+https://github.com/SuffolkLITLab/docassemble-AssemblyLine.git@main",
+    "docassemble.MassAccess @ git+https://github.com/SuffolkLITLab/docassemble-MassAccess.git@main",
+]
+
+[project.urls]
+Homepage = "https://courtformsonline.org"
+
+[tool.setuptools.packages.find]
+where = [
+    ".",
+]

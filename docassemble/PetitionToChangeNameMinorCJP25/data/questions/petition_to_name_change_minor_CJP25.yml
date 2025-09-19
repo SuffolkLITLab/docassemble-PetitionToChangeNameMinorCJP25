@@ -233,7 +233,7 @@ code: |
 code: |
   if number_of_guardians == True:  
     guardians.target_number = 1
-    guardians[1].is_presenting = False
+
 ---
 code: |
   if number_of_guardians == False:
