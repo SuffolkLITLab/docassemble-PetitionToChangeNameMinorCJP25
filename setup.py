@@ -1,6 +1,6 @@
 import os
 import sys
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 from fnmatch import fnmatchcase
 from distutils.util import convert_path
 
@@ -46,16 +46,14 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
 setup(name='docassemble.PetitionToChangeNameMinorCJP25',
       version='1.0.2',
       description=('Petition to Change the Name of a Minor'),
-      long_description='# docassemble.PetitionToNameChangeMinorCjp25\r\n\r\nPetition to Change the Name of a Minor\r\n\r\n## Author\r\n\r\nauthor@example.com\r\n\r\n',
+      long_description='# A Docassemble interview for the Massachusetts Petition to Change the Name of a Minor\r\n\r\nThis is a Docassemble interview to complete the Massachusetts Petition to Change the Name of a Minor forms online. The live interview can be found at [https://www.courtformsonline.org/family/#minor_name_change](https://www.courtformsonline.org/family/#minor_name_change).\r\n',
       long_description_content_type='text/markdown',
       author='Ryan Ditcham',
       author_email='rditcham@suffolk.edu',
-      license='The MIT License',
+      license='MIT',
       url='https://courtformsonline.org',
-      packages=find_packages(),
-      namespace_packages=['docassemble'],
-      install_requires=['docassemble.ALMassachusetts>=0.1.2', 'docassemble.AssemblyLine>=2.18.0', 'docassemble.MassAccess>=0.3.0'],
+      packages=find_namespace_packages(),
+      install_requires=['docassemble.ALMassachusetts @ git+https://github.com/SuffolkLITLab/docassemble-ALMassachusetts.git@main', 'docassemble.AssemblyLine @ git+https://github.com/SuffolkLITLab/docassemble-AssemblyLine.git@main', 'docassemble.MassAccess @ git+https://github.com/SuffolkLITLab/docassemble-MassAccess.git@main'],
       zip_safe=False,
       package_data=find_package_data(where='docassemble/PetitionToChangeNameMinorCJP25/', package='docassemble.PetitionToChangeNameMinorCJP25'),
      )
-
