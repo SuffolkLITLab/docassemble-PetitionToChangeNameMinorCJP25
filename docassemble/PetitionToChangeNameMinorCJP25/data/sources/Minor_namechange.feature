@@ -1,7 +1,7 @@
 Feature: I am a user
 
 Scenario: I am a user
-  Given I start the interview at "your_interview.yml"
+  Given I start the interview at "petition_to_name_change_minor_CJP25.yml"
   And the user gets to "download" with this data:
     | var | value | trigger |
     | acknowledged_information_use['I accept the terms of use.'] | True |  |
