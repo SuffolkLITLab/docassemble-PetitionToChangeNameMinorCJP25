@@ -4,54 +4,6 @@ Scenario: I have two parents, one guardian
   Given I start the interview at "petition_to_name_change_minor_CJP25.yml"
   And the user gets to "download petition_to_name_change_minor_CJP25" with this data:
     | var | value | trigger |
-    | AL_DEFAULT_STATE | MA |  |
-    | List | None |  |
-    | Optional | None |  |
-    | Post_interview_instructions['final'].docx.filename | Post-interview-instructions.docx |  |
-    | Post_interview_instructions['final'].docx.initialized | True |  |
-    | Post_interview_instructions['final'].docx.number | 405258 |  |
-    | Post_interview_instructions['final'].docx.ok | True |  |
-    | Post_interview_instructions['final'].info['attachment']['name'] | Question_447 |  |
-    | Post_interview_instructions['final'].info['attachment']['number'] | 0 |  |
-    | Post_interview_instructions['final'].info['description'] |  |  |
-    | Post_interview_instructions['final'].info['filename'] | Post-interview-instructions |  |
-    | Post_interview_instructions['final'].info['formats'][0] | docx |  |
-    | Post_interview_instructions['final'].info['formats'][1] | pdf |  |
-    | Post_interview_instructions['final'].info['name'] | Post interview instructions |  |
-    | Post_interview_instructions['final'].info['orig_variable_name'] | Post_interview_instructions[i] |  |
-    | Post_interview_instructions['final'].info['permissions'] | None |  |
-    | Post_interview_instructions['final'].info['raw'] | False |  |
-    | Post_interview_instructions['final'].pdf.filename | Post-interview-instructions.pdf |  |
-    | Post_interview_instructions['final'].pdf.initialized | True |  |
-    | Post_interview_instructions['final'].pdf.number | 405257 |  |
-    | Post_interview_instructions['final'].pdf.ok | True |  |
-    | Post_interview_instructions['preview'].docx.filename | Post-interview-instructions.docx |  |
-    | Post_interview_instructions['preview'].docx.initialized | True |  |
-    | Post_interview_instructions['preview'].docx.number | 405249 |  |
-    | Post_interview_instructions['preview'].docx.ok | True |  |
-    | Post_interview_instructions['preview'].info['attachment']['name'] | Question_447 |  |
-    | Post_interview_instructions['preview'].info['attachment']['number'] | 0 |  |
-    | Post_interview_instructions['preview'].info['description'] |  |  |
-    | Post_interview_instructions['preview'].info['filename'] | Post-interview-instructions |  |
-    | Post_interview_instructions['preview'].info['formats'][0] | docx |  |
-    | Post_interview_instructions['preview'].info['formats'][1] | pdf |  |
-    | Post_interview_instructions['preview'].info['name'] | Post interview instructions |  |
-    | Post_interview_instructions['preview'].info['orig_variable_name'] | Post_interview_instructions[i] |  |
-    | Post_interview_instructions['preview'].info['permissions'] | None |  |
-    | Post_interview_instructions['preview'].info['raw'] | False |  |
-    | Post_interview_instructions['preview'].pdf.filename | Post-interview-instructions.pdf |  |
-    | Post_interview_instructions['preview'].pdf.initialized | True |  |
-    | Post_interview_instructions['preview'].pdf.number | 405248 |  |
-    | Post_interview_instructions['preview'].pdf.ok | True |  |
-    | Post_interview_instructions.always_enabled | True |  |
-    | Post_interview_instructions.default_overflow_message | ... |  |
-    | Post_interview_instructions.enabled | True |  |
-    | Post_interview_instructions.filename | petition_to_name_change_minor_CJP25_next_steps.docx |  |
-    | Post_interview_instructions.has_addendum | False |  |
-    | Post_interview_instructions.overflow_fields.style | overflow_only |  |
-    | Post_interview_instructions.suffix_to_append | preview |  |
-    | Post_interview_instructions.title | Instructions |  |
-    | Union | None |  |
     | acknowledged_information_use | True |  |
     | addresses_to_search[0] | users[0].address |  |
     | addresses_to_search[0].address | w |  |
@@ -65,51 +17,6 @@ Scenario: I have two parents, one guardian
     | al_form_type | starts_case |  |
     | al_interview_languages[0] | en |  |
     | al_intro_screen | True |  |
-    | al_name_suffixes[0] | Jr |  |
-    | al_name_suffixes[1] | Junior |  |
-    | al_name_suffixes[2] | Sr |  |
-    | al_name_suffixes[3] | Senior |  |
-    | al_name_suffixes[4] | I |  |
-    | al_name_suffixes[5] | II |  |
-    | al_name_suffixes[6] | III |  |
-    | al_name_suffixes[7] | IV |  |
-    | al_name_suffixes[8] | V |  |
-    | al_name_suffixes[9] | VI |  |
-    | al_name_suffixes[10] | Esq. |  |
-    | al_name_suffixes[11] | Ph.D. |  |
-    | al_name_suffixes[12] | M.D. |  |
-    | al_name_suffixes[13] | J.D. |  |
-    | al_name_suffixes[14] | D.D.S. |  |
-    | al_name_suffixes[15] | D.V.M. |  |
-    | al_name_suffixes[16] | Ed.D. |  |
-    | al_name_suffixes[17] | Ret. |  |
-    | al_name_suffixes[18] | OBE |  |
-    | al_name_suffixes[19] | CBE |  |
-    | al_name_suffixes[20] | MBE |  |
-    | al_name_suffixes[21] | QC |  |
-    | al_name_suffixes[22] | KC |  |
-    | al_name_suffixes[23] | Bart. |  |
-    | al_name_suffixes[24] | Bt. |  |
-    | al_name_titles[0] | Mr. |  |
-    | al_name_titles[1] | Mrs. |  |
-    | al_name_titles[2] | Miss |  |
-    | al_name_titles[3] | Ms. |  |
-    | al_name_titles[4] | Mx. |  |
-    | al_name_titles[5] | Dr. |  |
-    | al_name_titles[6] | Prof. |  |
-    | al_name_titles[7] | Hon. |  |
-    | al_name_titles[8] | Rev. |  |
-    | al_name_titles[9] | Sir |  |
-    | al_name_titles[10] | Lord |  |
-    | al_name_titles[11] | Lady |  |
-    | al_name_titles[12] | Dame |  |
-    | al_name_titles[13] | Maj. |  |
-    | al_name_titles[14] | Gen. |  |
-    | al_name_titles[15] | Capt. |  |
-    | al_name_titles[16] | Lt. |  |
-    | al_name_titles[17] | Sgt. |  |
-    | al_name_titles[18] | Fr. |  |
-    | al_name_titles[19] | Sr. |  |
     | al_user_default_language | en |  |
     | al_user_language | en |  |
     | attorney_bbo | 1 |  |
@@ -156,7 +63,6 @@ Scenario: I have two parents, one guardian
     | docket_number |  |  |
     | dont_know_docket_number | True |  |
     | enable_al_language | True |  |
-    | feedback_form | docassemble.MassAccess:feedback.yml |  |
     | guardian | guardians[0] |  |
     | guardian.address | guardians[0].address |  |
     | guardian.address.address | g |  |
