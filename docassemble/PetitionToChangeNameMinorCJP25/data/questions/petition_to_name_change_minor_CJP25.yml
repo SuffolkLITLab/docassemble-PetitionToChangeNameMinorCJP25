@@ -432,17 +432,23 @@ fields:
 id: guardian presenting
 question: |
   Is this guardian presenting the form on behalf of the child?
-yesno: guardians[i].is_presenting
+fields:
+  - no label: "guardians[i].is_presenting"
+    datatype: yesnoradio
 ---
 id: parent presenting
 question: |
   Is the ${ordinal(i)} parent presenting the form on behalf of the child?
-yesno: parents[i].is_presenting
+fields:
+  - no label: "parents[i].is_presenting"
+    datatype: yesnoradio
 ---
 id: any guardians
 question: |
   Does the child have any guardians?
-yesno: guardians.there_are_any
+fields:
+  - no label: guardians.there_are_any
+    datatype: yesnoradio
 ---
 id: how many guardians
 question: |
@@ -463,12 +469,16 @@ buttons:
 id: address is DOC or DYS facility
 question: |
   Is the current address a facility under the supervision of the Massachusetts Department of Corrections or Department of Youth Services?
-yesno: doc_or_dys_yes
+fields:
+  - no label: doc_or_dys_yes
+    datatype: yesnoradio
 ---
 id: prior name change yesno
 question: |
   Has the child ever previously changed their name?
-yesno: prior_name_change
+fields:
+  - no label: prior_name_change
+    datatype: yesnoradio
 ---
 id: prior name change info
 question: |
@@ -484,7 +494,9 @@ fields:
 id: return request
 question: |
   Would you like to request a return, by first class mail, of all certified copies of documents filed with the court after review and processing?
-yesno: return_request_yes
+fields:
+  - no label: return_request_yes
+    datatype: yesnoradio
 ---
 #id: one parent listed
 #question: |
@@ -494,24 +506,32 @@ yesno: return_request_yes
 id: deceased parent
 question: |
   Is any legal parent listed on the child's birth certificate deceased?
-yesno: deceased_parent_listed_yes
+fields:
+  - no label: deceased_parent_listed_yes
+    datatype: yesnoradio
 ---
 id: parental rights terminated
 question: |
   Has any legal parent listed on the child's birth certificate had their parental rights terminated in a prior proceeding?
-yesno: parent_listed_rights_terminated_yes
+fields:
+  - no label: parent_listed_rights_terminated_yes
+    datatype: yesnoradio
 ---
 id: court-appointed guardian
 question: |
   Does the child have a court-appointed guardian?
-yesno: guardian
+fields:
+  - no label: guardian
+    datatype: yesnoradio
 ---
 id: minor assent
 question: |
   Is the minor over the age of 12 and able to assent to this petition?
 subquestion: |
   If the minor child is under 12 years of age, they cannot assent to this petition.
-noyes: minor_under_12_yes
+fields:
+  - no label: minor_under_12_yes
+    datatype: yesnoradio
 ---
 id: parent 1 assent
 question: |
@@ -962,6 +982,7 @@ review:
       ${ notary_public[0].signature }
 ---
 continue button field: users.revisit
+id: "edit users"
 question: |
   Edit users
 subquestion: |
@@ -989,6 +1010,7 @@ confirm: True
 
 ---
 continue button field: courts.revisit
+id: "edit courts"
 question: |
   Edit courts
 subquestion: |
@@ -1007,6 +1029,7 @@ confirm: True
 
 ---
 continue button field: parents.revisit
+id: "edit parents"
 question: |
   Edit parents
 subquestion: |
@@ -1037,6 +1060,7 @@ confirm: True
 
 ---
 continue button field: guardians.revisit
+id: "edit guardians"
 question: |
   Edit guardians
 subquestion: |
@@ -1067,6 +1091,7 @@ confirm: True
 
 ---
 continue button field: attorneys.revisit
+id: "edit attorneys"
 question: |
   Edit attorneys
 subquestion: |
