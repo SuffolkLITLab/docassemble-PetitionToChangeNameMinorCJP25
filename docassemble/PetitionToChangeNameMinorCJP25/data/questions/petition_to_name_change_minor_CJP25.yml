@@ -259,7 +259,7 @@ code: |
     guardians[i].needs_interpreter = False
   guardians[i].complete = True
 ---
-recalculate: True
+reconsider: True
 code: |
   temp_interpreter_languages = []
   if user_needs_interpreter == True:
@@ -531,7 +531,7 @@ subquestion: |
   If the minor child is under 12 years of age, they cannot assent to this petition.
 fields:
   - no label: minor_under_12_yes
-    datatype: yesnoradio
+    datatype: noyesradio
 ---
 id: parent 1 assent
 question: |
