@@ -261,23 +261,13 @@ code: |
 ---
 reconsider: True
 code: |
-  temp_interpreter_languages = []
-  if user_needs_interpreter == True:
-    temp_interpreter_languages.append(user_preferred_language)
-  
-  for parent in parents:
-    if parent.is_presenting == False: 
-      parent.needs_interpreter = False
-    if parent.needs_interpreter == True:
-      temp_interpreter_languages.append(parent.preferred_language)
-      
-  for guardian in guardians:
-    if guardian.is_presenting == False: 
-      guardian.needs_interpreter = False
-    if guardian.needs_interpreter == True:
-      temp_interpreter_languages.append(guardian.preferred_language)
-      
-  interpreter_languages = temp_interpreter_languages
+  interpreter_languages = (
+    ([user_preferred_language] if user_needs_interpreter else [])
+    + [person.preferred_language for person in parents
+       if person.is_presenting and person.needs_interpreter]
+    + [person.preferred_language for person in guardians
+       if person.is_presenting and person.needs_interpreter]
+  )
 ---
 ###################### Main order ######################
 comment: |
